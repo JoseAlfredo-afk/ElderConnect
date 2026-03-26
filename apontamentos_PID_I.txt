@@ -1,0 +1,5 @@
+ElderConnect
+
+- Atualizar o cronograma
+- No texto termos em inglês formatar como itálico ex:  backend
+- Formatar o  texto do resumo, objetivos para justificado
