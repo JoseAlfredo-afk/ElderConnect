@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<sim-project version="15.21" multi-file="no" uid="simp0c22986bfd28400ca1e224603fb010f4" creation-date="05/02/2026 19:28:47">
+  <meta>
+    <name>ElderConnect </name>
+    <authors> </authors>
+    <description />
+  </meta>
+  <counters models="4">
+    <entity-names>
+      <counter>
+        <item-type type-id="system-boundary" type="System Boundary" />
+        <value>1</value>
+      </counter>
+    </entity-names>
+    <entity-ids>
+      <counter>
+        <item-type type-id="system-boundary" type="System Boundary" />
+        <value>2</value>
+      </counter>
+    </entity-ids>
+    <diagrams>
+      <counter>
+        <type>SoftwareIdeasModeler.Core.Diagrams.UmlDiagrams.UmlComponentDiagram</type>
+        <value>3</value>
+      </counter>
+      <counter>
+        <type>SoftwareIdeasModeler.Core.Diagrams.UmlDiagrams.UmlUseCaseDiagram</type>
+        <value>1</value>
+      </counter>
+    </diagrams>
+    <fields />
+  </counters>
+  <alias-groups />
+  <management uid="md-42ced8ed312d48d8977be3b148d0748b" name="" task-id-sequence="0">
+    <working-schedule uid="ws-19e10fc2988140a58fe3e3023a0cd407" hours="8" monday="8" tuesday="8" wednesday="8" thursday="8" friday="8" saturday="0" sunday="0" />
+    <persons>
+      <person id="">
+        <first-name />
+        <last-name />
+        <role />
+        <e-mail />
+        <phone-number />
+        <description />
+        <color>#00000000</color>
+        <working-schedule uid="ws-7c5c6e3b3a724e779b5994665069d1df" hours="8" monday="8" tuesday="8" wednesday="8" thursday="8" friday="8" saturday="0" sunday="0" />
+      </person>
+    </persons>
+    <teams />
+    <sprints />
+    <projects />
+    <modules />
+    <tasks />
+    <to-dos />
+  </management>
+  <glossary id="glsr-41c0748f8e034850b349d5bd6b22d7e4" name="" order-index="-1" />
+  <types default="UML">
+    <type-sets>
+      <type-set file="UmlTypes.xml" />
+    </type-sets>
+    <custom-types>
+      <parameters />
+      <types />
+    </custom-types>
+  </types>
+  <items />
+  <models>
+    <model id="pe7e70bf6700a4e11b0abb0c5b3e6c9ca_424839651" name="Visão de Função" namespace="" order-index="1" expanded="true">
+      <meta>
+        <authors>
+          <author> </author>
+        </authors>
+        <description />
+        <creation-date>05/02/2026 19:32:15</creation-date>
+        <change-date>01/01/0001 00:00:00</change-date>
+        <revision-count>0</revision-count>
+        <version />
+      </meta>
+      <abstract-items />
+      <sub-models />
+      <diagram type="uml-usecase" id="pdcd78f0b720f4739b956ad643c0b36c6_449742521" name="Visão Geral" order-index="1" uid="" name-style="" auto-routed-paths="false" default-line-style="default">
+        <style>
+          <background-color index="1" color="#FFFFFFFF" />
+          <background-color index="2" color="#FFFFFFFF" />
+          <background-type type="solid" />
+        </style>
+        <meta>
+          <authors>
+            <author> </author>
+          </authors>
+          <description />
+          <creation-date>05/02/2026 19:39:54</creation-date>
+          <change-date>05/02/2026 19:40:02</change-date>
+          <revision-count>0</revision-count>
+          <version />
+        </meta>
+        <abstract-items>
+          <item id="4ebcd2e298cb491fac7a0035a53a4cbc" cid="SYS001" type="system-boundary" name="Elderonnect" creation-date="05/02/2026 19:40:02" />
+        </abstract-items>
+        <layer id="a7cc6addfa694f5ba1e0e4634410837a" name="Default" visible="true" enabled="true" locked="false">
+          <item id="4ebcd2e298cb491fac7a0035a53a4cbc" iid="e5d745b13aa04508bff3879caa9b1990" creation-date="05/02/2026 19:40:02" order-index="0" type="entity">
+            <layout ax="354" ay="43" awidth="300" aheight="400" x="354" y="43" width="300" height="400" expanded="354,43,300,400" collapsed="0,0,0,0" />
+          </item>
+        </layer>
+      </diagram>
+    </model>
+    <model id="p5379f02a4c3b4ff0a91fd090fc012829_734306895" name="Visão de Dados" namespace="" order-index="2">
+      <meta>
+        <authors>
+          <author> </author>
+        </authors>
+        <description />
+        <creation-date>05/02/2026 19:35:42</creation-date>
+        <change-date>01/01/0001 00:00:00</change-date>
+        <revision-count>0</revision-count>
+        <version />
+      </meta>
+      <abstract-items />
+      <sub-models />
+    </model>
+    <model id="pd4a4ed0a7c6046339f0841e4666243a5_585713600" name="Visão de Comportamento" namespace="" order-index="3">
+      <meta>
+        <authors>
+          <author> </author>
+        </authors>
+        <description />
+        <creation-date>05/02/2026 19:36:15</creation-date>
+        <change-date>01/01/0001 00:00:00</change-date>
+        <revision-count>0</revision-count>
+        <version />
+      </meta>
+      <abstract-items />
+      <sub-models />
+    </model>
+    <model id="pefe5152c2a98442b93c36c312f79ebe7_308596190" name="Visão de Integração com Usuario" namespace="" order-index="4">
+      <meta>
+        <authors>
+          <author> </author>
+        </authors>
+        <description />
+        <creation-date>05/02/2026 19:36:59</creation-date>
+        <change-date>01/01/0001 00:00:00</change-date>
+        <revision-count>0</revision-count>
+        <version />
+      </meta>
+      <abstract-items />
+      <sub-models />
+    </model>
+  </models>
+</sim-project>
