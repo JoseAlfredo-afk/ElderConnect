@@ -1,0 +1,4 @@
+- Revisão do MER
+     - Melhorar a disponibilização das entidades para ficar mais legível
+     - Analisar os relacionamentos
+     
