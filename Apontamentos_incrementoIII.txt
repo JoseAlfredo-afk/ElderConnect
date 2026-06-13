@@ -1,0 +1,7 @@
+Apontamentos Incremento 3
+- Requisitos não funcionais: descrever os requisitos 
+- Faltou oa parte de interação do usuário 
+- LGPD
+- Fluxo de finalizar o contrato entre o cuidador do idoso precisa ser definido
+- Correçõs no documento de formatação(vou subir os documentos com as marcações)
+- Caso de uso Gerenciar Perfil tem um relacionamento de include para atualizar dados, verificar se o atualizar dados tem que acontecer mesmo ou se é um extends?
