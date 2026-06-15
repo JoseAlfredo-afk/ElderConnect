@@ -1,2 +1,23 @@
-<h1>ElderConnect Rodando!</h1>
-<router-outlet />
+<header>
+  <div class="header-container">
+    <div class="logo">
+      <img src="/src/assets/images/svg/logo-elderconnect.svg" alt="ElderConnect Logo">
+    </div>
+    <nav class="main-menu">
+      <ul>
+        <li><a routerLink="/home" routerLinkActive="active">Início</a></li>
+        <li><a routerLink="/buscar">Buscar cuidadores</a></li>
+        <li><a routerLink="/sobre">Sobre</a></li>
+        <li><a routerLink="/ajuda">Ajuda</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a routerLink="/login" class="btn-entrar">Entrar</a>
+      <a routerLink="/cadastro" class="btn-cadastrar">Cadastrar</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
