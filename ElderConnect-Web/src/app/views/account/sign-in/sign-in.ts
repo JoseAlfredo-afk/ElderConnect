@@ -1,8 +1,8 @@
-// ... seus outros imports ...
-import { CommonModule } from '@angular/common'; // Garanta que o CommonModule está nos imports do @Component
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../services/user/auth';
 
 @Component({
   selector: 'app-sign-in',
@@ -15,6 +15,7 @@ export class SignIn {
   emailInput: string = '';
   senhaInput: string = '';
   mostrarSucesso: boolean = false;
+  private authService = inject(AuthService)
 
   constructor(private router: Router) { }
 
@@ -23,6 +24,8 @@ export class SignIn {
 
     if (this.emailInput.trim() !== '' && this.senhaInput.trim() !== '') {
       this.mostrarSucesso = true;
+
+      this.authService.logar()
 
       setTimeout(() => {
         this.router.navigate(['/home']);

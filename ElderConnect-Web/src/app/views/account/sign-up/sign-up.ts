@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../services/user/auth';
 
 @Component({
   selector: 'app-sign-up',
@@ -13,6 +14,7 @@ import { CommonModule } from '@angular/common';
 export class SignUp {
   cadastroForm: FormGroup;
   mostrarSucesso: boolean = false;
+  private authService = inject(AuthService)
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.cadastroForm = this.fb.group({
@@ -35,14 +37,14 @@ export class SignUp {
       valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
       valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
       valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-    } 
-    
+    }
+
     else if (tipo === 'data') {
       if (valor.length > 8) valor = valor.substring(0, 8);
       valor = valor.replace(/(\d{2})(\d)/, '$1/$2');
       valor = valor.replace(/(\d{2})(\d{1,4})$/, '$1/$2');
-    } 
-    
+    }
+
     else if (tipo === 'telefone') {
       if (valor.length > 11) valor = valor.substring(0, 11);
       valor = valor.replace(/^(\d{2})(\d)/g, '($1) $2');
@@ -50,20 +52,20 @@ export class SignUp {
     }
 
     input.value = valor;
-    
+
     this.cadastroForm.get(tipo === 'data' ? 'dataNascimento' : tipo)?.setValue(valor, { emitEvent: false });
   }
 
   submeter() {
     if (this.cadastroForm.valid) {
-      console.log('Dados enviados para simulação (Mock):', this.cadastroForm.value);
-      
-      this.mostrarSucesso = true; // Ativa a caixinha verde no HTML
+      this.mostrarSucesso = true;
+
+      // Ativa o estado de logado imediatamente para sumir os botões do topo
+      this.authService.logar();
 
       setTimeout(() => {
-        this.router.navigate(['/account/sign-in']);
+        this.router.navigate(['/home']); // Pode mandar direto para a Home já logado!
       }, 2500);
-
     } else {
       this.cadastroForm.markAllAsTouched();
     }
