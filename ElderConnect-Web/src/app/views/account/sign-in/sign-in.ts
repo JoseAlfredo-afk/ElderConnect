@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/user/auth';
 
 @Component({
@@ -15,7 +15,8 @@ export class SignIn {
   emailInput: string = '';
   senhaInput: string = '';
   mostrarSucesso: boolean = false;
-  private authService = inject(AuthService)
+  
+  private authService = inject(AuthService); 
 
   constructor(private router: Router) { }
 
@@ -23,13 +24,9 @@ export class SignIn {
     event.preventDefault();
 
     if (this.emailInput.trim() !== '' && this.senhaInput.trim() !== '') {
-      this.mostrarSucesso = true;
+      this.authService.logar(); 
 
-      this.authService.logar()
-
-      setTimeout(() => {
-        this.router.navigate(['/home']);
-      }, 2500);
+      this.router.navigate(['/home']); 
       
     } else {
       alert('Por favor, preencha o e-mail e a senha de simulação.');

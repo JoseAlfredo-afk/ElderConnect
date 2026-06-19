@@ -1,38 +1,52 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm py-3">
-  <div class="container">
-    <a class="navbar-brand d-flex align-items-center" routerLink="/home">
-      <img src="elderconnect.png" alt="ElderConnect Logo" height="40" class="me-2">
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-2 shadow-sm">
+  <div class="container-fluid px-4 d-flex align-items-center justify-content-between">
+    
+    <a class="d-flex flex-column align-items-center text-decoration-none" routerLink="/home" style="cursor: pointer;">
+      <img src="elderconnect.png" alt="ElderConnect Logo" height="48" class="d-block bg-transparent border-0 p-0 m-0">
     </a>
 
-    <div class="collapse navbar-collapse justify-content-center">
-      <ul class="navbar-nav mb-2 mb-lg-0 fw-bold">
-        <li class="nav-item mx-2">
-          <a class="nav-link text-dark" routerLink="/home" routerLinkActive="text-primary">Início</a>
-        </li>
-        <li class="nav-item mx-2">
-          <a class="nav-link text-dark" routerLink="/buscar">Buscar cuidadores</a>
-        </li>
-        <li class="nav-item mx-2">
-          <a class="nav-link text-dark" routerLink="/sobre">Sobre</a>
-        </li>
-        <li class="nav-item mx-2">
-          <a class="nav-link text-dark" routerLink="/ajuda">Ajuda</a>
-        </li>
-      </ul>
+    <div class="d-flex align-items-center gap-4 mx-auto">
+      <a routerLink="/home" class="text-decoration-none text-dark fw-bold" style="font-size: 1.05rem;">Início</a>
+      <a routerLink="/cuidadores" class="text-decoration-none text-dark fw-bold" style="font-size: 1.05rem;">Buscar cuidadores</a>
+      <a routerLink="/sobre" class="text-decoration-none text-dark fw-bold" style="font-size: 1.05rem;">Sobre</a>
+      <a routerLink="/ajuda" class="text-decoration-none text-dark fw-bold" style="font-size: 1.05rem;">Ajuda</a>
     </div>
 
-    <div *ngIf="!authService.usuarioLogado()" class="d-flex align-items-center gap-2">
-      <a routerLink="/account/sign-in" class="btn btn-outline-secondary px-4 rounded-3 text-dark fw-bold">Entrar</a>
-      <a routerLink="/account/sign-up" class="btn btn-success px-4 rounded-3 fw-bold bg-emerald">Cadastrar</a>
+    <div class="d-flex align-items-center">
+      
+      <div *ngIf="!authService.usuarioLogado()" class="d-flex align-items-center gap-2">
+        <a routerLink="/account/sign-in" class="btn btn-light bg-white px-3 py-1.5 rounded-3 text-dark fw-bold border border-secondary-subtle" style="font-size: 0.95rem;">
+          Entrar
+        </a>
+        <a routerLink="/account/sign-up" class="btn btn-success px-3 py-1.5 rounded-3 fw-bold border-0" style="background-color: #2ecc71; font-size: 0.95rem;">
+          Cadastrar
+        </a>
+      </div>
+
+      <div *ngIf="authService.usuarioLogado()" class="d-flex align-items-center gap-3">
+        <span class="text-dark fw-bold" style="font-size: 1rem;">Olá, Usuário!</span>
+        <button (click)="authService.logout()" class="btn btn-danger px-3 py-1.5 rounded-3 fw-bold border-0" style="background-color: #dc3545; font-size: 0.95rem;">
+          Sair
+        </button>
+      </div>
+
     </div>
 
-    <div *ngIf="authService.usuarioLogado()" class="d-flex align-items-center gap-2">
-      <span class="text-dark fw-bold me-2">!</span>
-      <button (click)="authService.logout()" class="btn btn-danger px-3 rounded-3 fw-bold">Sair</button>
-    </div>
   </div>
 </nav>
 
-<main>
+<div *ngIf="mostrarAlertaLogin()" 
+     class="alert alert-success d-flex align-items-center justify-content-center gap-2 border-0 shadow position-fixed end-0 py-2 px-4 rounded-3 text-success fw-bold me-4 animate__animated animate__fadeIn" 
+     style="background-color: #d1e7dd; z-index: 1050; top: 90px; min-width: 240px; font-size: 0.9rem;">
+  <i class="bi bi-check-circle-fill"></i> Logado com sucesso!
+</div>
+
+<div *ngIf="mostrarAlertaCadastro()" 
+     class="alert alert-success d-flex align-items-center justify-content-center gap-2 border-0 shadow position-fixed end-0 py-2 px-4 rounded-3 text-success fw-bold me-4 animate__animated animate__fadeIn" 
+     style="background-color: #d1e7dd; z-index: 1050; top: 90px; min-width: 240px; font-size: 0.9rem;">
+  <i class="bi bi-check-circle-fill"></i> Cadastrado com sucesso!
+</div>
+
+<main class="w-100">
   <router-outlet></router-outlet>
 </main>

@@ -4,8 +4,9 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-  // Signal que começa como 'false' (não logado)
+  
   public usuarioLogado = signal<boolean>(false);
+  public mostrarAlertaCadastroGlobal: boolean = false;
 
   logar() {
     this.usuarioLogado.set(true);

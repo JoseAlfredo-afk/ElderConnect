@@ -58,14 +58,12 @@ export class SignUp {
 
   submeter() {
     if (this.cadastroForm.valid) {
-      this.mostrarSucesso = true;
+      console.log('Dados enviados para simulação (Mock):', this.cadastroForm.value);
+    
+      this.authService.mostrarAlertaCadastroGlobal = true; 
 
-      // Ativa o estado de logado imediatamente para sumir os botões do topo
-      this.authService.logar();
+      this.router.navigate(['/account/sign-in']);
 
-      setTimeout(() => {
-        this.router.navigate(['/home']); // Pode mandar direto para a Home já logado!
-      }, 2500);
     } else {
       this.cadastroForm.markAllAsTouched();
     }
