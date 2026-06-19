@@ -1,22 +1,24 @@
 <div class="d-flex align-items-center justify-content-center py-5" style="min-height: 90vh; background-color: #ffffff;">
-  
-  <div class="card border border-secondary-subtle p-5 shadow-sm text-center" 
-       style="width: 100%; max-width: 850px; background-color: #ebf5ff; border-radius: 40px;">
-    
+
+  <div class="card border border-secondary-subtle p-5 shadow-sm text-center"
+    style="width: 100%; max-width: 850px; background-color: #ebf5ff; border-radius: 40px;">
+
     <h2 class="fw-bold fs-3 text-dark mb-1">Crie sua conta</h2>
     <p class="text-secondary fw-semibold mb-4" style="font-size: 0.85rem;">Escolha o tipo de conta que deseja criar</p>
 
     <form [formGroup]="cadastroForm" (ngSubmit)="submeter()">
-      
+
       <div class="row g-3 mb-4 justify-content-center mx-auto" style="max-width: 740px;">
-        <div class="col-12 col-md-6">
-          <div class="card p-3 border border-dark text-start bg-white h-100 rounded-4 shadow-sm" style="cursor: pointer;">
+        <div class="col-12 col-md-6" (click)="alterarTipoConta('idoso')">
+          <div class="card p-3 text-start bg-white h-100 rounded-4 shadow-sm" style="cursor: pointer;"
+            [ngClass]="tipoConta === 'idoso' ? 'border-dark' : 'border-secondary-subtle text-secondary'">
             <h4 class="fw-bold fs-5 text-dark mb-1">Idoso ou responsável</h4>
             <p class="text-secondary m-0" style="font-size: 0.75rem;">Sou idoso ou responsável por um idoso.</p>
           </div>
         </div>
-        <div class="col-12 col-md-6">
-          <div class="card p-3 border border-secondary-subtle text-center bg-white h-100 rounded-4 shadow-sm text-secondary" style="opacity: 0.85; cursor: pointer;">
+        <div class="col-12 col-md-6" (click)="alterarTipoConta('cuidador')">
+          <div class="card p-3 text-center bg-white h-100 rounded-4 shadow-sm" style="cursor: pointer;"
+            [ngClass]="tipoConta === 'cuidador' ? 'border-dark' : 'border-secondary-subtle text-secondary'">
             <h4 class="fw-bold fs-5 text-dark mb-1">Cuidador</h4>
             <p class="text-secondary m-0" style="font-size: 0.75rem;">Quero oferecer meus serviços de cuidado.</p>
           </div>
@@ -24,25 +26,28 @@
       </div>
 
       <div class="row g-4 text-start mx-auto mb-4" style="max-width: 740px;">
-        
+
         <div class="col-12 col-md-6 d-flex flex-column gap-3">
           <div>
             <label class="form-label fw-bold text-dark mb-1">Nome completo *</label>
-            <input type="text" formControlName="nome" class="form-control shadow-sm border-dark py-2" 
-                   [ngClass]="{'is-invalid': cadastroForm.get('nome')?.touched && cadastroForm.get('nome')?.invalid}" placeholder="Seu nome completo">
+            <input type="text" formControlName="nome" class="form-control shadow-sm border-dark py-2"
+              [ngClass]="{'is-invalid': cadastroForm.get('nome')?.touched && cadastroForm.get('nome')?.invalid}"
+              placeholder="Seu nome completo">
           </div>
-          
+
           <div>
             <label class="form-label fw-bold text-dark mb-1">Data de nascimento *</label>
-            <input type="text" formControlName="dataNascimento" (input)="aplicarMascara($event, 'data')" 
-                   class="form-control shadow-sm border-dark py-2" 
-                   [ngClass]="{'is-invalid': cadastroForm.get('dataNascimento')?.touched && cadastroForm.get('dataNascimento')?.invalid}" placeholder="dd/mm/aaaa">
+            <input type="text" formControlName="dataNascimento" (input)="aplicarMascara($event, 'data')"
+              class="form-control shadow-sm border-dark py-2"
+              [ngClass]="{'is-invalid': cadastroForm.get('dataNascimento')?.touched && cadastroForm.get('dataNascimento')?.invalid}"
+              placeholder="dd/mm/aaaa">
           </div>
-          
+
           <div>
             <label class="form-label fw-bold text-dark mb-1">E-mail *</label>
-            <input type="email" formControlName="email" class="form-control shadow-sm border-dark py-2" 
-                   [ngClass]="{'is-invalid': cadastroForm.get('email')?.touched && cadastroForm.get('email')?.invalid}" placeholder="seu@email.com">
+            <input type="email" formControlName="email" class="form-control shadow-sm border-dark py-2"
+              [ngClass]="{'is-invalid': cadastroForm.get('email')?.touched && cadastroForm.get('email')?.invalid}"
+              placeholder="seu@email.com">
             <div class="invalid-feedback" style="font-size: 0.75rem;">Insira um e-mail válido.</div>
           </div>
         </div>
@@ -50,28 +55,32 @@
         <div class="col-12 col-md-6 d-flex flex-column gap-3">
           <div>
             <label class="form-label fw-bold text-dark mb-1">CPF *</label>
-            <input type="text" formControlName="cpf" (input)="aplicarMascara($event, 'cpf')" 
-                   class="form-control shadow-sm border-dark py-2" 
-                   [ngClass]="{'is-invalid': cadastroForm.get('cpf')?.touched && cadastroForm.get('cpf')?.invalid}" placeholder="000.000.000-00">
+            <input type="text" formControlName="cpf" (input)="aplicarMascara($event, 'cpf')"
+              class="form-control shadow-sm border-dark py-2"
+              [ngClass]="{'is-invalid': cadastroForm.get('cpf')?.touched && cadastroForm.get('cpf')?.invalid}"
+              placeholder="000.000.000-00">
           </div>
-          
+
           <div>
             <label class="form-label fw-bold text-dark mb-1">Telefone *</label>
-            <input type="text" formControlName="telefone" (input)="aplicarMascara($event, 'telefone')" 
-                   class="form-control shadow-sm border-dark py-2" 
-                   [ngClass]="{'is-invalid': cadastroForm.get('telefone')?.touched && cadastroForm.get('telefone')?.invalid}" placeholder="(00) 00000-0000">
+            <input type="text" formControlName="telefone" (input)="aplicarMascara($event, 'telefone')"
+              class="form-control shadow-sm border-dark py-2"
+              [ngClass]="{'is-invalid': cadastroForm.get('telefone')?.touched && cadastroForm.get('telefone')?.invalid}"
+              placeholder="(00) 00000-0000">
           </div>
-          
+
           <div>
             <label class="form-label fw-bold text-dark mb-1">Senha *</label>
-            <input type="password" formControlName="senha" class="form-control shadow-sm border-dark py-2" 
-                   [ngClass]="{'is-invalid': cadastroForm.get('senha')?.touched && cadastroForm.get('senha')?.invalid}" placeholder="Mínimo 6 caracteres">
+            <input type="password" formControlName="senha" class="form-control shadow-sm border-dark py-2"
+              [ngClass]="{'is-invalid': cadastroForm.get('senha')?.touched && cadastroForm.get('senha')?.invalid}"
+              placeholder="Mínimo 6 caracteres">
           </div>
-          
+
           <div>
             <label class="form-label fw-bold text-dark mb-1">Confirma conta *</label>
-            <input type="password" formControlName="confirmaSenha" class="form-control shadow-sm border-dark py-2" 
-                   [ngClass]="{'is-invalid': cadastroForm.get('confirmaSenha')?.touched && cadastroForm.get('confirmaSenha')?.invalid}" placeholder="Confirme sua senha">
+            <input type="password" formControlName="confirmaSenha" class="form-control shadow-sm border-dark py-2"
+              [ngClass]="{'is-invalid': cadastroForm.get('confirmaSenha')?.touched && cadastroForm.get('confirmaSenha')?.invalid}"
+              placeholder="Confirme sua senha">
           </div>
         </div>
 
