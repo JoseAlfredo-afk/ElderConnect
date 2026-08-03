@@ -1,0 +1,77 @@
+<div class="container-fluid min-vh-100 bg-white p-4">
+  <div class="p-4 p-md-5 rounded-5" style="background-color: #eaf4ff;">
+
+    <!-- Cabeçalho: Título e Botão Novo Medicamento -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold text-dark m-0">Medicamentos</h2>
+      <button (click)="novoMedicamento()" class="btn btn-success fw-bold px-4 py-2 rounded-4 border-0 shadow-sm"
+        style="background-color: #2ecc71;">
+        + Novo Medicamento
+      </button>
+    </div>
+
+    <!-- Tabela / Container de Medicamentos -->
+    <div class="mb-4">
+
+      <!-- Cabeçalho das Colunas (Pílula) -->
+      <div class="d-flex align-items-center px-4 py-3 mb-3 rounded-pill border shadow-sm"
+        style="background-color: #dbeeff; border-color: #c8dcf0 !important;">
+        <div class="col-3 fw-bold text-secondary">Medicamentos</div>
+        <div class="col-3 fw-bold text-dark text-center">Dose</div>
+        <div class="col-2 fw-bold text-secondary text-center">Frequência</div>
+        <div class="col-2 fw-bold text-secondary text-center">Horário</div>
+        <div class="col-2 fw-bold text-secondary text-end pe-2">Ações</div>
+      </div>
+
+      <!-- Corpo com os Itens -->
+      <div class="p-4 rounded-5 border shadow-sm" style="background-color: #dbeeff; border-color: #c8dcf0 !important;">
+        @for (item of medicamentos; track item.id; let last = $last) {
+        <div class="d-flex align-items-center py-3" [class.border-bottom]="!last"
+          style="border-color: #c8dcf0 !important;">
+
+          <!-- Nome -->
+          <div class="col-3 text-secondary fw-semibold">
+            {{ item.nome }}
+          </div>
+
+          <!-- Dose -->
+          <div class="col-3 text-secondary fw-semibold text-center">
+            {{ item.dose }}
+          </div>
+
+          <!-- Frequência -->
+          <div class="col-2 text-secondary fw-semibold text-center">
+            {{ item.frequencia }}
+          </div>
+
+          <!-- Horário -->
+          <div class="col-2 text-primary fw-bold text-center">
+            {{ item.horario }}
+          </div>
+
+          <!-- Ações -->
+          <div class="col-2 d-flex justify-content-end gap-3 pe-2">
+            <button (click)="editar(item)" class="btn btn-link p-0 text-decoration-none border-0" title="Editar">
+              ✏️
+            </button>
+            <button (click)="excluir(item.id)" class="btn btn-link p-0 text-decoration-none border-0" title="Excluir">
+              🗑️
+            </button>
+          </div>
+
+        </div>
+        }
+      </div>
+
+    </div>
+
+    <!-- Card de Aviso Importante (Alinhado à direita) -->
+    <div class="d-flex justify-content-end mt-4">
+      <div class="card border-0 shadow-sm rounded-4 p-4" style="background-color: #dbeeff; min-width: 380px;">
+        <h6 class="fw-bold text-dark mb-1">Aviso Importante</h6>
+        <p class="text-secondary m-0 fw-medium">Proximo remédia as {{ proximoHorario }} horas</p>
+      </div>
+    </div>
+
+  </div>
+</div>
