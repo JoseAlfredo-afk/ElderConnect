@@ -1,0 +1,60 @@
+/* Card principal com o tom azul suave de fundo */
+.search-card {
+  background-color: #ebf5ff;
+  border-radius: 28px !important;
+}
+
+/* Selects arredondados idênticos ao layout */
+.custom-select {
+  border-radius: 20px;
+  border: 1px solid #1a1a1a;
+  padding: 0.5rem 1.2rem;
+  background-color: #ffffff;
+}
+
+/* Botão Buscar azul chamativo */
+.btn-buscar {
+  background-color: #005ce6;
+  border: none;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+}
+
+.btn-buscar:hover {
+  background-color: #0046b3;
+}
+
+/* Botão Limpar Filtros */
+.text-btn-limpar {
+  color: #4382ec;
+}
+
+.text-btn-limpar:hover {
+  color: #0046b3;
+}
+
+/* Avatar de perfil com borda roxa/azul arredondada */
+.avatar-circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid #5d75f7;
+  background-color: #ffffff;
+  flex-shrink: 0;
+}
+
+/* Estrela de avaliação */
+.star-icon {
+  font-size: 1.5rem;
+}
+
+/* Botão Ver Perfil */
+.btn-ver-perfil {
+  background-color: #005ce6;
+  border: none;
+  border-radius: 10px;
+}
+
+.btn-ver-perfil:hover {
+  background-color: #0046b3;
+}
