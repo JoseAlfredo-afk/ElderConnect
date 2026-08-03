@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ElderDashboard } from './elder-dashboard';
+import { ElderDashboard } from './elder';
 import { provideRouter } from '@angular/router';
 
 describe('ElderDashboard', () => {
@@ -13,7 +13,7 @@ describe('ElderDashboard', () => {
         provideRouter([]) // Prover dependências de roteamento para evitar erros com routerLink
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ElderDashboard);
     component = fixture.componentInstance;
