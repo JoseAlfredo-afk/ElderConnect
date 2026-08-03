@@ -1,0 +1,103 @@
+<div class="container-fluid vh-100 bg-white">
+  <div class="row h-100">
+    
+    <aside class="col-md-3 col-lg-2 d-flex flex-column justify-content-between p-4 bg-white border-end">
+      <div>
+        <nav class="nav flex-column gap-3 fs-5 fw-bold">
+          <a class="nav-link text-dark active px-0" routerLink="/dashboard/elder" routerLinkActive="text-primary">Home</a>
+          <a class="nav-link text-dark px-0" routerLink="/buscar-cuidador">Buscar cuidador</a>
+          <a class="nav-link text-dark px-0" routerLink="/agenda">Agenda</a>
+          <a class="nav-link text-dark px-0" routerLink="/medicamentos">Medicamentos</a>
+        </nav>
+      </div>
+
+      <div>
+        <button (click)="sair()" class="btn btn-link text-danger text-decoration-none fs-5 fw-bold p-0 border-0">
+          Sair
+        </button>
+      </div>
+    </aside>
+
+    <main class="col-md-9 col-lg-10 p-4 bg-white">
+      <div class="p-4 p-md-5 h-100 rounded-5" style="background-color: #eaf4ff;">
+        
+        <h2 class="fw-bold mb-4 text-dark">Olá {{ nomeUsuario }}</h2>
+
+        <div class="row g-4 mb-4">
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 p-3 text-center" style="background-color: #dbeeff;">
+              <span class="fs-2 fw-bold text-danger">1</span>
+              <h5 class="fw-bold text-dark m-0">Cuidador</h5>
+              <small class="text-secondary">Contratado</small>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 p-3 text-center" style="background-color: #dbeeff;">
+              <span class="fs-2 fw-bold text-success">2</span>
+              <h5 class="fw-bold text-dark m-0">Medicamentos</h5>
+              <small class="text-secondary">Hoje</small>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 p-3 text-center" style="background-color: #dbeeff;">
+              <span class="fs-2 fw-bold text-danger">1</span>
+              <h5 class="fw-bold text-dark m-0">Avisos</h5>
+              <small class="text-secondary">Importante</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100" style="background-color: #dbeeff;">
+              <h5 class="fw-bold text-dark mb-3">Próximos medicamentos</h5>
+              
+              <div class="d-flex flex-column gap-2 mb-3">
+                <div *ngFor="let med of proximosMedicamentos" class="d-flex justify-content-between align-items-center fs-5">
+                  <span class="text-secondary fw-medium">{{ med.nome }}</span>
+                  <span class="fw-bold text-primary">{{ med.horario }}</span>
+                </div>
+              </div>
+
+              <div class="mt-auto">
+                <a routerLink="/medicamentos" class="text-primary fw-bold text-decoration-none fs-5">Ver todos</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100 text-center d-flex flex-column align-items-center justify-content-center" style="background-color: #dbeeff;">
+              <h5 class="fw-bold text-dark mb-3 w-100 text-start">Cuidador Contratado</h5>
+              
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="rounded-circle d-flex align-items-center justify-content-center border border-primary border-2 p-2 bg-white" style="width: 60px; height: 60px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="#7b2cbf" class="bi bi-person" viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                  </svg>
+                </div>
+                <h5 class="fw-bold text-dark m-0">{{ cuidadorContratado.nome }}</h5>
+              </div>
+
+              <button class="btn btn-primary fw-bold rounded-pill px-4 py-2" style="background-color: #0d6efd;">
+                Ver perfil
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4 p-4" style="background-color: #dbeeff;">
+              <h5 class="fw-bold text-dark mb-1">Aviso Importante</h5>
+              <p class="fs-5 text-secondary m-0 fw-medium">{{ avisoImportante }}</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>
