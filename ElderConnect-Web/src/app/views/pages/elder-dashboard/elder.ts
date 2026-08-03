@@ -6,8 +6,8 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
   selector: 'app-elder-dashboard',
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive],
-  templateUrl: './elder-dashboard.html',
-  styleUrl: './elder-dashboard.css'
+  templateUrl: './elder.html',
+  styleUrl: './elder.css'
 })
 export class ElderDashboard {
   private router = inject(Router);
