@@ -5,6 +5,7 @@ import { Home } from './views/pages/home/home';
 import { CompleteProfile } from './views/account/sign-up-caregiver/sign-up-caregiver';
 import { ElderDashboard } from './views/pages/elder-dashboard/elder';
 import { SearchCaregivers } from './views/pages/search-caregiver/search-caregiver';
+import { Medications } from './views/pages/medications/medication';
 
 export const routes: Routes = [
     {
@@ -36,4 +37,8 @@ export const routes: Routes = [
         path: 'dashboard/search-caregiver',
         component: SearchCaregivers
     },
+    {
+        path: 'dashboard/medications',
+        component: Medications
+    }
 ];
