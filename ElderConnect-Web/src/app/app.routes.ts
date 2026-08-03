@@ -26,4 +26,8 @@ export const routes: Routes = [
         path: 'account/complete-profile',
         component: CompleteProfile
     },
+    {
+        path: 'dashboard-idoso/idoso',
+        component: IdosoDashboard
+    },
 ];
