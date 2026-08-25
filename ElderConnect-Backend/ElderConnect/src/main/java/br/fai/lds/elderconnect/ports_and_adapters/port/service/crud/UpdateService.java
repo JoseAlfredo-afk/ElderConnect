@@ -1,4 +1,4 @@
-package br.fai.lds.elderconnect.ports_and_adapters.adapter.service.crud;
+package br.fai.lds.elderconnect.ports_and_adapters.port.service.crud;
 
 public interface UpdateService<T> {
 
