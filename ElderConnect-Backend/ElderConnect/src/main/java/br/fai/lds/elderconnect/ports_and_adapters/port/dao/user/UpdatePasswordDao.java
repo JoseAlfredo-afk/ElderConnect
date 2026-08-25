@@ -1,4 +1,4 @@
-package br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user;
+package br.fai.lds.elderconnect.ports_and_adapters.port.dao.user;
 
 public interface UpdatePasswordDao {
 

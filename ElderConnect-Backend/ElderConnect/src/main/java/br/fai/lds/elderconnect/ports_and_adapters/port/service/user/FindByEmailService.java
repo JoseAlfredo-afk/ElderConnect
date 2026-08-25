@@ -1,4 +1,4 @@
-package br.fai.lds.elderconnect.ports_and_adapters.adapter.service.user;
+package br.fai.lds.elderconnect.ports_and_adapters.port.service.user;
 
 import br.fai.lds.elderconnect.domain.UserModel;
 
