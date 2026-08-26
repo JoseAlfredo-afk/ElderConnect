@@ -40,4 +40,9 @@ public class UserPostgresDaoAdapter implements UserDao {
     public boolean updatePassword(int id, String password) {
         return false;
     }
+
+    @Override
+    public UserModel readByCpf(String cpf) {
+        return null;
+    }
 }

@@ -20,7 +20,7 @@ public class UserFakeDaoAdapter implements UserDao {
         senior1.setEmail("maria@email.com");
         senior1.setPassword("12345");
         senior1.setPhoneNumber("(35) 99191-9191");
-        senior1.setUserType(UserType.IDOSO.name());
+        senior1.setUserType(UserType.IDOSO);
         senior1.setBirthDate("21/04/1938");
 
         UserModel senior2 = new UserModel();
@@ -30,7 +30,7 @@ public class UserFakeDaoAdapter implements UserDao {
         senior2.setEmail("joao@email.com");
         senior2.setPassword("2345678");
         senior2.setPhoneNumber("(35) 99999-9999");
-        senior2.setUserType(UserType.IDOSO.name());
+        senior2.setUserType(UserType.IDOSO);
         senior2.setBirthDate("27/06/1945");
 
         UserModel caregiver1 = new UserModel();
@@ -40,7 +40,7 @@ public class UserFakeDaoAdapter implements UserDao {
         caregiver1.setEmail("juliana@email.com");
         caregiver1.setPassword("juju");
         caregiver1.setPhoneNumber("(35) 99193-9393");
-        caregiver1.setUserType(UserType.CUIDADOR.name());
+        caregiver1.setUserType(UserType.CUIDADOR);
         caregiver1.setAvailabilitySchedule("Segunda a sexta - 08:00 às 18:00");
         caregiver1.setStreetAddress("Rua das Flores, 120");
         caregiver1.setSpecialization("Cuidados gerais com idosos");
@@ -55,7 +55,7 @@ public class UserFakeDaoAdapter implements UserDao {
         caregiver2.setEmail("paulo@email.com");
         caregiver2.setPassword("034567");
         caregiver2.setPhoneNumber("(35) 94444-5555");
-        caregiver2.setUserType(UserType.CUIDADOR.name());
+        caregiver2.setUserType(UserType.CUIDADOR);
         caregiver2.setAvailabilitySchedule("Todos os dias - 18:00 às 06:00");
         caregiver2.setStreetAddress("Avenida Sapucaí, 450");
         caregiver2.setSpecialization("Cuidados noturnos");
@@ -71,7 +71,7 @@ public class UserFakeDaoAdapter implements UserDao {
         caregiver3.setEmail("larissa@email.com");
         caregiver3.setPassword("52345");
         caregiver3.setPhoneNumber("(35) 99595-9595");
-        caregiver3.setUserType(UserType.CUIDADOR.name());
+        caregiver3.setUserType(UserType.CUIDADOR);
         caregiver3.setAvailabilitySchedule("Segunda, quarta e sexta - 07:00 às 17:00");
         caregiver3.setStreetAddress("Rua José Pinto, 81");
         caregiver3.setSpecialization("Acompanhamento e administração de medicamentos");
@@ -149,6 +149,15 @@ public class UserFakeDaoAdapter implements UserDao {
     public UserModel readByEmail(String email) {
         for (UserModel entity : entities){
             if(entity.getEmail().equalsIgnoreCase(email)){
+                return entity;
+            }
+        }
+        return null;
+    }
+
+    public UserModel readByCpf(String cpf) {
+        for (UserModel entity : entities){
+            if(entity.getCpf().equals(cpf)){
                 return entity;
             }
         }
