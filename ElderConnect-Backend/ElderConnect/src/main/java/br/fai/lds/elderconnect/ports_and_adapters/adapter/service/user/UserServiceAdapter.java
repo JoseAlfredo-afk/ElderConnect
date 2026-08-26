@@ -26,18 +26,35 @@ public class UserServiceAdapter implements UserService {
             return 0;
         }
 
-        if(userModel.getEmail().isEmpty()){
+        if(isFullnameInvalid(userModel.getFullname())){
             return 0;
         }
 
-        if (userModel.getFullname().isEmpty()
-        ) {
+        if(isEmailInvalid(userModel.getEmail())){
             return 0;
         }
 
-        if (!userModel.getEmail().contains("@")){
+        if(userDao.readByEmail(userModel.getEmail()) != null){
             return 0;
         }
+
+        if(isCpfInvalid(userModel.getCpf())){
+            return 0;
+        }
+
+        if(userDao.readByCpf(userModel.getCpf()) != null){
+            return 0;
+        }
+
+
+        if(isPhoneNumberInvalid(userModel.getPhoneNumber())){
+            return 0;
+        }
+
+        if (userModel.getUserType() == null){
+            return 0;
+        }
+
 
         return userDao.add(userModel);
     }
@@ -112,10 +129,69 @@ public class UserServiceAdapter implements UserService {
         return id < 0 ? true: false;
     }
 
-    boolean isPasswordInvalid(String password){
+    private boolean isPasswordInvalid(String password){
+
+        if(password == null){
+            return true;
+        }
+
         if (password.isEmpty()) {
             return true;
         }
-        return password.length() < 2 ? true : false;
+        return password.length() < 8 ? true : false;
+    }
+
+    private boolean isFullnameInvalid(String fullname){
+
+        if(fullname == null){
+            return true;
+        }
+
+        if(fullname.isEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isEmailInvalid(String email){
+
+        if(email == null){
+            return true;
+        }
+
+        if(email.isEmpty()){
+            return true;
+        }
+
+        if(!email.contains("@")){
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isCpfInvalid(String cpf){
+        if(cpf == null){
+            return true;
+        }
+
+        if(cpf.isEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isPhoneNumberInvalid(String phoneNumber){
+        if(phoneNumber == null){
+            return true;
+        }
+
+        if(phoneNumber.isEmpty()) {
+            return true;
+        }
+
+        return false;
     }
 }
