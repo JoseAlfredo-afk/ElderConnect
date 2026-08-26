@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class UserServiceAdapter implements UserService {
 
@@ -59,6 +61,28 @@ public class UserServiceAdapter implements UserService {
         return userDao.add(userModel);
     }
 
+    public UserModel login(String email, String password){
+        if(isEmailInvalid(email)){
+            return null;
+        }
+
+        if(isPasswordInvalid(password)){
+            return null;
+        }
+
+        UserModel userModel = userDao.readByEmail(email);
+
+        if(userModel == null){
+            return null;
+        }
+
+        if(!userModel.getPassword().equals(password)) {
+            return null;
+        }
+
+        return userModel;
+    }
+
     @Override
     public void delete(int id) {
         if (isIdInvalid(id)) {
@@ -79,7 +103,6 @@ public class UserServiceAdapter implements UserService {
         userDao.updateInformation(id,dataToUpdate);
         return true;
     }
-
 
     @Override
     public UserModel findById(int id) {

@@ -2,6 +2,7 @@ package br.fai.lds.elderconnect.controller;
 
 import br.fai.lds.elderconnect.domain.UserModel;
 import br.fai.lds.elderconnect.dto.CreateUserDto;
+import br.fai.lds.elderconnect.dto.CredencialUserDto;
 import br.fai.lds.elderconnect.dto.UpdateFullnameDto;
 import br.fai.lds.elderconnect.dto.UpdatePasswordDto;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService;
@@ -64,6 +65,18 @@ public class UserRestController {
         final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/").buildAndExpand(id).toUri();
 
         return ResponseEntity.created(uri).build();
+    }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<UserModel> signIn(@RequestBody CredencialUserDto credencialUserDto){
+
+        UserModel user = userService.login(credencialUserDto.getEmail(),credencialUserDto.getPassword());
+
+        if(user == null){
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/email/{email}")
