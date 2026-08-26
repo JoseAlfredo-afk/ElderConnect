@@ -18,7 +18,7 @@ public class UserFakeDaoAdapter implements UserDao {
         senior1.setCpf("111.111.111-11");
         senior1.setFullname("Maria de Olinda");
         senior1.setEmail("maria@email.com");
-        senior1.setPassword("12345");
+        senior1.setPassword("12345678");
         senior1.setPhoneNumber("(35) 99191-9191");
         senior1.setUserType(UserType.IDOSO);
         senior1.setBirthDate("21/04/1938");
@@ -28,7 +28,7 @@ public class UserFakeDaoAdapter implements UserDao {
         senior2.setCpf("222.222.222-22");
         senior2.setFullname("João Silva");
         senior2.setEmail("joao@email.com");
-        senior2.setPassword("2345678");
+        senior2.setPassword("23456788");
         senior2.setPhoneNumber("(35) 99999-9999");
         senior2.setUserType(UserType.IDOSO);
         senior2.setBirthDate("27/06/1945");
@@ -38,7 +38,7 @@ public class UserFakeDaoAdapter implements UserDao {
         caregiver1.setCpf("333.333.333-33");
         caregiver1.setFullname("Juliana Mota");
         caregiver1.setEmail("juliana@email.com");
-        caregiver1.setPassword("juju");
+        caregiver1.setPassword("juju2108");
         caregiver1.setPhoneNumber("(35) 99193-9393");
         caregiver1.setUserType(UserType.CUIDADOR);
         caregiver1.setAvailabilitySchedule("Segunda a sexta - 08:00 às 18:00");
@@ -53,7 +53,7 @@ public class UserFakeDaoAdapter implements UserDao {
         caregiver2.setCpf("444.444.444-44");
         caregiver2.setFullname("Paulo Santos");
         caregiver2.setEmail("paulo@email.com");
-        caregiver2.setPassword("034567");
+        caregiver2.setPassword("03456777");
         caregiver2.setPhoneNumber("(35) 94444-5555");
         caregiver2.setUserType(UserType.CUIDADOR);
         caregiver2.setAvailabilitySchedule("Todos os dias - 18:00 às 06:00");
@@ -69,7 +69,7 @@ public class UserFakeDaoAdapter implements UserDao {
         caregiver3.setCpf("111.111.111-55");
         caregiver3.setFullname("Larissa Silva");
         caregiver3.setEmail("larissa@email.com");
-        caregiver3.setPassword("52345");
+        caregiver3.setPassword("52345564");
         caregiver3.setPhoneNumber("(35) 99595-9595");
         caregiver3.setUserType(UserType.CUIDADOR);
         caregiver3.setAvailabilitySchedule("Segunda, quarta e sexta - 07:00 às 17:00");
