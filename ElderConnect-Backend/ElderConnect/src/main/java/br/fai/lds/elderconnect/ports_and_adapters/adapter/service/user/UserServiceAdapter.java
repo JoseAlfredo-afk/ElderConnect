@@ -4,9 +4,10 @@ import br.fai.lds.elderconnect.domain.UserModel;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class UserServiceAdapter implements UserService {
 
     @Autowired
