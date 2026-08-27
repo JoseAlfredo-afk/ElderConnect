@@ -25,10 +25,10 @@ public class UserRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserModel> getEntityById(@PathVariable final int id){
+    public ResponseEntity<UserResponseDto> getEntityById(@PathVariable final int id){
         UserModel userModel = userService.findById(id);
 
-        return userModel == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(userModel);
+        return userModel == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(UserResponseDto.toUserModel(userModel));
     }
 
     @DeleteMapping("/{id}")
@@ -76,12 +76,12 @@ public class UserRestController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<UserModel> getEntityByEmail(@PathVariable final String email){
+    public ResponseEntity<UserResponseDto> getEntityByEmail(@PathVariable final String email){
         final UserModel entity = userService.findByEmail(email);
         if(entity == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(entity);
+        return ResponseEntity.ok(UserResponseDto.toUserModel(entity));
     }
 
     @PatchMapping("/update-password")
