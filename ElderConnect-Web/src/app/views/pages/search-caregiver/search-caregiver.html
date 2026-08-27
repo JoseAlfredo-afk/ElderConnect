@@ -1,17 +1,14 @@
 <div class="container py-4">
-  <!-- Card Principal de Busca -->
-  <div class="card border-0 shadow-sm p-4 p-md-5 search-card">
-    
-    <!-- Título e Subtítulo -->
+  <div class="card border-0 shadow-sm p-4 p-md-5 rounded-5" style="background-color: #ebf5ff;">
+
     <h1 class="fw-bold fs-2 text-dark mb-1">Buscar Cuidadores</h1>
     <p class="text-secondary mb-4">Encontre o profissional ideal para o cuidado do seu familiar.</p>
 
     <!-- Área de Filtros -->
     <div class="row g-3 mb-4">
-      <!-- Cidade -->
       <div class="col-12 col-md-4">
         <label class="form-label fw-semibold text-dark">Cidade</label>
-        <select class="form-select custom-select" [(ngModel)]="cidadeSelecionada">
+        <select class="form-select rounded-pill border-dark px-3 py-2 bg-white" [(ngModel)]="cidadeSelecionada">
           <option value="Todas">Todas</option>
           <option value="Goiania - GO">Goiania - GO</option>
           <option value="Pouso Alegre - MG">Pouso Alegre - MG</option>
@@ -19,20 +16,19 @@
         </select>
       </div>
 
-      <!-- Valor máximo -->
       <div class="col-12 col-md-4">
         <label class="form-label fw-semibold text-dark">Valor máximo (R$)</label>
-        <select class="form-select custom-select" [(ngModel)]="valorMaximo">
+        <select class="form-select rounded-pill border-dark px-3 py-2 bg-white" [(ngModel)]="valorMaximo">
+          <option value="Todos">Todos</option>
           <option value="Até 30,00">Até 30,00</option>
           <option value="Até 50,00">Até 50,00</option>
           <option value="Até 100,00">Até 100,00</option>
         </select>
       </div>
 
-      <!-- Disponibilidade -->
       <div class="col-12 col-md-4">
         <label class="form-label fw-semibold text-dark">Disponibilidade</label>
-        <select class="form-select custom-select" [(ngModel)]="disponibilidade">
+        <select class="form-select rounded-pill border-dark px-3 py-2 bg-white" [(ngModel)]="disponibilidade">
           <option value="Qualquer horário">Qualquer horário</option>
           <option value="Manhã">Manhã</option>
           <option value="Tarde">Tarde</option>
@@ -40,10 +36,9 @@
         </select>
       </div>
 
-      <!-- Experiência mínima -->
       <div class="col-12 col-md-4">
-        <label class="form-label fw-semibold text-dark">Experiência minima</label>
-        <select class="form-select custom-select" [(ngModel)]="experienciaMinima">
+        <label class="form-label fw-semibold text-dark">Experiência mínima</label>
+        <select class="form-select rounded-pill border-dark px-3 py-2 bg-white" [(ngModel)]="experienciaMinima">
           <option value="Todas">Todas</option>
           <option value="1+ anos">1+ anos</option>
           <option value="3+ anos">3+ anos</option>
@@ -51,16 +46,16 @@
         </select>
       </div>
 
-      <!-- Botão Buscar -->
       <div class="col-12 col-md-4 d-flex align-items-end">
-        <button class="btn btn-primary btn-buscar w-100 fw-bold fs-5" (click)="buscar()">
+        <button class="btn btn-primary w-100 fw-bold fs-5 py-2 rounded-3 border-0" style="background-color: #005ce6;"
+          (click)="buscar()">
           Buscar
         </button>
       </div>
 
-      <!-- Limpar filtros -->
       <div class="col-12 col-md-4 d-flex align-items-end">
-        <button class="btn btn-link text-decoration-none fw-bold fs-5 text-btn-limpar p-0 mb-1" (click)="limparFiltros()">
+        <button class="btn btn-link text-decoration-none fw-bold fs-5 p-0 mb-1" style="color: #4382ec;"
+          (click)="limparFiltros()">
           Limpar filtros
         </button>
       </div>
@@ -69,41 +64,60 @@
     <!-- Lista de Cuidadores -->
     <div class="d-flex flex-column gap-4 mt-3">
       @for (cuidador of cuidadores; track cuidador.id) {
-        <div class="row align-items-center py-2">
-          
-          <!-- Avatar + Info Básica -->
-          <div class="col-12 col-md-5 d-flex align-items-center gap-3 mb-2 mb-md-0">
-            <div class="avatar-circle d-flex align-items-center justify-content-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-person text-info" viewBox="0 0 16 16">
-                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z"/>
-              </svg>
-            </div>
-            <div>
-              <h5 class="fw-bold mb-0 text-dark">{{ cuidador.nome }}</h5>
-              <small class="text-secondary d-block">{{ cuidador.cidade }}</small>
-              <small class="text-muted">{{ cuidador.experiencia }}</small>
+      <div class="row align-items-center py-2">
+
+        <!-- Avatar e Dados do Profissional -->
+        <div class="col-12 col-md-5 d-flex align-items-center gap-3 mb-2 mb-md-0">
+          <div
+            class="rounded-circle d-flex align-items-center justify-content-center border border-2 border-primary bg-white flex-shrink-0"
+            style="width: 70px; height: 70px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor"
+              class="bi bi-person text-info" viewBox="0 0 16 16">
+              <path
+                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z" />
+            </svg>
+          </div>
+          <div>
+            <h5 class="fw-bold mb-0 text-dark">{{ cuidador.nome }}</h5>
+            <small class="text-secondary d-block">{{ cuidador.cidade }}</small>
+            <small class="text-muted d-block mb-1">{{ cuidador.experiencia }}</small>
+
+            <!-- Badges de Disponibilidade exibidos em tela -->
+            <div class="d-flex flex-wrap gap-1">
+              @for (turn of cuidador.disponibilidade; track turn) {
+              <span class="badge bg-white text-primary border border-primary-subtle rounded-pill fw-semibold"
+                style="font-size: 0.75rem;">
+                {{ turn }}
+              </span>
+              }
             </div>
           </div>
-
-          <!-- Avaliação e Valor/Hora -->
-          <div class="col-12 col-md-4 mb-2 mb-md-0">
-            <div class="d-flex align-items-center gap-2 mb-1">
-              <span class="star-icon">⭐</span>
-              <span class="fw-bold fs-5 text-dark">{{ cuidador.avaliacao | number:'1.1-1' }}</span>
-            </div>
-            <div class="fw-bold text-dark fs-5">
-              R$ {{ cuidador.valorHora | number:'1.2-2' }} / hora
-            </div>
-          </div>
-
-          <!-- Botão Ver Perfil -->
-          <div class="col-12 col-md-3 text-md-end">
-            <button class="btn btn-primary btn-ver-perfil px-4 py-2 fw-semibold w-100 w-md-auto">
-              Ver perfil
-            </button>
-          </div>
-
         </div>
+
+        <!-- Avaliação e Valor -->
+        <div class="col-12 col-md-4 mb-2 mb-md-0">
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <span class="fs-4">⭐</span>
+            <span class="fw-bold fs-5 text-dark">{{ cuidador.avaliacao | number:'1.1-1' }}</span>
+          </div>
+          <div class="fw-bold text-dark fs-5">
+            R$ {{ cuidador.valorHora | number:'1.2-2' }} / hora
+          </div>
+        </div>
+
+        <!-- Ação -->
+        <div class="col-12 col-md-3 text-md-end">
+          <button class="btn btn-primary px-4 py-2 fw-semibold w-100 w-md-auto rounded-3 border-0"
+            style="background-color: #005ce6;">
+            Ver perfil
+          </button>
+        </div>
+
+      </div>
+      } @empty {
+      <div class="text-center py-5">
+        <p class="fs-5 text-secondary mb-0">Nenhum cuidador encontrado para os filtros selecionados.</p>
+      </div>
       }
     </div>
 
