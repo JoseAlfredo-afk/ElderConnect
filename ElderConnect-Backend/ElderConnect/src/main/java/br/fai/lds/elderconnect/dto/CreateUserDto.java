@@ -13,10 +13,10 @@ public class CreateUserDto {
 
     private String fullname;
     private String cpf;
-    private String birthDate;
     private String phoneNumber;
     private String email;
     private String password;
+    private String birthDate;
     private UserType userType;
 
     public UserModel toUserModel(){
@@ -26,6 +26,7 @@ public class CreateUserDto {
         userModel.setPhoneNumber(phoneNumber);
         userModel.setEmail(email);
         userModel.setPassword(password);
+        userModel.setBirthDate(birthDate);
         userModel.setUserType(userType);
         return userModel;
     }
