@@ -16,7 +16,7 @@ public class UserResponseDto {
     private UserType userType;
     private String birthDate;
 
-    public static UserResponseDto toUserModel(UserModel userModel) {
+    public static UserResponseDto fromUserModel(UserModel userModel) {
         UserResponseDto dto = new UserResponseDto();
 
         dto.setId(userModel.getId());
