@@ -1,12 +1,10 @@
 <div class="container-fluid vh-100 bg-white">
   <div class="row h-100">
 
-    <!-- Barra Lateral (Sidebar) -->
     <aside class="col-md-3 col-lg-2 d-flex flex-column justify-content-between p-4 bg-white border-end">
       <div>
         <nav class="nav flex-column gap-3 fs-5 fw-bold">
-          <a class="nav-link text-dark active px-0" routerLink="/home"
-            routerLinkActive="text-primary">Home</a>
+          <a class="nav-link text-dark active px-0" routerLink="/home" routerLinkActive="text-primary">Home</a>
           <a class="nav-link text-dark px-0" routerLink="/dashboard/search-caregiver">Buscar cuidador</a>
           <a class="nav-link text-dark px-0" routerLink="/dashboard/agenda">Agenda</a>
           <a class="nav-link text-dark px-0" routerLink="/dashboard/medications">Medicamentos</a>
@@ -20,13 +18,11 @@
       </div>
     </aside>
 
-    <!-- Conteúdo Principal -->
     <main class="col-md-9 col-lg-10 p-4 bg-white">
       <div class="p-4 p-md-5 h-100 rounded-5" style="background-color: #eaf4ff;">
 
         <h2 class="fw-bold mb-4 text-dark">Olá {{ nomeUsuario }}</h2>
 
-        <!-- Cards Superiores -->
         <div class="row g-4 mb-4">
           <div class="col-md-4">
             <div class="card border-0 shadow-sm rounded-4 p-3 text-center" style="background-color: #dbeeff;">
@@ -53,9 +49,7 @@
           </div>
         </div>
 
-        <!-- Conteúdo em Duas Colunas -->
         <div class="row g-4 mb-4">
-          <!-- Card Próximos Medicamentos -->
           <div class="col-md-6">
             <div class="card border-0 shadow-sm rounded-4 p-4 h-100" style="background-color: #dbeeff;">
               <h5 class="fw-bold text-dark mb-3">Próximos medicamentos</h5>
@@ -75,7 +69,6 @@
             </div>
           </div>
 
-          <!-- Card Cuidador Contratado -->
           <div class="col-md-6">
             <div
               class="card border-0 shadow-sm rounded-4 p-4 h-100 text-center d-flex flex-column align-items-center justify-content-center"
@@ -95,14 +88,15 @@
                 <h5 class="fw-bold text-dark m-0">{{ cuidadorContratado.nome }}</h5>
               </div>
 
-              <button class="btn btn-primary fw-bold rounded-pill px-4 py-2" style="background-color: #0d6efd;">
+              <a [routerLink]="['/caregiver', cuidadorContratado.id]"
+                class="btn btn-primary fw-bold rounded-pill px-4 py-2 text-decoration-none"
+                style="background-color: #0d6efd;">
                 Ver perfil
-              </button>
+              </a>
             </div>
           </div>
         </div>
 
-        <!-- Card Aviso Importante -->
         <div class="row">
           <div class="col-12">
             <div class="card border-0 shadow-sm rounded-4 p-4" style="background-color: #dbeeff;">

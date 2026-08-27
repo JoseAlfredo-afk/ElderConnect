@@ -4,7 +4,6 @@
     <h1 class="fw-bold fs-2 text-dark mb-1">Buscar Cuidadores</h1>
     <p class="text-secondary mb-4">Encontre o profissional ideal para o cuidado do seu familiar.</p>
 
-    <!-- Área de Filtros -->
     <div class="row g-3 mb-4">
       <div class="col-12 col-md-4">
         <label class="form-label fw-semibold text-dark">Cidade</label>
@@ -61,12 +60,10 @@
       </div>
     </div>
 
-    <!-- Lista de Cuidadores -->
     <div class="d-flex flex-column gap-4 mt-3">
       @for (cuidador of cuidadores; track cuidador.id) {
       <div class="row align-items-center py-2">
 
-        <!-- Avatar e Dados do Profissional -->
         <div class="col-12 col-md-5 d-flex align-items-center gap-3 mb-2 mb-md-0">
           <div
             class="rounded-circle d-flex align-items-center justify-content-center border border-2 border-primary bg-white flex-shrink-0"
@@ -82,7 +79,6 @@
             <small class="text-secondary d-block">{{ cuidador.cidade }}</small>
             <small class="text-muted d-block mb-1">{{ cuidador.experiencia }}</small>
 
-            <!-- Badges de Disponibilidade exibidos em tela -->
             <div class="d-flex flex-wrap gap-1">
               @for (turn of cuidador.disponibilidade; track turn) {
               <span class="badge bg-white text-primary border border-primary-subtle rounded-pill fw-semibold"
@@ -94,7 +90,6 @@
           </div>
         </div>
 
-        <!-- Avaliação e Valor -->
         <div class="col-12 col-md-4 mb-2 mb-md-0">
           <div class="d-flex align-items-center gap-2 mb-1">
             <span class="fs-4">⭐</span>
@@ -105,12 +100,13 @@
           </div>
         </div>
 
-        <!-- Ação -->
+        <!-- Botão corrigido (Apenas <a> formatado como botão) -->
         <div class="col-12 col-md-3 text-md-end">
-          <button class="btn btn-primary px-4 py-2 fw-semibold w-100 w-md-auto rounded-3 border-0"
+          <a [routerLink]="['/caregiver', cuidador.id]"
+            class="btn btn-primary px-4 py-2 fw-semibold w-100 w-md-auto rounded-3 border-0 text-decoration-none"
             style="background-color: #005ce6;">
             Ver perfil
-          </button>
+          </a>
         </div>
 
       </div>

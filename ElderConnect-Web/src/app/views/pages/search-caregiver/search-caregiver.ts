@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from "@angular/router";
 
 export interface Cuidador {
   id: number;
@@ -16,7 +17,7 @@ export interface Cuidador {
 @Component({
   selector: 'app-search-caregivers',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './search-caregiver.html',
   styleUrl: './search-caregiver.css'
 })
