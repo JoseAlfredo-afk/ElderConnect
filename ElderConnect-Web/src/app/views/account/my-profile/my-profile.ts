@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
   templateUrl: './my-profile.html'
 })
-export class Profile {
+export class Profile implements OnInit {
   usuario = {
     nome: 'Maria Silva',
     email: 'maria@email.com',
@@ -18,23 +18,38 @@ export class Profile {
 
   senhaAtual: string = '';
   novaSenha: string = '';
-  confirmarSenha: string = '';
+  confirmarNovaSenha: string = '';
 
-  alertaSucesso: boolean = false;
-
-  salvarPerfil() {
-    this.alertaSucesso = true;
-    setTimeout(() => this.alertaSucesso = false, 3000);
+  ngOnInit() {
+    this.carregarDadosPerfil();
   }
 
-  alterarSenha() {
-    if (this.novaSenha && this.novaSenha === this.confirmarSenha) {
-      alert('Senha alterada com sucesso!');
-      this.senhaAtual = '';
-      this.novaSenha = '';
-      this.confirmarSenha = '';
-    } else {
-      alert('As senhas não coincidem!');
+  carregarDadosPerfil() {
+    const salvos = localStorage.getItem('elderconnect_profile');
+    if (salvos) {
+      this.usuario = JSON.parse(salvos);
     }
+  }
+
+  salvarAlteracoes() {
+    localStorage.setItem('elderconnect_profile', JSON.stringify(this.usuario));
+    alert('Dados pessoais atualizados com sucesso!');
+  }
+
+  atualizarSenha() {
+    if (!this.senhaAtual || !this.novaSenha || !this.confirmarNovaSenha) {
+      alert('Preencha todos os campos de senha!');
+      return;
+    }
+
+    if (this.novaSenha !== this.confirmarNovaSenha) {
+      alert('A nova senha e a confirmação não coincidem!');
+      return;
+    }
+
+    alert('Senha alterada com sucesso!');
+    this.senhaAtual = '';
+    this.novaSenha = '';
+    this.confirmarNovaSenha = '';
   }
 }
