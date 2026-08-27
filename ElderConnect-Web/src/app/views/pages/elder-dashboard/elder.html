@@ -34,7 +34,7 @@
 
           <div class="col-md-4">
             <div class="card border-0 shadow-sm rounded-4 p-3 text-center" style="background-color: #dbeeff;">
-              <span class="fs-2 fw-bold text-success">2</span>
+              <span class="fs-2 fw-bold text-success">{{ totalMedicamentosHoje }}</span>
               <h5 class="fw-bold text-dark m-0">Medicamentos</h5>
               <small class="text-secondary">Hoje</small>
             </div>
@@ -50,21 +50,27 @@
         </div>
 
         <div class="row g-4 mb-4">
+
           <div class="col-md-6">
-            <div class="card border-0 shadow-sm rounded-4 p-4 h-100" style="background-color: #dbeeff;">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100 d-flex flex-column"
+              style="background-color: #dbeeff;">
               <h5 class="fw-bold text-dark mb-3">Próximos medicamentos</h5>
 
               <div class="d-flex flex-column gap-2 mb-3">
-                <div *ngFor="let med of proximosMedicamentos"
-                  class="d-flex justify-content-between align-items-center fs-5">
+                @for (med of proximosMedicamentos; track med.id) {
+                <div class="d-flex justify-content-between align-items-center fs-5">
                   <span class="text-secondary fw-medium">{{ med.nome }}</span>
                   <span class="fw-bold text-primary">{{ med.horario }}</span>
                 </div>
+                } @empty {
+                <p class="text-secondary m-0">Nenhum medicamento cadastrado.</p>
+                }
               </div>
 
-              <div class="mt-auto">
-                <a routerLink="/dashboard/medications" class="text-primary fw-bold text-decoration-none fs-5">Ver
-                  todos</a>
+              <div class="mt-auto pt-2">
+                <a routerLink="/dashboard/medications" class="text-primary fw-bold text-decoration-none fs-5">
+                  Ver todos
+                </a>
               </div>
             </div>
           </div>
