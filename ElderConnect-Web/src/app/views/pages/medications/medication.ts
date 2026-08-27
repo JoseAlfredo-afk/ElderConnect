@@ -18,10 +18,11 @@ export interface Medicamento {
 })
 export class Medications implements OnInit {
   medicamentos: Medicamento[] = [];
-
   exibirModalCadastro: boolean = false;
+  modoEdicao: boolean = false;
 
   novoMedicamento: Partial<Medicamento> = {
+    id: undefined,
     nome: '',
     dose: '',
     horario: '',
@@ -48,13 +49,19 @@ export class Medications implements OnInit {
   }
 
   salvarNoStorage() {
-    // Mantém a lista sempre ordenada ao salvar
     this.medicamentos.sort((a, b) => a.horario.localeCompare(b.horario));
     localStorage.setItem('elderconnect_medicamentos', JSON.stringify(this.medicamentos));
   }
 
   abrirModal() {
-    this.novoMedicamento = { nome: '', dose: '', horario: '', instrucoes: '' };
+    this.modoEdicao = false;
+    this.novoMedicamento = { id: undefined, nome: '', dose: '', horario: '', instrucoes: '' };
+    this.exibirModalCadastro = true;
+  }
+
+  editarMedicamento(med: Medicamento) {
+    this.modoEdicao = true;
+    this.novoMedicamento = { ...med };
     this.exibirModalCadastro = true;
   }
 
@@ -68,15 +75,28 @@ export class Medications implements OnInit {
       return;
     }
 
-    const item: Medicamento = {
-      id: Date.now(),
-      nome: this.novoMedicamento.nome,
-      dose: this.novoMedicamento.dose || 'S/D',
-      horario: this.novoMedicamento.horario,
-      instrucoes: this.novoMedicamento.instrucoes || ''
-    };
+    if (this.modoEdicao && this.novoMedicamento.id) {
+      const index = this.medicamentos.findIndex(m => m.id === this.novoMedicamento.id);
+      if (index !== -1) {
+        this.medicamentos[index] = {
+          id: this.novoMedicamento.id,
+          nome: this.novoMedicamento.nome,
+          dose: this.novoMedicamento.dose || 'S/D',
+          horario: this.novoMedicamento.horario,
+          instrucoes: this.novoMedicamento.instrucoes || ''
+        };
+      }
+    } else {
+      const item: Medicamento = {
+        id: Date.now(),
+        nome: this.novoMedicamento.nome,
+        dose: this.novoMedicamento.dose || 'S/D',
+        horario: this.novoMedicamento.horario,
+        instrucoes: this.novoMedicamento.instrucoes || ''
+      };
+      this.medicamentos.push(item);
+    }
 
-    this.medicamentos.push(item);
     this.salvarNoStorage();
     this.fecharModal();
   }
