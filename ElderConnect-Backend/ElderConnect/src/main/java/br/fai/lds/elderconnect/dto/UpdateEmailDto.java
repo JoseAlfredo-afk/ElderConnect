@@ -9,13 +9,7 @@ import lombok.Setter;
 public class UpdateEmailDto {
 
     private int id;
-    private String email;
-
-    public UserModel toUserModel() {
-        final UserModel userModel = new UserModel();
-        userModel.setId(id);
-        userModel.setEmail(email);
-        return userModel;
-    }
+    private String password;
+    private String newEmail;
 
 }
