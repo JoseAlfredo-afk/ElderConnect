@@ -9,6 +9,7 @@ import { Medications } from './views/pages/medications/medication';
 import { Profile } from './views/account/my-profile/my-profile';
 import { ForgotPassword } from './views/account/forgot-password/forgot-password';
 import { CaregiverProfile } from './views/pages/profile-caregiver/profile-caregiver';
+import { CaregiverDashboard } from './views/pages/caregiver-dashboard/caregiver-dashboard.';
 
 export const routes: Routes = [
     {
@@ -54,5 +55,9 @@ export const routes: Routes = [
     }, {
         path: 'caregiver/:id',
         component: CaregiverProfile
+    },
+    {
+        path: 'dashboard/caregiver',
+        component: CaregiverDashboard
     }
 ];
