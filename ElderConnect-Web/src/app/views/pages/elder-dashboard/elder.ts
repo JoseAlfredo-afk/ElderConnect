@@ -14,13 +14,13 @@ export class ElderDashboard {
 
   nomeUsuario: string = 'José';
 
-  // Exemplo de dados mockados para exibição reativa
   proximosMedicamentos = [
     { nome: 'Losartana', horario: '08:00' },
     { nome: 'Omeprazol', horario: '12:00' }
   ];
 
   cuidadorContratado = {
+    id: 1,
     nome: 'Maria Silva',
     foto: ''
   };
@@ -28,7 +28,6 @@ export class ElderDashboard {
   avisoImportante = 'Consulta dia 15/05';
 
   sair() {
-    // Limpa a sessão se necessário e volta para o login ou home
     this.router.navigate(['/account/sign-in']);
   }
 }
