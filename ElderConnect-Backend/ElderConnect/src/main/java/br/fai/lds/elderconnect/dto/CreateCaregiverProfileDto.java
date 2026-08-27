@@ -1,7 +1,12 @@
 package br.fai.lds.elderconnect.dto;
 
 import br.fai.lds.elderconnect.domain.UserModel;
+import lombok.Getter;
+import lombok.Setter;
 
+
+@Getter
+@Setter
 public class CreateCaregiverProfileDto {
 
     private String availabilitySchedule;
@@ -11,7 +16,8 @@ public class CreateCaregiverProfileDto {
     private String neighborhood;
     private String experience;
 
-    public UserModel ToUserModel(UserModel userModel){
+    public UserModel ToUserModel(){
+        UserModel userModel = new UserModel();
         userModel.setAvailabilitySchedule(availabilitySchedule);
         userModel.setStreetAddress(streetAddress);
         userModel.setNeighborhood(neighborhood);
