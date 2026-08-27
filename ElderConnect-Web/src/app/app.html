@@ -15,7 +15,6 @@
 
     <div class="d-flex align-items-center">
 
-      <!-- Usuário NÃO Logado -->
       <div *ngIf="!authService.usuarioLogado()" class="d-flex align-items-center gap-2">
         <a routerLink="/account/sign-in"
           class="btn btn-light bg-white px-3 py-1.5 rounded-3 text-dark fw-bold border border-secondary-subtle"
@@ -28,17 +27,14 @@
         </a>
       </div>
 
-      <!-- Usuário Logado (Com Botão Meu Perfil) -->
       <div *ngIf="authService.usuarioLogado()" class="d-flex align-items-center gap-3">
         <span class="text-dark fw-bold" style="font-size: 1rem;">Olá, Usuário!</span>
 
-        <!-- Botão Meu Perfil -->
         <a routerLink="/dashboard/profile" class="btn btn-outline-primary px-3 py-1.5 rounded-3 fw-bold"
           style="font-size: 0.95rem;">
           Meu Perfil
         </a>
 
-        <!-- Botão Sair -->
         <button (click)="authService.logout()" class="btn btn-danger px-3 py-1.5 rounded-3 fw-bold border-0"
           style="font-size: 0.95rem;">
           Sair

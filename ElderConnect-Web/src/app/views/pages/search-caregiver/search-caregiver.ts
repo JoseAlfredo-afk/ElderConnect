@@ -1,67 +1,131 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 
-interface Cuidador {
+export interface Cuidador {
   id: number;
   nome: string;
   cidade: string;
   experiencia: string;
+  anosExperiencia: number;
   avaliacao: number;
   valorHora: number;
+  disponibilidade: string[];
 }
 
 @Component({
   selector: 'app-search-caregivers',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './search-caregiver.html',
   styleUrl: './search-caregiver.css'
 })
 export class SearchCaregivers {
-  // Filtros
-  cidadeSelecionada = 'Todas';
-  valorMaximo = 'Até 30,00';
-  disponibilidade = 'Qualquer horário';
-  experienciaMinima = 'Todas';
+  cidadeSelecionada: string = 'Todas';
+  valorMaximo: string = 'Todos';
+  disponibilidade: string = 'Qualquer horário';
+  experienciaMinima: string = 'Todas';
 
-  // Lista Mock de Cuidadores (baseada no protótipo)
-  cuidadores: Cuidador[] = [
+  cuidadoresOriginais: Cuidador[] = [
     {
       id: 1,
-      nome: 'Cuidador1',
-      cidade: 'Goiania - GO',
+      nome: 'Maria Silva',
+      cidade: 'Pouso Alegre - MG',
       experiencia: '5 anos de experiência',
-      avaliacao: 3.5,
-      valorHora: 25.00
+      anosExperiencia: 5,
+      avaliacao: 4.9,
+      valorHora: 28.00,
+      disponibilidade: ['Manhã', 'Tarde']
     },
     {
       id: 2,
-      nome: 'Cuidador2',
-      cidade: 'Pouso Alegre - MG',
+      nome: 'João Santos',
+      cidade: 'Itajuba - MG',
       experiencia: '3 anos de experiência',
-      avaliacao: 3.8,
-      valorHora: 25.00
+      anosExperiencia: 3,
+      avaliacao: 4.7,
+      valorHora: 45.00,
+      disponibilidade: ['Noite']
     },
     {
       id: 3,
-      nome: 'Cuidador3',
-      cidade: 'Itajuba - MG',
-      experiencia: '4 anos de experiência',
+      nome: 'Ana Oliveira',
+      cidade: 'Goiania - GO',
+      experiencia: '1 ano de experiência',
+      anosExperiencia: 1,
       avaliacao: 4.8,
-      valorHora: 25.00
+      valorHora: 30.00,
+      disponibilidade: ['Manhã', 'Tarde', 'Noite']
+    },
+    {
+      id: 4,
+      nome: 'Carlos Eduardo',
+      cidade: 'Pouso Alegre - MG',
+      experiencia: '6 anos de experiência',
+      anosExperiencia: 6,
+      avaliacao: 5.0,
+      valorHora: 60.00,
+      disponibilidade: ['Tarde', 'Noite']
+    },
+    {
+      id: 5,
+      nome: 'Fernanda Lima',
+      cidade: 'Itajuba - MG',
+      experiencia: '2 anos de experiência',
+      anosExperiencia: 2,
+      avaliacao: 4.6,
+      valorHora: 25.00,
+      disponibilidade: ['Manhã']
+    },
+    {
+      id: 6,
+      nome: 'Roberto Alves',
+      cidade: 'Goiania - GO',
+      experiencia: '4 anos de experiência',
+      anosExperiencia: 4,
+      avaliacao: 4.9,
+      valorHora: 80.00,
+      disponibilidade: ['Manhã', 'Tarde']
     }
   ];
 
-  limparFiltros() {
-    this.cidadeSelecionada = 'Todas';
-    this.valorMaximo = 'Até 30,00';
-    this.disponibilidade = 'Qualquer horário';
-    this.experienciaMinima = 'Todas';
-  }
+  cuidadores: Cuidador[] = [...this.cuidadoresOriginais];
 
   buscar() {
-    // Lógica para aplicar os filtros futuramente
+    this.cuidadores = this.cuidadoresOriginais.filter(item => {
+      if (this.cidadeSelecionada !== 'Todas' && item.cidade !== this.cidadeSelecionada) {
+        return false;
+      }
+
+      if (this.valorMaximo !== 'Todos') {
+        const limite = parseFloat(this.valorMaximo.replace('Até ', '').replace(',', '.'));
+        if (item.valorHora > limite) {
+          return false;
+        }
+      }
+
+      if (this.disponibilidade !== 'Qualquer horário') {
+        if (!item.disponibilidade.includes(this.disponibilidade)) {
+          return false;
+        }
+      }
+
+      if (this.experienciaMinima !== 'Todas') {
+        const minAnos = parseInt(this.experienciaMinima.replace('+ anos', ''), 10);
+        if (item.anosExperiencia < minAnos) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }
+
+  limparFiltros() {
+    this.cidadeSelecionada = 'Todas';
+    this.valorMaximo = 'Todos';
+    this.disponibilidade = 'Qualquer horário';
+    this.experienciaMinima = 'Todas';
+    this.cuidadores = [...this.cuidadoresOriginais];
   }
 }
