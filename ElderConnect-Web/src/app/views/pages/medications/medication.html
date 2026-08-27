@@ -2,71 +2,101 @@
   <div class="p-4 p-md-5 rounded-5" style="background-color: #eaf4ff;">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="fw-bold text-dark m-0">Medicamentos</h2>
-      <button (click)="novoMedicamento()" class="btn btn-success fw-bold px-4 py-2 rounded-4 border-0 shadow-sm">
-        + Novo Medicamento
+      <div>
+        <h2 class="fw-bold text-dark m-0">Gestão de Medicamentos</h2>
+        <p class="text-secondary m-0">Cadastre e acompanhe os horários das medicações.</p>
+      </div>
+      <button class="btn btn-success fw-bold px-4 py-2 rounded-4 border-0 shadow-sm" (click)="abrirModal()">
+        + Cadastrar Medicamento
       </button>
     </div>
 
-    <div class="mb-4">
-
-      <div class="d-flex align-items-center px-4 py-3 mb-3 rounded-pill border shadow-sm"
-        style="background-color: #dbeeff; border-color: #c8dcf0 !important;">
-        <div class="col-3 fw-bold text-secondary">Medicamentos</div>
-        <div class="col-3 fw-bold text-dark text-center">Dose</div>
-        <div class="col-2 fw-bold text-secondary text-center">Frequência</div>
-        <div class="col-2 fw-bold text-secondary text-center">Horário</div>
-        <div class="col-2 fw-bold text-secondary text-end pe-2">Ações</div>
-      </div>
-
-      <div class="p-4 rounded-5 border shadow-sm" style="background-color: #dbeeff; border-color: #c8dcf0 !important;">
-        @for (item of medicamentos; track item.id; let last = $last) {
-        <div class="d-flex align-items-center py-3" [class.border-bottom]="!last"
-          style="border-color: #c8dcf0 !important;">
-
-          <!-- Nome -->
-          <div class="col-3 text-secondary fw-semibold">
-            {{ item.nome }}
+    <div class="row g-3">
+      @for (med of medicamentos; track med.id) {
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4" style="background-color: #dbeeff;">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+              <h5 class="fw-bold text-dark m-0">{{ med.nome }}</h5>
+              <small class="text-secondary fw-semibold">{{ med.dose }}</small>
+            </div>
+            <span class="badge bg-primary fs-6 px-3 py-2 rounded-pill">
+              {{ med.horario }}
+            </span>
           </div>
 
-          <!-- Dose -->
-          <div class="col-3 text-secondary fw-semibold text-center">
-            {{ item.dose }}
-          </div>
+          <p *ngIf="med.instrucoes" class="text-muted small mb-3">
+            {{ med.instrucoes }}
+          </p>
 
-          <!-- Frequência -->
-          <div class="col-2 text-secondary fw-semibold text-center">
-            {{ item.frequencia }}
-          </div>
-
-          <!-- Horário -->
-          <div class="col-2 text-primary fw-bold text-center">
-            {{ item.horario }}
-          </div>
-
-          <!-- Ações -->
-          <div class="col-2 d-flex justify-content-end gap-3 pe-2">
-            <button (click)="editar(item)" class="btn btn-link p-0 text-decoration-none border-0" title="Editar">
-              ✏️
-            </button>
-            <button (click)="excluir(item.id)" class="btn btn-link p-0 text-decoration-none border-0" title="Excluir">
-              🗑️
+          <div class="text-end mt-auto">
+            <button class="btn btn-outline-danger btn-sm rounded-3 fw-bold" (click)="excluirMedicamento(med.id)">
+              Remover
             </button>
           </div>
-
         </div>
-        }
+      </div>
+      } @empty {
+      <div class="col-12 text-center py-5">
+        <p class="fs-5 text-secondary">Nenhum medicamento cadastrado até o momento.</p>
+      </div>
+      }
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="exibirModalCadastro" class="modal d-block bg-dark bg-opacity-50" style="z-index: 1060;">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-5 border-0 p-3 shadow-lg" style="background-color: #eaf4ff;">
+
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold text-dark">Cadastrar Medicamento</h5>
+        <button type="button" class="btn-close" (click)="fecharModal()"></button>
+      </div>
+
+      <div class="modal-body">
+        <form (ngSubmit)="salvarMedicamento()">
+
+          <div class="mb-3">
+            <label class="form-label fw-bold text-dark">Nome *</label>
+            <input type="text" class="form-control rounded-3 border-0 px-3 py-2" placeholder="Ex: Losartana"
+              [(ngModel)]="novoMedicamento.nome" name="nome" required>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold text-dark">Dose</label>
+              <input type="text" class="form-control rounded-3 border-0 px-3 py-2" placeholder="Ex: 50mg"
+                [(ngModel)]="novoMedicamento.dose" name="dose">
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold text-dark">Horário *</label>
+              <input type="time" class="form-control rounded-3 border-0 px-3 py-2" [(ngModel)]="novoMedicamento.horario"
+                name="horario" required>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-bold text-dark">Instruções</label>
+            <textarea class="form-control rounded-3 border-0 px-3 py-2" rows="2"
+              placeholder="Ex: Tomar após o café da manhã" [(ngModel)]="novoMedicamento.instrucoes"
+              name="instrucoes"></textarea>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary rounded-4 px-4 fw-bold" (click)="fecharModal()">
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-success rounded-4 px-4 fw-bold border-0">
+              Salvar
+            </button>
+          </div>
+
+        </form>
       </div>
 
     </div>
-
-    <!-- Card de Aviso Importante (Alinhado à direita) -->
-    <div class="d-flex justify-content-end mt-4">
-      <div class="card border-0 shadow-sm rounded-4 p-4" style="background-color: #dbeeff; min-width: 380px;">
-        <h6 class="fw-bold text-dark mb-1">Aviso Importante</h6>
-        <p class="text-secondary m-0 fw-medium">Proximo remédio as {{ proximoHorario }} horas</p>
-      </div>
-    </div>
-
   </div>
 </div>
