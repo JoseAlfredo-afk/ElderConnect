@@ -45,4 +45,9 @@ public class UserPostgresDaoAdapter implements UserDao {
     public UserModel readByCpf(String cpf) {
         return null;
     }
+
+    @Override
+    public boolean updateEmail(int id, String email) {
+        return false;
+    }
 }

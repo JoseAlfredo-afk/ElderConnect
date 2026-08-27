@@ -139,7 +139,7 @@ public class UserFakeDaoAdapter implements UserDao {
         for(UserModel data : entities){
             if(data.getId() == id){
                 data.setFullname(entity.getFullname());
-                data.setEmail(entity.getEmail());
+                data.setPhoneNumber(entity.getPhoneNumber());
                 break;
             }
         }
@@ -171,6 +171,20 @@ public class UserFakeDaoAdapter implements UserDao {
         for(UserModel entity : entities){
             if(entity.getId() == id){
                 entity.setPassword(password);
+                response = true;
+                break;
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public boolean updateEmail(int id, String newEmail) {
+        boolean response = false;
+
+        for (UserModel entity : entities) {
+            if (entity.getId() == id) {
+                entity.setEmail(newEmail);
                 response = true;
                 break;
             }

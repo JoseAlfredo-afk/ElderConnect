@@ -92,13 +92,27 @@ public class UserServiceAdapter implements UserService {
     }
 
     @Override
-    public boolean update(int id, UserModel userModel) {
+    public boolean updateProfile(int id, UserModel userModel) {
+        if(isIdInvalid(id) || userModel == null){
+            return false;
+        }
+
         UserModel dataToUpdate = findById(id);
+
         if(dataToUpdate == null) {
             return false;
         }
 
+        if (isFullnameInvalid(userModel.getFullname())) {
+            return false;
+        }
+
+        if (isPhoneNumberInvalid(userModel.getPhoneNumber())) {
+            return false;
+        }
+
         dataToUpdate.setFullname(userModel.getFullname());
+        dataToUpdate.setPhoneNumber(userModel.getPhoneNumber());
 
         userDao.updateInformation(id,dataToUpdate);
         return true;
@@ -145,12 +159,45 @@ public class UserServiceAdapter implements UserService {
            return false;
        }
 
+        if(isPasswordInvalid(newPassword)){
+            return false;
+        }
+
        return userDao.updatePassword(id, newPassword);
     }
 
-    private boolean isIdInvalid(int id) {
-        return id < 0 ? true: false;
+    @Override
+    public boolean updateEmail(int id, String password, String newEmail) {
+        if(isIdInvalid(id)){
+            return false;
+        }
+
+        UserModel userModel = userDao.readyById(id);
+        if(userModel == null){
+            return false;
+        }
+
+        if(!userModel.getPassword().equals(password)){
+            return false;
+        }
+
+        if(isEmailInvalid(newEmail)){
+            return false;
+        }
+
+        UserModel userSameEmail = userDao.readByEmail(newEmail);
+
+        if(userSameEmail != null && userSameEmail.getId() != id){
+            return false;
+        }
+
+        return userDao.updateEmail(id, newEmail);
     }
+
+    private boolean isIdInvalid(int id) {
+        return id <= 0 ? true: false;
+    }
+
 
     private boolean isPasswordInvalid(String password){
 
