@@ -1,0 +1,293 @@
+@startuml
+class br.fai.lds.elderconnect.controller.UserRestController {
+- UserService userService
++ ResponseEntity<List<UserModel>> getEntities()
++ ResponseEntity<UserModel> getEntityById(int)
++ ResponseEntity<Void> delete(int)
++ ResponseEntity<UserModel> update(int,UpdateFullnameDto)
++ ResponseEntity<UserModel> create(CreateUserDto)
++ ResponseEntity<UserModel> signIn(CredencialUserDto)
++ ResponseEntity<UserModel> getEntityByEmail(String)
++ ResponseEntity<Void> updatePassword(UpdatePasswordDto)
+}
+
+
+class br.fai.lds.elderconnect.domain.Medication {
+- int id
+- String medicationName
+- String dose
+}
+
+class br.fai.lds.elderconnect.ElderConnectApplication {
++ {static} void main(String[])
+}
+
+enum br.fai.lds.elderconnect.domain.ContractStatus {
++  PEDENTE
++  ATIVO
++  COMPLETO
++  CANCELADO
+}
+
+class br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.configuration.PostgresConnectionManagerConfiguration {
+- String databaseBaseUrl
+- String databaseName
+- String databaseUsername
+- String databasePassword
+- String databaseUrl
++ DataSource dataSource()
++ Connection getConnection()
+- void createDatabaseIfNotExists(Connection)
+}
+
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.DeleteService {
+~ void delete(int)
+}
+
+class br.fai.lds.elderconnect.dto.UpdatePhoneNumberDto {
+- int id
+- String phoneNumber
++ UserModel toUserModel()
+}
+
+
+class br.fai.lds.elderconnect.domain.Contract {
+- int id
+- String contractNumber
+- String comment
+- int rating
+- String startDate
+- String endDate
+- int contractValue
+- String status
+- String workingHours
+- String description
+- UserModel senior
+- UserModel caregiver
+}
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.service.user.LoginService {
+~ UserModel login(String,String)
+}
+
+class br.fai.lds.elderconnect.dto.CredencialUserDto {
+- String email
+- String password
+}
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.CrudDao {
+}
+class br.fai.lds.elderconnect.domain.SeniorCaregiver {
+- int id
+- UserModel senior
+- UserModel caregiver
+}
+
+class br.fai.lds.elderconnect.domain.MedicationSchedule {
+- int id
+- String dosageInstructions
+- String intakeTime
+- UserModel senior
+- Medication medication
+}
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.service.user.FindByEmailService {
+~ UserModel findByEmail(String)
+}
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.CrudService {
+}
+class br.fai.lds.elderconnect.dto.UpdatePasswordDto {
+- int id
+- String oldPassword
+- String newPassword
+}
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UpdatePasswordDao {
+~ boolean updatePassword(int,String)
+}
+
+class br.fai.lds.elderconnect.configuration.AppConfiguration {
++ UserDao getUserFakeDao()
++ UserDao getUserPostgresDao()
+}
+
+class br.fai.lds.elderconnect.dto.CreateUserDto {
+- String fullname
+- String cpf
+- String birthDate
+- String phoneNumber
+- String email
+- String password
+- UserType userType
++ UserModel toUserModel()
+}
+
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.UpdateService {
+~ boolean update(int,T)
+}
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.CreateDao {
+~ int add(T)
+}
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.ReadByEmailDao {
+~ UserModel readByEmail(String)
+}
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService {
+}
+class br.fai.lds.elderconnect.ports_and_adapters.adapter.service.user.UserServiceAdapter {
+- UserDao userDao
++ int create(UserModel)
++ UserModel login(String,String)
++ void delete(int)
++ boolean update(int,UserModel)
++ UserModel findById(int)
++ List<UserModel> findAll()
++ UserModel findByEmail(String)
++ boolean updatePassword(int,String,String)
+- boolean isIdInvalid(int)
+- boolean isPasswordInvalid(String)
+- boolean isFullnameInvalid(String)
+- boolean isEmailInvalid(String)
+- boolean isCpfInvalid(String)
+- boolean isPhoneNumberInvalid(String)
+}
+
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.ReadByCpfDao {
+~ UserModel readByCpf(String)
+}
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao {
+}
+class br.fai.lds.elderconnect.domain.UserModel {
+- int id
+- String cpf
+- String fullname
+- String email
+- String password
+- String phoneNumber
+- UserType userType
+- String birthDate
+- String availabilitySchedule
+- String streetAddress
+- String specialization
+- String city
+- String neighborhood
+- String experience
+}
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.CreateService {
+~ int create(T)
+}
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.DeleteDao {
+~ void remove(int)
+}
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.UpdateDao {
+~ void updateInformation(int,T)
+}
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.FindService {
+~ T findById(int)
+~ List<T> findAll()
+}
+
+class br.fai.lds.elderconnect.dto.UpdateEmailDto {
+- int id
+- String email
++ UserModel toUserModel()
+}
+
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UpdatePasswordService {
+~ boolean updatePassword(int,String,String)
+}
+
+class br.fai.lds.elderconnect.domain.Message {
+- int id
+- String text
+- String sentAt
+- UserModel sender
+- UserModel recipient
+}
+
+class br.fai.lds.elderconnect.dto.UpdateAddressDto {
+- int id
+- String streetAddress
+- String city
+- String neighborhood
++ UserModel toUserModel()
+}
+
+
+class br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user.UserPostgresDaoAdapter {
++ int add(UserModel)
++ void remove(int)
++ UserModel readyById(int)
++ List<UserModel> readAll()
++ void updateInformation(int,UserModel)
++ UserModel readByEmail(String)
++ boolean updatePassword(int,String)
++ UserModel readByCpf(String)
+}
+
+interface br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.ReadDao {
+~ T readyById(int)
+~ List<T> readAll()
+}
+
+class br.fai.lds.elderconnect.dto.UpdateFullnameDto {
+- int id
+- String fullname
++ UserModel toUserModel()
+}
+
+
+enum br.fai.lds.elderconnect.domain.UserType {
++  IDOSO
++  CUIDADOR
+}
+
+class br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user.UserFakeDaoAdapter {
+- {static} List<UserModel> entities
+- {static} int ID
+- int getNextID()
++ int add(UserModel)
++ void remove(int)
++ UserModel readyById(int)
++ List<UserModel> readAll()
++ void updateInformation(int,UserModel)
++ UserModel readByEmail(String)
++ UserModel readByCpf(String)
++ boolean updatePassword(int,String)
+}
+
+
+
+
+br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.CreateDao <|-- br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.CrudDao
+br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.DeleteDao <|-- br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.CrudDao
+br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.ReadDao <|-- br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.CrudDao
+br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.UpdateDao <|-- br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.CrudDao
+br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.CreateService <|-- br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.CrudService
+br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.DeleteService <|-- br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.CrudService
+br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.UpdateService <|-- br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.CrudService
+br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.FindService <|-- br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.CrudService
+br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.CrudService <|-- br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService
+br.fai.lds.elderconnect.ports_and_adapters.port.service.user.FindByEmailService <|-- br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService
+br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UpdatePasswordService <|-- br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService
+br.fai.lds.elderconnect.ports_and_adapters.port.service.user.LoginService <|-- br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService
+br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService <|.. br.fai.lds.elderconnect.ports_and_adapters.adapter.service.user.UserServiceAdapter
+br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.CrudDao <|-- br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao
+br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.ReadByEmailDao <|-- br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao
+br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.ReadByCpfDao <|-- br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao
+br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UpdatePasswordDao <|-- br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao
+br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao <|.. br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user.UserPostgresDaoAdapter
+br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao <|.. br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user.UserFakeDaoAdapter
+@enduml
