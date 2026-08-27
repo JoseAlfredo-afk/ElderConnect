@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,16 +20,23 @@ public class UserRestController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserModel>> getEntities(){
-        List<UserModel> entities = userService.findAll();
-        return ResponseEntity.ok(entities);
+    public ResponseEntity<List<UserResponseDto>> getEntities(){
+        ArrayList<UserResponseDto> userResponseDtos = new ArrayList<>();
+        List<UserModel> userModels = userService.findAll();
+
+        for (UserModel userModel: userModels){
+            UserResponseDto userResponseDto =UserResponseDto.fromUserModel(userModel);
+            userResponseDtos.add(userResponseDto);
+        }
+
+        return ResponseEntity.ok(userResponseDtos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> getEntityById(@PathVariable final int id){
         UserModel userModel = userService.findById(id);
 
-        return userModel == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(UserResponseDto.toUserModel(userModel));
+        return userModel == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(UserResponseDto.fromUserModel(userModel));
     }
 
     @DeleteMapping("/{id}")
@@ -72,7 +80,7 @@ public class UserRestController {
             return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.ok(UserResponseDto.toUserModel(user));
+        return ResponseEntity.ok(UserResponseDto.fromUserModel(user));
     }
 
     @GetMapping("/email/{email}")
@@ -81,7 +89,7 @@ public class UserRestController {
         if(entity == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(UserResponseDto.toUserModel(entity));
+        return ResponseEntity.ok(UserResponseDto.fromUserModel(entity));
     }
 
     @PatchMapping("/update-password")
