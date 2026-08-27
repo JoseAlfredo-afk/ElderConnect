@@ -1,6 +1,7 @@
 <div class="container-fluid vh-100 bg-white">
   <div class="row h-100">
 
+    <!-- Sidebar -->
     <aside class="col-md-3 col-lg-2 d-flex flex-column justify-content-between p-4 bg-white border-end">
       <div>
         <nav class="nav flex-column gap-3 fs-5 fw-bold">
@@ -18,11 +19,13 @@
       </div>
     </aside>
 
+    <!-- Conteúdo Principal -->
     <main class="col-md-9 col-lg-10 p-4 bg-white">
       <div class="p-4 p-md-5 h-100 rounded-5" style="background-color: #eaf4ff;">
 
         <h2 class="fw-bold mb-4 text-dark">Olá {{ nomeUsuario }}</h2>
 
+        <!-- Cards Superiores -->
         <div class="row g-4 mb-4">
           <div class="col-md-4">
             <div class="card border-0 shadow-sm rounded-4 p-3 text-center" style="background-color: #dbeeff;">
@@ -42,15 +45,16 @@
 
           <div class="col-md-4">
             <div class="card border-0 shadow-sm rounded-4 p-3 text-center" style="background-color: #dbeeff;">
-              <span class="fs-2 fw-bold text-danger">1</span>
+              <span class="fs-2 fw-bold text-danger">{{ avisos.length }}</span>
               <h5 class="fw-bold text-dark m-0">Avisos</h5>
               <small class="text-secondary">Importante</small>
             </div>
           </div>
         </div>
 
+        <!-- Conteúdo Principal -->
         <div class="row g-4 mb-4">
-
+          <!-- Card Próximos Medicamentos -->
           <div class="col-md-6">
             <div class="card border-0 shadow-sm rounded-4 p-4 h-100 d-flex flex-column"
               style="background-color: #dbeeff;">
@@ -75,6 +79,7 @@
             </div>
           </div>
 
+          <!-- Card Cuidador Contratado -->
           <div class="col-md-6">
             <div
               class="card border-0 shadow-sm rounded-4 p-4 h-100 text-center d-flex flex-column align-items-center justify-content-center"
@@ -103,11 +108,32 @@
           </div>
         </div>
 
+        <!-- Seção de Avisos Importantes com Botão de Novo Aviso -->
         <div class="row">
           <div class="col-12">
             <div class="card border-0 shadow-sm rounded-4 p-4" style="background-color: #dbeeff;">
-              <h5 class="fw-bold text-dark mb-1">Aviso Importante</h5>
-              <p class="fs-5 text-secondary m-0 fw-medium">{{ avisoImportante }}</p>
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-dark m-0">Avisos Importantes</h5>
+                <button class="btn btn-primary btn-sm fw-bold rounded-3 px-3" (click)="abrirModalAviso()">
+                  + Cadastrar Aviso
+                </button>
+              </div>
+
+              <div class="d-flex flex-column gap-2">
+                @for (aviso of avisos; track aviso.id) {
+                <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded-3 shadow-sm">
+                  <div>
+                    <h6 class="fw-bold text-dark mb-1">{{ aviso.titulo }}</h6>
+                    <p class="fs-6 text-secondary m-0 fw-medium">{{ aviso.descricao }}</p>
+                  </div>
+                  <button class="btn btn-outline-danger btn-sm rounded-3 fw-bold ms-2" (click)="removerAviso(aviso.id)">
+                    Excluir
+                  </button>
+                </div>
+                } @empty {
+                <p class="text-secondary m-0">Nenhum aviso cadastrado.</p>
+                }
+              </div>
             </div>
           </div>
         </div>
@@ -115,5 +141,47 @@
       </div>
     </main>
 
+  </div>
+</div>
+
+<!-- Modal para Cadastrar Aviso -->
+<div *ngIf="exibirModalAviso" class="modal d-block bg-dark bg-opacity-50" style="z-index: 1060;">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-5 border-0 p-3 shadow-lg" style="background-color: #eaf4ff;">
+
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold text-dark">Cadastrar Novo Aviso</h5>
+        <button type="button" class="btn-close" (click)="fecharModalAviso()"></button>
+      </div>
+
+      <div class="modal-body">
+        <form (ngSubmit)="salvarAviso()">
+
+          <div class="mb-3">
+            <label class="form-label fw-bold text-dark">Título *</label>
+            <input type="text" class="form-control rounded-3 border-0 px-3 py-2" placeholder="Ex: Consulta Médica"
+              [(ngModel)]="novoAviso.titulo" name="titulo" required>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-bold text-dark">Descrição / Detalhes *</label>
+            <textarea class="form-control rounded-3 border-0 px-3 py-2" rows="3"
+              placeholder="Ex: Consulta dia 15/05 às 14:00 com Dr. Roberto" [(ngModel)]="novoAviso.descricao"
+              name="descricao" required></textarea>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary rounded-4 px-4 fw-bold" (click)="fecharModalAviso()">
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-primary rounded-4 px-4 fw-bold border-0">
+              Salvar Aviso
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
   </div>
 </div>
