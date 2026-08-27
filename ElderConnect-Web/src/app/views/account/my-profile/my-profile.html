@@ -4,6 +4,8 @@
     <h2 class="fw-bold text-dark mb-4">Meu Perfil</h2>
 
     <div class="row g-4">
+
+      <!-- Bloco 1: Edição de Dados Pessoais -->
       <div class="col-12 col-lg-6">
         <div class="bg-white p-4 rounded-4 shadow-sm border-0 h-100 d-flex flex-column justify-content-between">
           <div>
@@ -11,21 +13,21 @@
 
             <div class="mb-3">
               <label class="form-label fw-semibold text-dark">Nome Completo</label>
-              <input type="text" class="form-control rounded-3 border-secondary-subtle py-2" [(ngModel)]="usuario.nome"
-                name="nome">
+              <input type="text" class="form-control rounded-3 border-secondary-subtle py-2 text-dark"
+                [(ngModel)]="usuario.nome" name="nome" placeholder="Seu nome completo">
             </div>
 
             <div class="mb-3">
               <label class="form-label fw-semibold text-dark">E-mail</label>
-              <input type="email" class="form-control rounded-3 border-secondary-subtle py-2"
-                [(ngModel)]="usuario.email" name="email">
+              <input type="email" class="form-control rounded-3 border-secondary-subtle py-2 text-dark"
+                [(ngModel)]="usuario.email" name="email" placeholder="seu@email.com">
             </div>
 
             <div class="row g-3">
               <div class="col-12 col-md-6 mb-3">
                 <label class="form-label fw-semibold text-dark">Telefone</label>
-                <input type="text" class="form-control rounded-3 border-secondary-subtle py-2"
-                  [(ngModel)]="usuario.telefone" name="telefone">
+                <input type="text" class="form-control rounded-3 border-secondary-subtle py-2 text-dark"
+                  [(ngModel)]="usuario.telefone" name="telefone" placeholder="(00) 00000-0000">
               </div>
 
               <div class="col-12 col-md-6 mb-3">
@@ -38,13 +40,14 @@
 
           <div class="text-end mt-4">
             <button class="btn btn-success fw-bold px-4 py-2 rounded-3 border-0 shadow-sm"
-              style="background-color: #198754;" (click)="salvarAlteracoes()">
+              style="background-color: #00bf63;" (click)="salvarAlteracoes()">
               Salvar Alterações
             </button>
           </div>
         </div>
       </div>
 
+      <!-- Bloco 2: Alteração de Senha -->
       <div class="col-12 col-lg-6">
         <div class="bg-white p-4 rounded-4 shadow-sm border-0 h-100 d-flex flex-column justify-content-between">
           <div>
@@ -71,12 +74,13 @@
 
           <div class="mt-4">
             <button class="btn btn-primary fw-bold w-100 py-2 rounded-3 border-0 shadow-sm"
-              style="background-color: #0d6efd;" (click)="atualizarSenha()">
+              style="background-color: #005ce6;" (click)="atualizarSenha()">
               Atualizar Senha
             </button>
           </div>
         </div>
       </div>
+
     </div>
 
   </div>
