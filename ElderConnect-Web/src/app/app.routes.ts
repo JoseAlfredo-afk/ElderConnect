@@ -6,6 +6,8 @@ import { CompleteProfile } from './views/account/sign-up-caregiver/sign-up-careg
 import { ElderDashboard } from './views/pages/elder-dashboard/elder';
 import { SearchCaregivers } from './views/pages/search-caregiver/search-caregiver';
 import { Medications } from './views/pages/medications/medication';
+import { Profile } from './views/account/my-profile/my-profile';
+import { ForgotPassword } from './views/account/forgot-password/forgot-password';
 
 export const routes: Routes = [
     {
@@ -40,5 +42,13 @@ export const routes: Routes = [
     {
         path: 'dashboard/medications',
         component: Medications
+    },
+    {
+        path: 'account/forgot-password',
+        component: ForgotPassword
+    },
+    {
+        path: 'dashboard/profile',
+        component: Profile
     }
 ];
