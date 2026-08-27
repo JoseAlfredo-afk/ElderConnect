@@ -1,12 +1,8 @@
 package br.fai.lds.elderconnect.controller;
 
 import br.fai.lds.elderconnect.domain.UserModel;
-import br.fai.lds.elderconnect.dto.CreateUserDto;
-import br.fai.lds.elderconnect.dto.CredencialUserDto;
-import br.fai.lds.elderconnect.dto.UpdateFullnameDto;
-import br.fai.lds.elderconnect.dto.UpdatePasswordDto;
+import br.fai.lds.elderconnect.dto.*;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,11 +37,11 @@ public class UserRestController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserModel> update(@PathVariable final int id, @RequestBody final UpdateFullnameDto updateFullnameDto ){
-        final UserModel userModel = updateFullnameDto.toUserModel();
+    @PutMapping("/profile/{id}")
+    public ResponseEntity<UserModel> updateProfile(@PathVariable final int id, @RequestBody final UpdateProfileDto updateProfileDto){
+        final UserModel userModel = updateProfileDto.toUserModel();
 
-        boolean response = userService.update(id, userModel);
+        boolean response = userService.updateProfile(id, userModel);
 
         return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
 
@@ -68,7 +64,7 @@ public class UserRestController {
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<UserModel> signIn(@RequestBody CredencialUserDto credencialUserDto){
+    public ResponseEntity<UserResponseDto> signIn(@RequestBody CredencialUserDto credencialUserDto){
 
         UserModel user = userService.login(credencialUserDto.getEmail(),credencialUserDto.getPassword());
 
@@ -76,7 +72,7 @@ public class UserRestController {
             return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(UserResponseDto.toUserModel(user));
     }
 
     @GetMapping("/email/{email}")
@@ -91,6 +87,14 @@ public class UserRestController {
     @PatchMapping("/update-password")
     public ResponseEntity<Void> updatePassword(@RequestBody final UpdatePasswordDto updatePasswordDto){
         final boolean response = userService.updatePassword(updatePasswordDto.getId(), updatePasswordDto.getOldPassword(), updatePasswordDto.getNewPassword());
+
+        return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+    }
+
+    @PatchMapping("/update-email")
+    public ResponseEntity<Void> updateEmail(@RequestBody final UpdateEmailDto updateEmailDto) {
+
+        final boolean response = userService.updateEmail(updateEmailDto.getId(),updateEmailDto.getPassword(), updateEmailDto.getNewEmail());
 
         return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
