@@ -1,115 +1,161 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
-export interface Medicamento {
-  id: number;
-  nome: string;
-  dose: string;
-  horario: string;
-  instrucoes?: string;
+export interface CuidadorContratado {
+  cuidadorId: number;
+  cuidadorNome: string;
+  telefone?: string;
+  especialidade?: string;
 }
 
-export interface Aviso {
-  id: number;
-  titulo: string;
-  descricao: string;
-  data?: string;
+export interface Medicamento {
+  nome: string;
+  dosagem: string;
+  horario: string;
+  instrucoes: string;
 }
 
 @Component({
   selector: 'app-elder-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, RouterLinkActive],
-  templateUrl: './elder.html',
-  styleUrl: './elder.css'
+  imports: [CommonModule, FormsModule, RouterLink],
+  templateUrl: './elder.html'
 })
 export class ElderDashboard implements OnInit {
-  private router = inject(Router);
+  nomeIdoso: string = 'José da Silva';
+  cuidadorContratado: CuidadorContratado | null = null;
+  medicamentos: Medicamento[] = [];
 
-  nomeUsuario: string = 'José';
-  proximosMedicamentos: Medicamento[] = [];
-  totalMedicamentosHoje: number = 0;
+  // Pop-up / Modal de Avaliação
+  exibirModalAvaliacao: boolean = false;
+  estrelasSelecionadas: number = 5;
+  comentarioAvaliacao: string = '';
 
-  cuidadorContratado = {
-    id: 1,
-    nome: 'Maria Silva',
-    foto: ''
-  };
-
-  // Gestão de Avisos
-  avisos: Aviso[] = [];
-  exibirModalAviso: boolean = false;
-  novoAviso: Partial<Aviso> = { titulo: '', descricao: '' };
-
-  ngOnInit() {
+  ngOnInit(): void {
+    this.carregarCuidadorVinculado();
     this.carregarMedicamentos();
-    this.carregarAvisos();
   }
 
-  carregarMedicamentos() {
-    const salvos = localStorage.getItem('elderconnect_medicamentos');
-    let lista: Medicamento[] = [];
-
-    if (salvos) {
-      lista = JSON.parse(salvos);
+  carregarMedicamentos(): void {
+    const medsSalvos = localStorage.getItem('elderconnect_medicamentos');
+    if (medsSalvos) {
+      try {
+        this.medicamentos = JSON.parse(medsSalvos);
+      } catch (e) {
+        this.carregarMedicamentosPadrao();
+      }
     } else {
-      lista = [
-        { id: 1, nome: 'Losartana', dose: '50mg', horario: '08:00', instrucoes: 'Tomar após o café' },
-        { id: 2, nome: 'Omeprazol', dose: '20mg', horario: '12:00', instrucoes: 'Jejum ou antes do almoço' }
-      ];
-      localStorage.setItem('elderconnect_medicamentos', JSON.stringify(lista));
+      this.carregarMedicamentosPadrao();
     }
-
-    this.proximosMedicamentos = lista.sort((a, b) => a.horario.localeCompare(b.horario));
-    this.totalMedicamentosHoje = this.proximosMedicamentos.length;
   }
 
-  carregarAvisos() {
-    const salvos = localStorage.getItem('elderconnect_avisos');
-    if (salvos) {
-      this.avisos = JSON.parse(salvos);
+  private carregarMedicamentosPadrao(): void {
+    this.medicamentos = [
+      {
+        nome: 'Loratadina',
+        dosagem: '1 compr.',
+        horario: '07:30',
+        instrucoes: 'Sem instruções'
+      },
+      {
+        nome: 'Omeprazol',
+        dosagem: '20mg',
+        horario: '12:00',
+        instrucoes: 'Jejum ou antes do almoço'
+      }
+    ];
+    localStorage.setItem('elderconnect_medicamentos', JSON.stringify(this.medicamentos));
+  }
+
+  carregarCuidadorVinculado(): void {
+    const vinculoSalvo = localStorage.getItem('elderconnect_vinculo');
+
+    if (vinculoSalvo) {
+      try {
+        const dados = JSON.parse(vinculoSalvo);
+        this.cuidadorContratado = {
+          cuidadorId: dados.cuidadorId || 1,
+          cuidadorNome: dados.cuidadorNome || 'Maria Silva',
+          telefone: dados.telefone || '(35) 99988-7766',
+          especialidade: dados.especialidade || 'Cuidados Gerais & Acompanhamento'
+        };
+      } catch (e) {
+        this.cuidadorContratado = null;
+      }
     } else {
-      this.avisos = [
-        { id: 1, titulo: 'Consulta Médica', descricao: 'Consulta dia 15/05' }
-      ];
-      localStorage.setItem('elderconnect_avisos', JSON.stringify(this.avisos));
+      this.cuidadorContratado = null;
     }
   }
 
-  abrirModalAviso() {
-    this.novoAviso = { titulo: '', descricao: '' };
-    this.exibirModalAviso = true;
-  }
+  desfazerVinculo(): void {
+    const confirmacao = window.confirm('Tem certeza que deseja encerrar o vínculo com este cuidador?');
 
-  fecharModalAviso() {
-    this.exibirModalAviso = false;
-  }
-
-  salvarAviso() {
-    if (!this.novoAviso.titulo || !this.novoAviso.descricao) {
-      alert('Por favor, preencha o título e a descrição do aviso!');
-      return;
+    if (confirmacao) {
+      localStorage.removeItem('elderconnect_vinculo');
+      this.cuidadorContratado = null;
+      alert('Vínculo encerrado com sucesso.');
     }
+  }
 
-    const item: Aviso = {
-      id: Date.now(),
-      titulo: this.novoAviso.titulo,
-      descricao: this.novoAviso.descricao
+  // Métodos do Pop-up de Avaliação
+  abrirModalAvaliacao(): void {
+    this.estrelasSelecionadas = 5;
+    this.comentarioAvaliacao = '';
+    this.exibirModalAvaliacao = true;
+  }
+
+  fecharModalAvaliacao(): void {
+    this.exibirModalAvaliacao = false;
+  }
+
+  selecionarEstrelas(qtd: number): void {
+    this.estrelasSelecionadas = qtd;
+  }
+
+  salvarAvaliacao(): void {
+    if (!this.cuidadorContratado) return;
+
+    const novaNota = this.estrelasSelecionadas;
+    const cuidadorId = this.cuidadorContratado.cuidadorId;
+
+    // 1. Salva o histórico de avaliações individuais
+    const avaliacao = {
+      cuidadorId: cuidadorId,
+      cuidadorNome: this.cuidadorContratado.cuidadorNome,
+      estrelas: novaNota,
+      comentario: this.comentarioAvaliacao.trim(),
+      data: new Date().toLocaleDateString('pt-BR')
     };
 
-    this.avisos.unshift(item);
-    localStorage.setItem('elderconnect_avisos', JSON.stringify(this.avisos));
-    this.fecharModalAviso();
-  }
+    const avaliacoesSalvas = JSON.parse(localStorage.getItem('elderconnect_avaliacoes') || '[]');
+    avaliacoesSalvas.push(avaliacao);
+    localStorage.setItem('elderconnect_avaliacoes', JSON.stringify(avaliacoesSalvas));
 
-  removerAviso(id: number) {
-    this.avisos = this.avisos.filter(a => a.id !== id);
-    localStorage.setItem('elderconnect_avisos', JSON.stringify(this.avisos));
-  }
+    // 2. Atualiza o perfil acumulado do cuidador no localStorage
+    const chaveCuidador = `elderconnect_cuidador_${cuidadorId}`;
+    const dadosCuidadorSalvos = localStorage.getItem(chaveCuidador);
 
-  sair() {
-    this.router.navigate(['/account/sign-in']);
+    let dadosCuidador = dadosCuidadorSalvos ? JSON.parse(dadosCuidadorSalvos) : {
+      id: cuidadorId,
+      nome: this.cuidadorContratado.cuidadorNome,
+      avaliacao: 4.9,
+      totalAvaliacoes: 48
+    };
+
+    const totalAnterior = dadosCuidador.totalAvaliacoes || 1;
+    const somaAnterior = (dadosCuidador.avaliacao || 5.0) * totalAnterior;
+
+    const novoTotal = totalAnterior + 1;
+    const novaMedia = (somaAnterior + novaNota) / novoTotal;
+
+    dadosCuidador.avaliacao = parseFloat(novaMedia.toFixed(1));
+    dadosCuidador.totalAvaliacoes = novoTotal;
+
+    localStorage.setItem(chaveCuidador, JSON.stringify(dadosCuidador));
+
+    alert(`Avaliação enviada com sucesso! A nova média de ${dadosCuidador.nome} é ${dadosCuidador.avaliacao} ★ (${dadosCuidador.totalAvaliacoes} avaliações).`);
+    this.fecharModalAvaliacao();
   }
 }

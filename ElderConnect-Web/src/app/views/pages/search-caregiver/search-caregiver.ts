@@ -1,132 +1,115 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from "@angular/router";
+import { RouterLink } from '@angular/router';
 
 export interface Cuidador {
   id: number;
   nome: string;
   cidade: string;
-  experiencia: string;
-  anosExperiencia: number;
+  experienciaAnos: number;
+  experienciaTexto: string;
+  precoHora: number;
   avaliacao: number;
-  valorHora: number;
-  disponibilidade: string[];
+  disponibilidade: string; // 'Manhã', 'Tarde', 'Noite', 'Integral'
 }
 
 @Component({
-  selector: 'app-search-caregivers',
+  selector: 'app-search-caregiver',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './search-caregiver.html',
-  styleUrl: './search-caregiver.css'
+  templateUrl: './search-caregiver.html'
 })
-export class SearchCaregivers {
-  cidadeSelecionada: string = 'Todas';
-  valorMaximo: string = 'Todos';
-  disponibilidade: string = 'Qualquer horário';
-  experienciaMinima: string = 'Todas';
-
-  cuidadoresOriginais: Cuidador[] = [
+export class SearchCaregiver implements OnInit {
+  // Lista original de cuidadores
+  cuidadores: Cuidador[] = [
     {
       id: 1,
-      nome: 'Maria Silva',
-      cidade: 'Pouso Alegre - MG',
-      experiencia: '5 anos de experiência',
-      anosExperiencia: 5,
-      avaliacao: 4.9,
-      valorHora: 28.00,
-      disponibilidade: ['Manhã', 'Tarde']
+      nome: 'Cuidador1',
+      cidade: 'Goiânia - GO',
+      experienciaAnos: 5,
+      experienciaTexto: '5 anos de experiência',
+      precoHora: 25.00,
+      avaliacao: 3.5,
+      disponibilidade: 'Manhã'
     },
     {
       id: 2,
-      nome: 'João Santos',
-      cidade: 'Itajuba - MG',
-      experiencia: '3 anos de experiência',
-      anosExperiencia: 3,
-      avaliacao: 4.7,
-      valorHora: 45.00,
-      disponibilidade: ['Noite']
+      nome: 'Cuidador2',
+      cidade: 'Pouso Alegre - MG',
+      experienciaAnos: 3,
+      experienciaTexto: '3 anos de experiência',
+      precoHora: 25.00,
+      avaliacao: 3.8,
+      disponibilidade: 'Tarde'
     },
     {
       id: 3,
-      nome: 'Ana Oliveira',
-      cidade: 'Goiania - GO',
-      experiencia: '1 ano de experiência',
-      anosExperiencia: 1,
+      nome: 'Cuidador3',
+      cidade: 'Itajubá - MG',
+      experienciaAnos: 4,
+      experienciaTexto: '4 anos de experiência',
+      precoHora: 25.00,
       avaliacao: 4.8,
-      valorHora: 30.00,
-      disponibilidade: ['Manhã', 'Tarde', 'Noite']
+      disponibilidade: 'Integral'
     },
     {
       id: 4,
-      nome: 'Carlos Eduardo',
-      cidade: 'Pouso Alegre - MG',
-      experiencia: '6 anos de experiência',
-      anosExperiencia: 6,
-      avaliacao: 5.0,
-      valorHora: 60.00,
-      disponibilidade: ['Tarde', 'Noite']
-    },
-    {
-      id: 5,
-      nome: 'Fernanda Lima',
-      cidade: 'Itajuba - MG',
-      experiencia: '2 anos de experiência',
-      anosExperiencia: 2,
-      avaliacao: 4.6,
-      valorHora: 25.00,
-      disponibilidade: ['Manhã']
-    },
-    {
-      id: 6,
-      nome: 'Roberto Alves',
-      cidade: 'Goiania - GO',
-      experiencia: '4 anos de experiência',
-      anosExperiencia: 4,
+      nome: 'Maria Silva',
+      cidade: 'Santa Rita do Sapucaí - MG',
+      experienciaAnos: 5,
+      experienciaTexto: '5 anos de experiência',
+      precoHora: 45.00,
       avaliacao: 4.9,
-      valorHora: 80.00,
-      disponibilidade: ['Manhã', 'Tarde']
+      disponibilidade: 'Integral'
     }
   ];
 
-  cuidadores: Cuidador[] = [...this.cuidadoresOriginais];
+  // Lista filtrada que será exibida na tela
+  cuidadoresFiltrados: Cuidador[] = [];
 
-  buscar() {
-    this.cuidadores = this.cuidadoresOriginais.filter(item => {
-      if (this.cidadeSelecionada !== 'Todas' && item.cidade !== this.cidadeSelecionada) {
-        return false;
+  // Variáveis do Filtro
+  cidadeSelecionada: string = 'Todas';
+  valorMaximoSelecionado: string = 'Todos';
+  disponibilidadeSelecionada: string = 'Qualquer horário';
+  experienciaMinimaSelecionada: string = 'Todas';
+
+  ngOnInit(): void {
+    this.cuidadoresFiltrados = [...this.cuidadores];
+  }
+
+  aplicarFiltros(): void {
+    this.cuidadoresFiltrados = this.cuidadores.filter(cuidador => {
+      // Filtro Cidade
+      const atendeCidade = this.cidadeSelecionada === 'Todas' || cuidador.cidade === this.cidadeSelecionada;
+
+      // Filtro Valor Máximo
+      let atendeValor = true;
+      if (this.valorMaximoSelecionado !== 'Todos') {
+        const valorMax = parseFloat(this.valorMaximoSelecionado);
+        atendeValor = cuidador.precoHora <= valorMax;
       }
 
-      if (this.valorMaximo !== 'Todos') {
-        const limite = parseFloat(this.valorMaximo.replace('Até ', '').replace(',', '.'));
-        if (item.valorHora > limite) {
-          return false;
-        }
+      // Filtro Disponibilidade
+      const atendeDisponibilidade = this.disponibilidadeSelecionada === 'Qualquer horário' ||
+        cuidador.disponibilidade === this.disponibilidadeSelecionada;
+
+      // Filtro Experiência Mínima
+      let atendeExperiencia = true;
+      if (this.experienciaMinimaSelecionada !== 'Todas') {
+        const expMin = parseInt(this.experienciaMinimaSelecionada, 10);
+        atendeExperiencia = cuidador.experienciaAnos >= expMin;
       }
 
-      if (this.disponibilidade !== 'Qualquer horário') {
-        if (!item.disponibilidade.includes(this.disponibilidade)) {
-          return false;
-        }
-      }
-
-      if (this.experienciaMinima !== 'Todas') {
-        const minAnos = parseInt(this.experienciaMinima.replace('+ anos', ''), 10);
-        if (item.anosExperiencia < minAnos) {
-          return false;
-        }
-      }
-
-      return true;
+      return atendeCidade && atendeValor && atendeDisponibilidade && atendeExperiencia;
     });
   }
 
-  limparFiltros() {
+  limparFiltros(): void {
     this.cidadeSelecionada = 'Todas';
-    this.valorMaximo = 'Todos';
-    this.disponibilidade = 'Qualquer horário';
-    this.experienciaMinima = 'Todas';
-    this.cuidadores = [...this.cuidadoresOriginais];
+    this.valorMaximoSelecionado = 'Todos';
+    this.disponibilidadeSelecionada = 'Qualquer horário';
+    this.experienciaMinimaSelecionada = 'Todas';
+    this.cuidadoresFiltrados = [...this.cuidadores];
   }
 }

@@ -1,185 +1,192 @@
-<div class="container-fluid vh-100 bg-white">
-  <div class="row h-100">
+<div class="d-flex min-vh-100 bg-light">
 
-    <!-- Sidebar -->
-    <aside class="col-md-3 col-lg-2 d-flex flex-column justify-content-between p-4 bg-white border-end">
-      <div>
-        <nav class="nav flex-column gap-3 fs-5 fw-bold">
-          <a class="nav-link text-dark active px-0" routerLink="/home" routerLinkActive="text-primary">Home</a>
-          <a class="nav-link text-dark px-0" routerLink="/dashboard/search-caregiver">Buscar cuidador</a>
-          <a class="nav-link text-dark px-0" routerLink="/dashboard/agenda">Agenda</a>
-          <a class="nav-link text-dark px-0" routerLink="/dashboard/medications">Medicamentos</a>
-        </nav>
-      </div>
+  <!-- Sidebar Lateral -->
+  <aside class="bg-white border-end d-flex flex-column justify-content-between p-3"
+    style="width: 240px; min-width: 240px;">
+    <div>
+      <nav class="nav nav-pills flex-column gap-2 pt-2">
+        <a routerLink="/dashboard/elder" class="nav-link active fw-semibold">
+          Home
+        </a>
+        <a routerLink="/dashboard/search-caregiver" class="nav-link text-dark fw-semibold">
+          Buscar cuidador
+        </a>
+        <a routerLink="/dashboard/agenda" class="nav-link text-dark fw-semibold">
+          Agenda
+        </a>
+        <a routerLink="/dashboard/medications" class="nav-link text-dark fw-semibold">
+          Medicamentos
+        </a>
+      </nav>
+    </div>
 
+    <!-- Botão Sair no Rodapé da Sidebar -->
+    <div>
+      <a routerLink="/account/sign-in" class="btn btn-link text-danger fw-bold text-decoration-none px-2">
+        Sair
+      </a>
+    </div>
+  </aside>
+
+  <!-- Conteúdo Principal -->
+  <main class="flex-grow-1 p-4 overflow-auto">
+
+    <!-- Cabeçalho / Saudação -->
+    <header class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
       <div>
-        <button (click)="sair()" class="btn btn-link text-danger text-decoration-none fs-5 fw-bold p-0 border-0">
-          Sair
-        </button>
+        <h1 class="h2 fw-bold text-dark mb-1">Olá, {{ nomeIdoso }}</h1>
+        <p class="text-muted mb-0">Bem-vindo ao seu painel de acompanhamento diário.</p>
       </div>
-    </aside>
+      <div>
+        <a routerLink="/dashboard/search-caregiver" class="btn btn-primary fw-semibold">
+          <i class="bi bi-search me-1"></i> Buscar Cuidadores
+        </a>
+      </div>
+    </header>
+
+    <!-- Cards de Resumo -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm text-center p-3">
+          <span class="fs-4 fw-bold text-primary">{{ cuidadorContratado ? 1 : 0 }}</span>
+          <span class="text-muted small">Cuidador Contratado</span>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm text-center p-3">
+          <span class="fs-4 fw-bold text-success">{{ medicamentos.length }}</span>
+          <span class="text-muted small">Medicamentos Hoje</span>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm text-center p-3">
+          <span class="fs-4 fw-bold text-danger">1</span>
+          <span class="text-muted small">Avisos Importantes</span>
+        </div>
+      </div>
+    </div>
 
     <!-- Conteúdo Principal -->
-    <main class="col-md-9 col-lg-10 p-4 bg-white">
-      <div class="p-4 p-md-5 h-100 rounded-5" style="background-color: #eaf4ff;">
+    <div class="row g-4">
 
-        <h2 class="fw-bold mb-4 text-dark">Olá {{ nomeUsuario }}</h2>
+      <!-- Seção: Próximos Medicamentos -->
+      <div class="col-lg-6">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body p-4">
+            <h3 class="h5 fw-bold text-dark mb-3">Próximos Medicamentos</h3>
 
-        <!-- Cards Superiores -->
-        <div class="row g-4 mb-4">
-          <div class="col-md-4">
-            <div class="card border-0 shadow-sm rounded-4 p-3 text-center" style="background-color: #dbeeff;">
-              <span class="fs-2 fw-bold text-danger">1</span>
-              <h5 class="fw-bold text-dark m-0">Cuidador</h5>
-              <small class="text-secondary">Contratado</small>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="card border-0 shadow-sm rounded-4 p-3 text-center" style="background-color: #dbeeff;">
-              <span class="fs-2 fw-bold text-success">{{ totalMedicamentosHoje }}</span>
-              <h5 class="fw-bold text-dark m-0">Medicamentos</h5>
-              <small class="text-secondary">Hoje</small>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="card border-0 shadow-sm rounded-4 p-3 text-center" style="background-color: #dbeeff;">
-              <span class="fs-2 fw-bold text-danger">{{ avisos.length }}</span>
-              <h5 class="fw-bold text-dark m-0">Avisos</h5>
-              <small class="text-secondary">Importante</small>
+            <div class="list-group list-group-flush">
+              <div *ngFor="let med of medicamentos"
+                class="list-group-item d-flex justify-content-between align-items-center px-0 py-3 border-bottom">
+                <div>
+                  <h6 class="fw-bold mb-1 text-dark">{{ med.nome }}</h6>
+                  <small class="text-muted">{{ med.dosagem }} - {{ med.instrucoes }}</small>
+                </div>
+                <span class="badge bg-primary rounded-pill px-3 py-2 fs-6">{{ med.horario }}</span>
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Conteúdo Principal -->
-        <div class="row g-4 mb-4">
-          <!-- Card Próximos Medicamentos -->
-          <div class="col-md-6">
-            <div class="card border-0 shadow-sm rounded-4 p-4 h-100 d-flex flex-column"
-              style="background-color: #dbeeff;">
-              <h5 class="fw-bold text-dark mb-3">Próximos medicamentos</h5>
+      <!-- Seção: Cuidador Contratado -->
+      <div class="col-lg-6">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body p-4 d-flex flex-column justify-content-between">
+            <div>
+              <h3 class="h5 fw-bold text-dark mb-3">Cuidador Contratado</h3>
 
-              <div class="d-flex flex-column gap-2 mb-3">
-                @for (med of proximosMedicamentos; track med.id) {
-                <div class="d-flex justify-content-between align-items-center fs-5">
-                  <span class="text-secondary fw-medium">{{ med.nome }}</span>
-                  <span class="fw-bold text-primary">{{ med.horario }}</span>
-                </div>
-                } @empty {
-                <p class="text-secondary m-0">Nenhum medicamento cadastrado.</p>
-                }
-              </div>
-
-              <div class="mt-auto pt-2">
-                <a routerLink="/dashboard/medications" class="text-primary fw-bold text-decoration-none fs-5">
-                  Ver todos
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card Cuidador Contratado -->
-          <div class="col-md-6">
-            <div
-              class="card border-0 shadow-sm rounded-4 p-4 h-100 text-center d-flex flex-column align-items-center justify-content-center"
-              style="background-color: #dbeeff;">
-              <h5 class="fw-bold text-dark mb-3 w-100 text-start">Cuidador Contratado</h5>
-
-              <div class="d-flex align-items-center gap-3 mb-3">
-                <div
-                  class="rounded-circle d-flex align-items-center justify-content-center border border-primary border-2 p-2 bg-white"
-                  style="width: 60px; height: 60px;">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="#7b2cbf" class="bi bi-person"
-                    viewBox="0 0 16 16">
-                    <path
-                      d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
-                  </svg>
-                </div>
-                <h5 class="fw-bold text-dark m-0">{{ cuidadorContratado.nome }}</h5>
-              </div>
-
-              <a [routerLink]="['/caregiver', cuidadorContratado.id]"
-                class="btn btn-primary fw-bold rounded-pill px-4 py-2 text-decoration-none"
-                style="background-color: #0d6efd;">
-                Ver perfil
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Seção de Avisos Importantes com Botão de Novo Aviso -->
-        <div class="row">
-          <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4 p-4" style="background-color: #dbeeff;">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="fw-bold text-dark m-0">Avisos Importantes</h5>
-                <button class="btn btn-primary btn-sm fw-bold rounded-3 px-3" (click)="abrirModalAviso()">
-                  + Cadastrar Aviso
-                </button>
-              </div>
-
-              <div class="d-flex flex-column gap-2">
-                @for (aviso of avisos; track aviso.id) {
-                <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded-3 shadow-sm">
-                  <div>
-                    <h6 class="fw-bold text-dark mb-1">{{ aviso.titulo }}</h6>
-                    <p class="fs-6 text-secondary m-0 fw-medium">{{ aviso.descricao }}</p>
+              <!-- Estado COM cuidador -->
+              <div *ngIf="cuidadorContratado; else semCuidador" class="bg-light p-3 rounded border">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <div class="d-flex align-items-center">
+                    <div
+                      class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3"
+                      style="width: 48px; height: 48px;">
+                      <span class="fs-5 fw-bold">{{ cuidadorContratado.cuidadorNome.charAt(0) }}</span>
+                    </div>
+                    <div>
+                      <h5 class="fw-bold text-dark mb-0">{{ cuidadorContratado.cuidadorNome }}</h5>
+                      <small class="text-muted">{{ cuidadorContratado.especialidade }}</small>
+                    </div>
                   </div>
-                  <button class="btn btn-outline-danger btn-sm rounded-3 fw-bold ms-2" (click)="removerAviso(aviso.id)">
-                    Excluir
+
+                  <!-- Botão Ver Perfil no canto direito -->
+                  <a routerLink="/profile-caregiver" class="btn btn-outline-primary btn-sm fw-semibold">
+                    Ver perfil
+                  </a>
+                </div>
+
+                <p class="mb-3 text-secondary small">
+                  <strong>Contato:</strong> {{ cuidadorContratado.telefone }}
+                </p>
+
+                <!-- Botões de Ação -->
+                <div class="d-flex flex-column gap-2">
+                  <button (click)="desfazerVinculo()" class="btn btn-outline-danger btn-sm w-100">
+                    Encerrar Vínculo
+                  </button>
+                  <button (click)="abrirModalAvaliacao()" class="btn btn-primary btn-sm w-100 fw-semibold">
+                    Avaliar Cuidador
                   </button>
                 </div>
-                } @empty {
-                <p class="text-secondary m-0">Nenhum aviso cadastrado.</p>
-                }
               </div>
+
+              <!-- Estado SEM cuidador -->
+              <ng-template #semCuidador>
+                <div class="text-center py-4 my-auto">
+                  <p class="text-muted mb-3">Nenhum cuidador contratado no momento.</p>
+                  <a routerLink="/dashboard/search-caregiver" class="btn btn-outline-primary">
+                    Buscar Cuidadores
+                  </a>
+                </div>
+              </ng-template>
             </div>
           </div>
         </div>
-
       </div>
-    </main>
 
-  </div>
+    </div>
+  </main>
 </div>
 
-<!-- Modal para Cadastrar Aviso -->
-<div *ngIf="exibirModalAviso" class="modal d-block bg-dark bg-opacity-50" style="z-index: 1060;">
+<!-- Pop-up Modal de Avaliação -->
+<div *ngIf="exibirModalAvaliacao" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-5 border-0 p-3 shadow-lg" style="background-color: #eaf4ff;">
+    <div class="modal-content border-0 shadow rounded-4">
 
-      <div class="modal-header border-0 pb-0">
-        <h5 class="modal-title fw-bold text-dark">Cadastrar Novo Aviso</h5>
-        <button type="button" class="btn-close" (click)="fecharModalAviso()"></button>
+      <div class="modal-header border-bottom-0 pb-0">
+        <h5 class="modal-title fw-bold text-dark">Avaliar {{ cuidadorContratado?.cuidadorNome }}</h5>
+        <button type="button" class="btn-close" (click)="fecharModalAvaliacao()"></button>
       </div>
 
-      <div class="modal-body">
-        <form (ngSubmit)="salvarAviso()">
-
-          <div class="mb-3">
-            <label class="form-label fw-bold text-dark">Título *</label>
-            <input type="text" class="form-control rounded-3 border-0 px-3 py-2" placeholder="Ex: Consulta Médica"
-              [(ngModel)]="novoAviso.titulo" name="titulo" required>
+      <div class="modal-body py-4">
+        <div class="mb-4 text-center">
+          <p class="text-muted small mb-2">Selecione uma nota de 1 a 5 estrelas:</p>
+          <div class="d-flex justify-content-center gap-2">
+            <span *ngFor="let i of [1, 2, 3, 4, 5]" (click)="selecionarEstrelas(i)" class="fs-2"
+              [style.color]="i <= estrelasSelecionadas ? '#ffc107' : '#e4e5e9'"
+              style="cursor: pointer; user-select: none;">
+              ★
+            </span>
           </div>
+          <span class="badge bg-light text-dark border mt-2 px-3 py-1 fw-bold">
+            {{ estrelasSelecionadas }} {{ estrelasSelecionadas === 1 ? 'estrela' : 'estrelas' }}
+          </span>
+        </div>
 
-          <div class="mb-4">
-            <label class="form-label fw-bold text-dark">Descrição / Detalhes *</label>
-            <textarea class="form-control rounded-3 border-0 px-3 py-2" rows="3"
-              placeholder="Ex: Consulta dia 15/05 às 14:00 com Dr. Roberto" [(ngModel)]="novoAviso.descricao"
-              name="descricao" required></textarea>
-          </div>
+        <div class="mb-3">
+          <label for="comentario" class="form-label text-secondary fw-semibold small">Comentário (opcional):</label>
+          <textarea id="comentario" class="form-control" rows="3" [(ngModel)]="comentarioAvaliacao"
+            placeholder="Conte como foi sua experiência com este cuidador...">
+          </textarea>
+        </div>
+      </div>
 
-          <div class="d-flex justify-content-end gap-2">
-            <button type="button" class="btn btn-secondary rounded-4 px-4 fw-bold" (click)="fecharModalAviso()">
-              Cancelar
-            </button>
-            <button type="submit" class="btn btn-primary rounded-4 px-4 fw-bold border-0">
-              Salvar Aviso
-            </button>
-          </div>
-
-        </form>
+      <div class="modal-footer border-top-0 pt-0">
+        <button type="button" class="btn btn-light fw-semibold" (click)="fecharModalAvaliacao()">Cancelar</button>
+        <button type="button" class="btn btn-primary fw-semibold px-4" (click)="salvarAvaliacao()">Enviar
+          Avaliação</button>
       </div>
 
     </div>
