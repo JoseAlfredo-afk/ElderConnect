@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 export interface Cuidador {
   id: number;
@@ -11,7 +11,11 @@ export interface Cuidador {
   experienciaTexto: string;
   precoHora: number;
   avaliacao: number;
-  disponibilidade: string; // 'Manhã', 'Tarde', 'Noite', 'Integral'
+  totalAvaliacoes: number;
+  disponibilidade: string;
+  especialidade: string;
+  sobre: string;
+  telefone: string;
 }
 
 @Component({
@@ -21,58 +25,73 @@ export interface Cuidador {
   templateUrl: './search-caregiver.html'
 })
 export class SearchCaregiver implements OnInit {
-  // Lista original de cuidadores
   cuidadores: Cuidador[] = [
     {
       id: 1,
-      nome: 'Cuidador1',
+      nome: 'Ana Paula Souza',
       cidade: 'Goiânia - GO',
       experienciaAnos: 5,
       experienciaTexto: '5 anos de experiência',
       precoHora: 25.00,
       avaliacao: 3.5,
-      disponibilidade: 'Manhã'
+      totalAvaliacoes: 24,
+      disponibilidade: 'Manhã',
+      especialidade: 'Cuidados com Mobilidade & Enfermagem Básica',
+      sobre: 'Enfermeira de formação com foco em reabilitação de idosos, administração correta de medicamentos e suporte diário.',
+      telefone: '(62) 98877-1122'
     },
     {
       id: 2,
-      nome: 'Cuidador2',
+      nome: 'Carlos Eduardo Lima',
       cidade: 'Pouso Alegre - MG',
       experienciaAnos: 3,
       experienciaTexto: '3 anos de experiência',
       precoHora: 25.00,
       avaliacao: 3.8,
-      disponibilidade: 'Tarde'
+      totalAvaliacoes: 18,
+      disponibilidade: 'Tarde',
+      especialidade: 'Acompanhamento Geriátrico & Companhia',
+      sobre: 'Profissional dedicado ao bem-estar e entretenimento de idosos, com ampla facilidade para caminhadas e conversas.',
+      telefone: '(35) 99112-3344'
     },
     {
       id: 3,
-      nome: 'Cuidador3',
+      nome: 'Mariana Ribeiro',
       cidade: 'Itajubá - MG',
       experienciaAnos: 4,
       experienciaTexto: '4 anos de experiência',
       precoHora: 25.00,
       avaliacao: 4.8,
-      disponibilidade: 'Integral'
+      totalAvaliacoes: 42,
+      disponibilidade: 'Integral',
+      especialidade: 'Cuidadora Especializada em Alzheimer & Parkinson',
+      sobre: 'Especialista em cuidados a pacientes com doenças neurodegenerativas, oferecendo um ambiente seguro, empático e estruturado.',
+      telefone: '(35) 98833-5566'
     },
     {
       id: 4,
       nome: 'Maria Silva',
       cidade: 'Santa Rita do Sapucaí - MG',
-      experienciaAnos: 5,
-      experienciaTexto: '5 anos de experiência',
+      experienciaAnos: 6,
+      experienciaTexto: '6 anos de experiência',
       precoHora: 45.00,
       avaliacao: 4.9,
-      disponibilidade: 'Integral'
+      totalAvaliacoes: 48,
+      disponibilidade: 'Integral',
+      especialidade: 'Cuidados Gerais & Acompanhamento',
+      sobre: 'Profissional com mais de 5 anos de experiência no acompanhamento e cuidado integral de idosos, com referências locais.',
+      telefone: '(35) 99988-7766'
     }
   ];
 
-  // Lista filtrada que será exibida na tela
   cuidadoresFiltrados: Cuidador[] = [];
 
-  // Variáveis do Filtro
   cidadeSelecionada: string = 'Todas';
   valorMaximoSelecionado: string = 'Todos';
   disponibilidadeSelecionada: string = 'Qualquer horário';
   experienciaMinimaSelecionada: string = 'Todas';
+
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.cuidadoresFiltrados = [...this.cuidadores];
@@ -80,21 +99,17 @@ export class SearchCaregiver implements OnInit {
 
   aplicarFiltros(): void {
     this.cuidadoresFiltrados = this.cuidadores.filter(cuidador => {
-      // Filtro Cidade
       const atendeCidade = this.cidadeSelecionada === 'Todas' || cuidador.cidade === this.cidadeSelecionada;
 
-      // Filtro Valor Máximo
       let atendeValor = true;
       if (this.valorMaximoSelecionado !== 'Todos') {
         const valorMax = parseFloat(this.valorMaximoSelecionado);
         atendeValor = cuidador.precoHora <= valorMax;
       }
 
-      // Filtro Disponibilidade
       const atendeDisponibilidade = this.disponibilidadeSelecionada === 'Qualquer horário' ||
         cuidador.disponibilidade === this.disponibilidadeSelecionada;
 
-      // Filtro Experiência Mínima
       let atendeExperiencia = true;
       if (this.experienciaMinimaSelecionada !== 'Todas') {
         const expMin = parseInt(this.experienciaMinimaSelecionada, 10);
@@ -111,5 +126,10 @@ export class SearchCaregiver implements OnInit {
     this.disponibilidadeSelecionada = 'Qualquer horário';
     this.experienciaMinimaSelecionada = 'Todas';
     this.cuidadoresFiltrados = [...this.cuidadores];
+  }
+
+  verPerfil(cuidador: Cuidador): void {
+    localStorage.setItem('elderconnect_perfil_ativo', JSON.stringify(cuidador));
+    this.router.navigate(['/profile-caregiver']);
   }
 }

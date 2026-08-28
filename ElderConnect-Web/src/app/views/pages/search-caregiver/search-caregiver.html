@@ -1,44 +1,27 @@
 <div class="d-flex min-vh-100 bg-light">
 
-  <!-- Sidebar Lateral -->
   <aside class="bg-white border-end d-flex flex-column justify-content-between p-3"
     style="width: 240px; min-width: 240px;">
     <div>
       <nav class="nav nav-pills flex-column gap-2 pt-2">
-        <a routerLink="/dashboard/elder" class="nav-link text-dark fw-semibold">
-          Home
-        </a>
-        <a routerLink="/dashboard/search-caregiver" class="nav-link active fw-semibold">
-          Buscar cuidador
-        </a>
-        <a routerLink="/dashboard/agenda" class="nav-link text-dark fw-semibold">
-          Agenda
-        </a>
-        <a routerLink="/dashboard/medications" class="nav-link text-dark fw-semibold">
-          Medicamentos
-        </a>
+        <a routerLink="/dashboard/elder" class="nav-link text-dark fw-semibold">Home</a>
+        <a routerLink="/dashboard/search-caregiver" class="nav-link active fw-semibold">Buscar cuidador</a>
+        <a routerLink="/dashboard/agenda" class="nav-link text-dark fw-semibold">Agenda</a>
+        <a routerLink="/dashboard/medications" class="nav-link text-dark fw-semibold">Medicamentos</a>
       </nav>
     </div>
-
     <div>
-      <a routerLink="/account/sign-in" class="btn btn-link text-danger fw-bold text-decoration-none px-2">
-        Sair
-      </a>
+      <a routerLink="/account/sign-in" class="btn btn-link text-danger fw-bold text-decoration-none px-2">Sair</a>
     </div>
   </aside>
 
-  <!-- Conteúdo Principal -->
   <main class="flex-grow-1 p-4 overflow-auto">
 
-    <!-- Container dos Filtros -->
     <div class="card border-0 shadow-sm p-4 mb-4 rounded-4" style="background-color: #f0f7ff;">
       <h1 class="h3 fw-bold text-dark mb-1">Buscar Cuidadores</h1>
       <p class="text-muted mb-4">Encontre o profissional ideal para o cuidado do seu familiar.</p>
 
-      <!-- Grade de Filtros -->
       <div class="row g-3 align-items-end mb-3">
-
-        <!-- Cidade -->
         <div class="col-md-4">
           <label class="form-label fw-semibold text-dark mb-1">Cidade</label>
           <select class="form-select rounded-3 border-secondary-subtle" [(ngModel)]="cidadeSelecionada">
@@ -50,18 +33,16 @@
           </select>
         </div>
 
-        <!-- Valor máximo -->
         <div class="col-md-4">
           <label class="form-label fw-semibold text-dark mb-1">Valor máximo (R$)</label>
           <select class="form-select rounded-3 border-secondary-subtle" [(ngModel)]="valorMaximoSelecionado">
             <option value="Todos">Todos</option>
             <option value="30">Até 30,00</option>
-            <option value="40">Até 40,00</option>
+            <option value="45">Até 45,00</option>
             <option value="50">Até 50,00</option>
           </select>
         </div>
 
-        <!-- Disponibilidade -->
         <div class="col-md-4">
           <label class="form-label fw-semibold text-dark mb-1">Disponibilidade</label>
           <select class="form-select rounded-3 border-secondary-subtle" [(ngModel)]="disponibilidadeSelecionada">
@@ -73,7 +54,6 @@
           </select>
         </div>
 
-        <!-- Experiência mínima -->
         <div class="col-md-4">
           <label class="form-label fw-semibold text-dark mb-1">Experiência mínima</label>
           <select class="form-select rounded-3 border-secondary-subtle" [(ngModel)]="experienciaMinimaSelecionada">
@@ -84,38 +64,26 @@
           </select>
         </div>
 
-        <!-- Botão Buscar -->
         <div class="col-md-4">
-          <button (click)="aplicarFiltros()" class="btn btn-primary w-100 rounded-3 fw-bold py-2">
-            Buscar
-          </button>
+          <button (click)="aplicarFiltros()" class="btn btn-primary w-100 rounded-3 fw-bold py-2">Buscar</button>
         </div>
 
-        <!-- Botão Limpar Filtros -->
         <div class="col-md-4">
-          <button (click)="limparFiltros()" class="btn btn-link text-primary fw-bold text-decoration-none py-2">
-            Limpar filtros
-          </button>
+          <button (click)="limparFiltros()" class="btn btn-link text-primary fw-bold text-decoration-none py-2">Limpar
+            filtros</button>
         </div>
-
       </div>
     </div>
 
-    <!-- Lista de Cuidadores Filtrados -->
+    <!-- Lista -->
     <div class="d-flex flex-column gap-3">
       <div *ngFor="let c of cuidadoresFiltrados" class="card border-0 shadow-sm p-3 rounded-4">
         <div class="row align-items-center">
-
-          <!-- Foto e Dados Básicos -->
           <div class="col-md-5 d-flex align-items-center">
             <div
-              class="border border-primary border-2 rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
-              style="width: 64px; height: 64px; color: #0d6efd;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
+              class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+              style="width: 56px; height: 56px;">
+              <span class="fs-5 fw-bold">{{ c.nome.charAt(0) }}</span>
             </div>
             <div>
               <h2 class="h5 fw-bold text-dark mb-0">{{ c.nome }}</h2>
@@ -124,28 +92,25 @@
             </div>
           </div>
 
-          <!-- Avaliação e Preço -->
           <div class="col-md-4 my-2 my-md-0">
             <div class="d-flex align-items-center gap-1 mb-1">
               <span class="text-warning fs-5">★</span>
               <span class="fw-bold text-dark fs-5">{{ c.avaliacao | number:'1.1-1' }}</span>
+              <span class="text-muted small">({{ c.totalAvaliacoes }})</span>
             </div>
-            <div class="fw-bold text-dark fs-5">
+            <div class="fw-bold text-dark fs-6">
               R$ {{ c.precoHora | number:'1.2-2' }} / hora
             </div>
           </div>
 
-          <!-- Botão Ver perfil -->
           <div class="col-md-3 text-md-end">
-            <a routerLink="/profile-caregiver" class="btn btn-primary px-4 rounded-3 fw-semibold">
+            <button (click)="verPerfil(c)" class="btn btn-primary px-4 rounded-3 fw-semibold">
               Ver perfil
-            </a>
+            </button>
           </div>
-
         </div>
       </div>
 
-      <!-- Estado quando nenhum cuidador atende aos filtros -->
       <div *ngIf="cuidadoresFiltrados.length === 0" class="text-center py-5 bg-white rounded-4 border-0 shadow-sm">
         <p class="text-muted mb-0">Nenhum cuidador encontrado com os filtros selecionados.</p>
       </div>
