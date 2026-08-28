@@ -1,64 +1,65 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ProfileCaregiver } from './profile-caregiver';
-import { provideRouter, ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { provideRouter } from '@angular/router';
 
 describe('ProfileCaregiver', () => {
-  let component: ProfileCaregiver;
-  let fixture: ComponentFixture<ProfileCaregiver>;
-
   beforeEach(async () => {
+    // Limpa o localStorage antes de cada teste para isolar o estado
+    localStorage.clear();
+
     await TestBed.configureTestingModule({
       imports: [ProfileCaregiver],
-      providers: [
-        provideRouter([]),
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            queryParams: of({ id: '1' }),
-            snapshot: { queryParams: { id: '1' } }
-          }
-        }
-      ]
+      providers: [provideRouter([])]
     }).compileComponents();
-
-    fixture = TestBed.createComponent(ProfileCaregiver);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('deve criar o componente', () => {
+  it('deve criar o componente com sucesso', () => {
+    const fixture = TestBed.createComponent(ProfileCaregiver);
+    const component = fixture.componentInstance;
     expect(component).toBeTruthy();
   });
 
-  it('deve carregar os dados do cuidador se o ID for valido', () => {
-    component.carregarCuidador();
-    expect(component.cuidador).not.toBeNull();
-    expect(component.cuidador?.nome).toBe('Maria Silva');
+  it('deve carregar os dados iniciais do cuidador corretamente', () => {
+    const fixture = TestBed.createComponent(ProfileCaregiver);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    expect(component.cuidador.nome).toBe('Maria Silva');
+    expect(component.cuidador.avaliacao).toBe(4.9);
+    expect(component.cuidador.totalAvaliacoes).toBe(48);
   });
 
-  it('deve solicitar o vinculo e atualizar o estado de vinculo ativo', () => {
-    const spySetItem = vi.spyOn(Storage.prototype, 'setItem');
+  it('deve salvar o vínculo no localStorage ao solicitar vínculo', () => {
+    const fixture = TestBed.createComponent(ProfileCaregiver);
+    const component = fixture.componentInstance;
+
+    // Espiona o alert para evitar que bloqueie a execução do teste
     vi.spyOn(window, 'alert').mockImplementation(() => { });
 
-    component.carregarCuidador();
     component.solicitarVinculo();
 
-    expect(component.temVinculoAtivo).toBe(true);
-    expect(spySetItem).toHaveBeenCalledWith(
-      'elderconnect_vinculo',
-      expect.any(String)
-    );
+    const vinculoSalvo = localStorage.getItem('elderconnect_vinculo');
+    expect(vinculoSalvo).toBeTruthy();
+
+    const dados = JSON.parse(vinculoSalvo!);
+    expect(dados.cuidadorNome).toBe('Maria Silva');
+    expect(dados.nome).toBe('José da Silva');
   });
 
-  it('deve remover o vinculo ao confirmar', () => {
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
-    const spyRemoveItem = vi.spyOn(Storage.prototype, 'removeItem');
+  it('deve atualizar a avaliação e o total de avaliações se houver dados no localStorage', () => {
+    const dadosAtualizados = {
+      id: 1,
+      nome: 'Maria Silva',
+      avaliacao: 4.8,
+      totalAvaliacoes: 50
+    };
+    localStorage.setItem('elderconnect_cuidador_1', JSON.stringify(dadosAtualizados));
 
-    component.temVinculoAtivo = true;
-    component.removerVinculo();
+    const fixture = TestBed.createComponent(ProfileCaregiver);
+    const component = fixture.componentInstance;
+    component.ngOnInit();
 
-    expect(component.temVinculoAtivo).toBe(false);
-    expect(spyRemoveItem).toHaveBeenCalledWith('elderconnect_vinculo');
+    expect(component.cuidador.avaliacao).toBe(4.8);
+    expect(component.cuidador.totalAvaliacoes).toBe(50);
   });
 });

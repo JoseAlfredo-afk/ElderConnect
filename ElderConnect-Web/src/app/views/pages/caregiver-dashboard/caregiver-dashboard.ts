@@ -27,7 +27,7 @@ export interface Aviso {
 @Component({
   selector: 'app-caregiver-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './caregiver-dashboard.html'
 })
 export class CaregiverDashboard implements OnInit {
