@@ -1,19 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SearchCaregivers } from './search-caregiver';
+import { SearchCaregiver, Cuidador } from './search-caregiver';
 import { provideRouter } from '@angular/router';
 
-describe('SearchCaregivers', () => {
-  let component: SearchCaregivers;
-  let fixture: ComponentFixture<SearchCaregivers>;
+describe('SearchCaregiver', () => {
+  let component: SearchCaregiver;
+  let fixture: ComponentFixture<SearchCaregiver>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SearchCaregivers],
+      imports: [SearchCaregiver],
       providers: [provideRouter([])]
-    })
-      .compileComponents();
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(SearchCaregivers);
+    fixture = TestBed.createComponent(SearchCaregiver);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -26,16 +25,56 @@ describe('SearchCaregivers', () => {
     expect(component.cuidadores.length).toBeGreaterThan(0);
   });
 
-  it('deve filtrar por cidade', () => {
-    component.cidadeSelecionada = 'Pouso Alegre - MG';
-    component.buscar();
-    expect(component.cuidadores.every(c => c.cidade === 'Pouso Alegre - MG')).toBe(true);
+  it('deve filtrar os cuidadores por nome', () => {
+    component.termoBusca = 'Maria';
+    const resultados = component.cuidadoresFiltrados;
+
+    expect(resultados.length).toBe(1);
+    expect(resultados[0].nome).toContain('Maria');
   });
 
-  it('deve resetar os filtros ao chamar limparFiltros', () => {
-    component.cidadeSelecionada = 'Goiania - GO';
-    component.limparFiltros();
-    expect(component.cidadeSelecionada).toBe('Todas');
-    expect(component.cuidadores.length).toBe(component.cuidadoresOriginais.length);
+  it('deve filtrar os cuidadores por cidade', () => {
+    component.cidadeFiltro = 'Pouso Alegre';
+    const resultados = component.cuidadoresFiltrados;
+
+    expect(resultados.every((c: Cuidador) => c.cidade.includes('Pouso Alegre'))).toBe(true);
+  });
+
+  it('deve retornar todos os cuidadores quando os filtros estiverem vazios', () => {
+    component.termoBusca = '';
+    component.cidadeFiltro = '';
+
+    expect(component.cuidadoresFiltrados.length).toBe(component.cuidadores.length);
+  });
+
+  it('deve solicitar o vínculo com sucesso e salvar no localStorage', () => {
+    const spySetItem = vi.spyOn(Storage.prototype, 'setItem');
+    const spyAlert = vi.spyOn(window, 'alert').mockImplementation(() => { });
+
+    const cuidadorExemplo = component.cuidadores[0];
+    component.solicitarVinculo(cuidadorExemplo);
+
+    expect(component.cuidadorContratadoId).toBe(cuidadorExemplo.id);
+    expect(spySetItem).toHaveBeenCalledWith(
+      'elderconnect_vinculo',
+      expect.any(String)
+    );
+    expect(spyAlert).toHaveBeenCalled();
+
+    spySetItem.mockRestore();
+    spyAlert.mockRestore();
+  });
+
+  it('deve encerrar o vínculo ao confirmar remoção', () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
+    const spyRemoveItem = vi.spyOn(Storage.prototype, 'removeItem');
+
+    component.cuidadorContratadoId = 1;
+    component.removerVinculo();
+
+    expect(component.cuidadorContratadoId).toBeNull();
+    expect(spyRemoveItem).toHaveBeenCalledWith('elderconnect_vinculo');
+
+    spyRemoveItem.mockRestore();
   });
 });

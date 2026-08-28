@@ -1,108 +1,97 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 export interface Medicamento {
-  id: number;
   nome: string;
-  dose: string;
+  dosagem: string;
   horario: string;
-  instrucoes?: string;
+  instrucoes: string;
 }
 
 @Component({
-  selector: 'app-medications',
+  selector: 'app-medication',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './medication.html'
 })
 export class Medications implements OnInit {
   medicamentos: Medicamento[] = [];
-  exibirModalCadastro: boolean = false;
-  modoEdicao: boolean = false;
 
-  novoMedicamento: Partial<Medicamento> = {
-    id: undefined,
-    nome: '',
-    dose: '',
-    horario: '',
-    instrucoes: ''
-  };
+  // Propriedades do formulário
+  novoNome: string = '';
+  novaDosagem: string = '';
+  novoHorario: string = '';
+  novasInstrucoes: string = '';
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.carregarMedicamentos();
   }
 
-  carregarMedicamentos() {
-    const salvos = localStorage.getItem('elderconnect_medicamentos');
-    if (salvos) {
-      const lista: Medicamento[] = JSON.parse(salvos);
-      this.medicamentos = lista.sort((a, b) => a.horario.localeCompare(b.horario));
+  carregarMedicamentos(): void {
+    const medsSalvos = localStorage.getItem('elderconnect_medicamentos');
+    if (medsSalvos) {
+      try {
+        this.medicamentos = JSON.parse(medsSalvos);
+      } catch (e) {
+        this.carregarMedicamentosPadrao();
+      }
     } else {
-      const padrao = [
-        { id: 1, nome: 'Losartana', dose: '50mg', horario: '08:00', instrucoes: 'Tomar após o café' },
-        { id: 2, nome: 'Omeprazol', dose: '20mg', horario: '12:00', instrucoes: 'Jejum ou antes do almoço' }
-      ];
-      this.medicamentos = padrao.sort((a, b) => a.horario.localeCompare(b.horario));
-      this.salvarNoStorage();
+      this.carregarMedicamentosPadrao();
     }
   }
 
-  salvarNoStorage() {
-    this.medicamentos.sort((a, b) => a.horario.localeCompare(b.horario));
-    localStorage.setItem('elderconnect_medicamentos', JSON.stringify(this.medicamentos));
+  private carregarMedicamentosPadrao(): void {
+    this.medicamentos = [
+      {
+        nome: 'Loratadina',
+        dosagem: '1 compr.',
+        horario: '07:30',
+        instrucoes: 'Sem instruções'
+      },
+      {
+        nome: 'Omeprazol',
+        dosagem: '20mg',
+        horario: '12:00',
+        instrucoes: 'Jejum ou antes do almoço'
+      }
+    ];
+    this.salvarNoLocalStorage();
   }
 
-  abrirModal() {
-    this.modoEdicao = false;
-    this.novoMedicamento = { id: undefined, nome: '', dose: '', horario: '', instrucoes: '' };
-    this.exibirModalCadastro = true;
-  }
-
-  editarMedicamento(med: Medicamento) {
-    this.modoEdicao = true;
-    this.novoMedicamento = { ...med };
-    this.exibirModalCadastro = true;
-  }
-
-  fecharModal() {
-    this.exibirModalCadastro = false;
-  }
-
-  salvarMedicamento() {
-    if (!this.novoMedicamento.nome || !this.novoMedicamento.horario) {
-      alert('Por favor, preencha pelo menos o Nome e o Horário!');
+  adicionarMedicamento(): void {
+    if (!this.novoNome || !this.novoHorario) {
+      alert('Por favor, preencha pelo menos o Nome e o Horário do medicamento.');
       return;
     }
 
-    if (this.modoEdicao && this.novoMedicamento.id) {
-      const index = this.medicamentos.findIndex(m => m.id === this.novoMedicamento.id);
-      if (index !== -1) {
-        this.medicamentos[index] = {
-          id: this.novoMedicamento.id,
-          nome: this.novoMedicamento.nome,
-          dose: this.novoMedicamento.dose || 'S/D',
-          horario: this.novoMedicamento.horario,
-          instrucoes: this.novoMedicamento.instrucoes || ''
-        };
-      }
-    } else {
-      const item: Medicamento = {
-        id: Date.now(),
-        nome: this.novoMedicamento.nome,
-        dose: this.novoMedicamento.dose || 'S/D',
-        horario: this.novoMedicamento.horario,
-        instrucoes: this.novoMedicamento.instrucoes || ''
-      };
-      this.medicamentos.push(item);
-    }
+    const novo: Medicamento = {
+      nome: this.novoNome.trim(),
+      dosagem: this.novaDosagem.trim() || 'Conforme receita',
+      horario: this.novoHorario,
+      instrucoes: this.novasInstrucoes.trim() || 'Sem instruções'
+    };
 
-    this.salvarNoStorage();
-    this.fecharModal();
+    this.medicamentos.push(novo);
+    this.salvarNoLocalStorage();
+
+    // Limpa o formulário
+    this.novoNome = '';
+    this.novaDosagem = '';
+    this.novoHorario = '';
+    this.novasInstrucoes = '';
   }
 
-  excluirMedicamento(id: number) {
-    this.medicamentos = this.medicamentos.filter(m => m.id !== id);
-    this.salvarNoStorage();
+  removerMedicamento(index: number): void {
+    const confirmacao = window.confirm('Deseja realmente remover este medicamento da rotina?');
+    if (confirmacao) {
+      this.medicamentos.splice(index, 1);
+      this.salvarNoLocalStorage();
+    }
+  }
+
+  private salvarNoLocalStorage(): void {
+    localStorage.setItem('elderconnect_medicamentos', JSON.stringify(this.medicamentos));
   }
 }
