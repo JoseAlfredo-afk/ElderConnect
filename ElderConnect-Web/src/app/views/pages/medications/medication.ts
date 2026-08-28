@@ -10,6 +10,11 @@ export interface Medicamento {
   instrucoes: string;
 }
 
+export interface Aviso {
+  tipo: string;
+  mensagem: string;
+}
+
 @Component({
   selector: 'app-medication',
   standalone: true,
@@ -18,18 +23,24 @@ export interface Medicamento {
 })
 export class Medications implements OnInit {
   medicamentos: Medicamento[] = [];
+  avisos: Aviso[] = [];
 
-  // Propriedades do formulário
+  // Campos do formulário de Medicamento
   novoNome: string = '';
   novaDosagem: string = '';
   novoHorario: string = '';
   novasInstrucoes: string = '';
 
+  // Campos do formulário de Aviso
+  novoTipoAviso: string = 'Aviso';
+  novaMensagemAviso: string = '';
+
   ngOnInit(): void {
-    this.carregarMedicamentos();
+    this.carregarDados();
   }
 
-  carregarMedicamentos(): void {
+  carregarDados(): void {
+    // Carrega Medicamentos
     const medsSalvos = localStorage.getItem('elderconnect_medicamentos');
     if (medsSalvos) {
       try {
@@ -40,24 +51,33 @@ export class Medications implements OnInit {
     } else {
       this.carregarMedicamentosPadrao();
     }
+
+    // Carrega Avisos
+    const avisosSalvos = localStorage.getItem('elderconnect_avisos');
+    if (avisosSalvos) {
+      try {
+        this.avisos = JSON.parse(avisosSalvos);
+      } catch (e) {
+        this.carregarAvisosPadrao();
+      }
+    } else {
+      this.carregarAvisosPadrao();
+    }
   }
 
   private carregarMedicamentosPadrao(): void {
     this.medicamentos = [
-      {
-        nome: 'Loratadina',
-        dosagem: '1 compr.',
-        horario: '07:30',
-        instrucoes: 'Sem instruções'
-      },
-      {
-        nome: 'Omeprazol',
-        dosagem: '20mg',
-        horario: '12:00',
-        instrucoes: 'Jejum ou antes do almoço'
-      }
+      { nome: 'Loratadina', dosagem: '1 compr.', horario: '07:30', instrucoes: 'Sem instruções' },
+      { nome: 'Omeprazol', dosagem: '20mg', horario: '12:00', instrucoes: 'Jejum ou antes do almoço' }
     ];
-    this.salvarNoLocalStorage();
+    localStorage.setItem('elderconnect_medicamentos', JSON.stringify(this.medicamentos));
+  }
+
+  private carregarAvisosPadrao(): void {
+    this.avisos = [
+      { tipo: 'Aviso', mensagem: 'Acompanhar nas atividades diárias e medições.' }
+    ];
+    localStorage.setItem('elderconnect_avisos', JSON.stringify(this.avisos));
   }
 
   adicionarMedicamento(): void {
@@ -74,9 +94,8 @@ export class Medications implements OnInit {
     };
 
     this.medicamentos.push(novo);
-    this.salvarNoLocalStorage();
+    localStorage.setItem('elderconnect_medicamentos', JSON.stringify(this.medicamentos));
 
-    // Limpa o formulário
     this.novoNome = '';
     this.novaDosagem = '';
     this.novoHorario = '';
@@ -84,14 +103,33 @@ export class Medications implements OnInit {
   }
 
   removerMedicamento(index: number): void {
-    const confirmacao = window.confirm('Deseja realmente remover este medicamento da rotina?');
-    if (confirmacao) {
+    if (window.confirm('Deseja realmente remover este medicamento?')) {
       this.medicamentos.splice(index, 1);
-      this.salvarNoLocalStorage();
+      localStorage.setItem('elderconnect_medicamentos', JSON.stringify(this.medicamentos));
     }
   }
 
-  private salvarNoLocalStorage(): void {
-    localStorage.setItem('elderconnect_medicamentos', JSON.stringify(this.medicamentos));
+  adicionarAviso(): void {
+    if (!this.novaMensagemAviso.trim()) {
+      alert('Por favor, digite a mensagem do aviso.');
+      return;
+    }
+
+    const novoAviso: Aviso = {
+      tipo: this.novoTipoAviso,
+      mensagem: this.novaMensagemAviso.trim()
+    };
+
+    this.avisos.push(novoAviso);
+    localStorage.setItem('elderconnect_avisos', JSON.stringify(this.avisos));
+
+    this.novaMensagemAviso = '';
+  }
+
+  removerAviso(index: number): void {
+    if (window.confirm('Deseja realmente remover este aviso?')) {
+      this.avisos.splice(index, 1);
+      localStorage.setItem('elderconnect_avisos', JSON.stringify(this.avisos));
+    }
   }
 }

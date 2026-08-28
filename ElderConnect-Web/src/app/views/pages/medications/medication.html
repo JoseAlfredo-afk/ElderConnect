@@ -4,94 +4,106 @@
   <aside class="bg-white border-end d-flex flex-column justify-content-between p-3"
     style="width: 240px; min-width: 240px;">
     <div>
-      
-
-      <nav class="nav nav-pills flex-column gap-2">
-        <a routerLink="/dashboard/elder" class="nav-link text-dark fw-semibold">
-          Home
-        </a>
-        <a routerLink="/dashboard/search-caregiver" class="nav-link text-dark fw-semibold">
-          Buscar cuidador
-        </a>
-        <a routerLink="/dashboard/agenda" class="nav-link text-dark fw-semibold">
-          Agenda
-        </a>
-        <a routerLink="/dashboard/medications" class="nav-link active fw-semibold">
-          Medicamentos
-        </a>
+      <nav class="nav nav-pills flex-column gap-2 pt-2">
+        <a routerLink="/dashboard/elder" class="nav-link text-dark fw-semibold">Home</a>
+        <a routerLink="/dashboard/search-caregiver" class="nav-link text-dark fw-semibold">Buscar cuidador</a>
+        <a routerLink="/dashboard/agenda" class="nav-link text-dark fw-semibold">Agenda</a>
+        <a routerLink="/dashboard/medications" class="nav-link active fw-semibold">Medicamentos & Avisos</a>
       </nav>
     </div>
 
     <div>
-      <a routerLink="/account/sign-in" class="btn btn-link text-danger fw-bold text-decoration-none px-2">
-        Sair
-      </a>
+      <a routerLink="/account/sign-in" class="btn btn-link text-danger fw-bold text-decoration-none px-2">Sair</a>
     </div>
   </aside>
 
   <!-- Conteúdo Principal -->
   <main class="flex-grow-1 p-4 overflow-auto">
 
-    <!-- Cabeçalho -->
-    <header class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
-      <div>
-        <h1 class="h2 fw-bold text-dark mb-1">Gerenciamento de Medicamentos</h1>
-        <p class="text-muted mb-0">Cadastre e acompanhe os horários e dosagens da rotina do idoso.</p>
-      </div>
+    <header class="mb-4 pb-3 border-bottom">
+      <h1 class="h2 fw-bold text-dark mb-1">Gerenciamento de Medicamentos e Avisos</h1>
+      <p class="text-muted mb-0">Cadastre a rotina de remédios e avisos importantes para o acompanhamento.</p>
     </header>
 
     <div class="row g-4">
 
-      <!-- Formulário de Cadastro -->
+      <!-- Coluna Esquerda: Formulários de Cadastro -->
       <div class="col-lg-5">
-        <div class="card border-0 shadow-sm">
+
+        <!-- Formulário de Medicamento -->
+        <div class="card border-0 shadow-sm mb-4">
           <div class="card-body p-4">
             <h3 class="h5 fw-bold text-dark mb-3">Novo Medicamento</h3>
 
             <form (ngSubmit)="adicionarMedicamento()">
               <div class="mb-3">
-                <label for="nome" class="form-label text-secondary fw-semibold small">Nome do Medicamento *</label>
-                <input type="text" id="nome" class="form-control" [(ngModel)]="novoNome" name="nome"
-                  placeholder="Ex: Paracetamol" required />
+                <label class="form-label text-secondary fw-semibold small">Nome do Medicamento *</label>
+                <input type="text" class="form-control" [(ngModel)]="novoNome" name="nome" placeholder="Ex: Paracetamol"
+                  required />
               </div>
 
               <div class="row g-2 mb-3">
                 <div class="col-md-6">
-                  <label for="dosagem" class="form-label text-secondary fw-semibold small">Dosagem</label>
-                  <input type="text" id="dosagem" class="form-control" [(ngModel)]="novaDosagem" name="dosagem"
-                    placeholder="Ex: 500mg, 1 compr." />
+                  <label class="form-label text-secondary fw-semibold small">Dosagem</label>
+                  <input type="text" class="form-control" [(ngModel)]="novaDosagem" name="dosagem"
+                    placeholder="Ex: 500mg" />
                 </div>
                 <div class="col-md-6">
-                  <label for="horario" class="form-label text-secondary fw-semibold small">Horário *</label>
-                  <input type="time" id="horario" class="form-control" [(ngModel)]="novoHorario" name="horario"
-                    required />
+                  <label class="form-label text-secondary fw-semibold small">Horário *</label>
+                  <input type="time" class="form-control" [(ngModel)]="novoHorario" name="horario" required />
                 </div>
               </div>
 
-              <div class="mb-4">
-                <label for="instrucoes" class="form-label text-secondary fw-semibold small">Instruções</label>
-                <textarea id="instrucoes" class="form-control" rows="2" [(ngModel)]="novasInstrucoes" name="instrucoes"
+              <div class="mb-3">
+                <label class="form-label text-secondary fw-semibold small">Instruções</label>
+                <textarea class="form-control" rows="2" [(ngModel)]="novasInstrucoes" name="instrucoes"
                   placeholder="Ex: Tomar após as refeições"></textarea>
               </div>
 
-              <button type="submit" class="btn btn-primary w-100 fw-semibold">
-                Cadastrar Medicamento
-              </button>
+              <button type="submit" class="btn btn-primary w-100 fw-semibold">Cadastrar Medicamento</button>
             </form>
           </div>
         </div>
+
+        <!-- Formulário de Aviso -->
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-4">
+            <h3 class="h5 fw-bold text-dark mb-3">Novo Aviso Importante</h3>
+
+            <form (ngSubmit)="adicionarAviso()">
+              <div class="mb-3">
+                <label class="form-label text-secondary fw-semibold small">Tipo de Aviso</label>
+                <select class="form-select" [(ngModel)]="novoTipoAviso" name="tipoAviso">
+                  <option value="Aviso">Aviso</option>
+                  <option value="Urgente">Urgente</option>
+                  <option value="Alerta">Alerta</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label text-secondary fw-semibold small">Mensagem *</label>
+                <textarea class="form-control" rows="2" [(ngModel)]="novaMensagemAviso" name="mensagemAviso"
+                  placeholder="Descreva o aviso..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-outline-primary w-100 fw-semibold">Adicionar Aviso</button>
+            </form>
+          </div>
+        </div>
+
       </div>
 
-      <!-- Listagem de Medicamentos Cadastrados -->
+      <!-- Coluna Direta: Listagens -->
       <div class="col-lg-7">
-        <div class="card border-0 shadow-sm">
+
+        <!-- Lista de Medicamentos -->
+        <div class="card border-0 shadow-sm mb-4">
           <div class="card-body p-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h3 class="h5 fw-bold text-dark mb-0">Medicamentos Cadastrados</h3>
-              <span class="badge bg-secondary rounded-pill px-3 py-2">{{ medicamentos.length }} no total</span>
+              <span class="badge bg-secondary rounded-pill px-3 py-2">{{ medicamentos.length }}</span>
             </div>
 
-            <!-- Lista de itens -->
             <div *ngIf="medicamentos.length > 0; else semMeds" class="list-group list-group-flush">
               <div *ngFor="let med of medicamentos; let i = index"
                 class="list-group-item d-flex justify-content-between align-items-center px-0 py-3 border-bottom">
@@ -104,23 +116,40 @@
                 </div>
                 <div class="d-flex align-items-center gap-3">
                   <span class="badge bg-primary rounded-pill px-3 py-2 fs-6">{{ med.horario }}</span>
-                  <button (click)="removerMedicamento(i)" class="btn btn-outline-danger btn-sm"
-                    title="Excluir Medicamento">
-                    &times;
-                  </button>
+                  <button (click)="removerMedicamento(i)" class="btn btn-outline-danger btn-sm">&times;</button>
                 </div>
               </div>
             </div>
-
-            <!-- Estado Vazio -->
             <ng-template #semMeds>
-              <div class="text-center py-5 my-3">
-                <p class="text-muted mb-0">Nenhum medicamento cadastrado até o momento.</p>
-              </div>
+              <p class="text-muted text-center py-3 mb-0">Nenhum medicamento cadastrado.</p>
             </ng-template>
-
           </div>
         </div>
+
+        <!-- Lista de Avisos -->
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h3 class="h5 fw-bold text-dark mb-0">Avisos do Idoso</h3>
+              <span class="badge bg-secondary rounded-pill px-3 py-2">{{ avisos.length }}</span>
+            </div>
+
+            <div *ngIf="avisos.length > 0; else semAvisos" class="d-flex flex-column gap-2">
+              <div *ngFor="let aviso of avisos; let j = index"
+                class="alert alert-warning border-0 d-flex justify-content-between align-items-center mb-0">
+                <div class="d-flex align-items-center gap-3">
+                  <span class="badge bg-warning text-dark">{{ aviso.tipo }}</span>
+                  <p class="mb-0 text-dark small">{{ aviso.mensagem }}</p>
+                </div>
+                <button (click)="removerAviso(j)" class="btn btn-outline-danger btn-sm">&times;</button>
+              </div>
+            </div>
+            <ng-template #semAvisos>
+              <p class="text-muted text-center py-3 mb-0">Nenhum aviso cadastrado.</p>
+            </ng-template>
+          </div>
+        </div>
+
       </div>
 
     </div>
