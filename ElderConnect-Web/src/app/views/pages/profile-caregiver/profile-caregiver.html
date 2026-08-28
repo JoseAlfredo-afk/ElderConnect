@@ -1,8 +1,24 @@
-<div class="container-fluid py-4 bg-light min-vh-100">
-  <div class="container">
+<div class="d-flex min-vh-100 bg-light">
+
+  <aside class="bg-white border-end d-flex flex-column justify-content-between p-3"
+    style="width: 240px; min-width: 240px;">
+    <div>
+      <nav class="nav nav-pills flex-column gap-2 pt-2">
+        <a routerLink="/dashboard/elder" class="nav-link text-dark fw-semibold">Home</a>
+        <a routerLink="/dashboard/search-caregiver" class="nav-link text-dark fw-semibold">Buscar cuidador</a>
+        <a routerLink="/dashboard/agenda" class="nav-link text-dark fw-semibold">Agenda</a>
+        <a routerLink="/dashboard/medications" class="nav-link text-dark fw-semibold">Medicamentos</a>
+      </nav>
+    </div>
+    <div>
+      <a routerLink="/account/sign-in" class="btn btn-link text-danger fw-bold text-decoration-none px-2">Sair</a>
+    </div>
+  </aside>
+
+  <main class="flex-grow-1 p-4 overflow-auto">
 
     <div class="mb-3">
-      <a routerLink="/dashboard/search-caregiver" class="btn btn-outline-secondary btn-sm">
+      <a routerLink="/dashboard/search-caregiver" class="btn btn-outline-secondary btn-sm fw-semibold">
         ← Voltar para Busca
       </a>
     </div>
@@ -36,7 +52,7 @@
               <div class="col-md-6">
                 <div class="bg-light p-3 rounded">
                   <h6 class="fw-bold text-dark mb-1">Experiência</h6>
-                  <p class="text-muted small mb-0">{{ cuidador.experiencia }}</p>
+                  <p class="text-muted small mb-0">{{ cuidador.experienciaTexto }}</p>
                 </div>
               </div>
               <div class="col-md-6">
@@ -58,7 +74,7 @@
         <div class="card border-0 shadow-sm sticky-top" style="top: 20px;">
           <div class="card-body p-4 text-center">
 
-            <h3 class="h4 fw-bold text-dark mb-1">{{ cuidador.precoHora }}</h3>
+            <h3 class="h4 fw-bold text-dark mb-1">R$ {{ cuidador.precoHora | number:'1.2-2' }}</h3>
             <p class="text-muted small mb-4">Valor por hora negociável</p>
 
             <div class="d-grid gap-2 mb-3">
@@ -78,5 +94,5 @@
 
     </div>
 
-  </div>
+  </main>
 </div>
