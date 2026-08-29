@@ -1,6 +1,7 @@
 package br.fai.lds.elderconnect.dto.contract;
 
 import br.fai.lds.elderconnect.domain.Contract;
+import br.fai.lds.elderconnect.domain.ContractStatus;
 import br.fai.lds.elderconnect.domain.UserModel;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,7 @@ public class CreateContractDto {
     private String startDate;
     private String endDate;
     private float contractValue;
-    private String status;
+    private ContractStatus status;
     private String workingHours;
     private String description;
     private UserModel senior;
@@ -25,7 +26,7 @@ public class CreateContractDto {
         contract.setStartDate(startDate);
         contract.setEndDate(endDate);
         contract.setContractValue(contractValue);
-        contract.setStatus(status);
+        contract.setStatus(ContractStatus.PEDENTE);
         contract.setWorkingHours(workingHours);
         contract.setDescription(description);
         contract.setSenior(senior);

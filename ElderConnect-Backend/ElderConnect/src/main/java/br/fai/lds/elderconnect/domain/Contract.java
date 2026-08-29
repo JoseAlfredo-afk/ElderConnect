@@ -8,16 +8,16 @@ import lombok.Setter;
 public class Contract {
     private int id;
     private String contractNumber;
-    private String comment;
-    private int rating;
     private String startDate;
     private String endDate;
-    private int contractValue;
-    private String status;
+    private float contractValue;
+    private ContractStatus status;
     private String workingHours;
     private String description;
     private UserModel senior;
     private UserModel caregiver;
+    private String comment;
+    private int rating;
 
 
 
