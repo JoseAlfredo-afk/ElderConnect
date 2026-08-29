@@ -71,7 +71,7 @@ interface br.fai.lds.elderconnect.ports_and_adapters.port.service.user.LoginServ
 ~ UserModel login(String,String)
 }
 
-class br.fai.lds.elderconnect.dto.CredencialUserDto {
+class br.fai.lds.elderconnect.dto.user.CredencialUserDto {
 - String email
 - String password
 }
@@ -98,7 +98,7 @@ interface br.fai.lds.elderconnect.ports_and_adapters.port.service.user.FindByEma
 
 interface br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.CrudService {
 }
-class br.fai.lds.elderconnect.dto.UpdatePasswordDto {
+class br.fai.lds.elderconnect.dto.user.UpdatePasswordDto {
 - int id
 - String oldPassword
 - String newPassword
@@ -113,7 +113,7 @@ class br.fai.lds.elderconnect.configuration.AppConfiguration {
 + UserDao getUserPostgresDao()
 }
 
-class br.fai.lds.elderconnect.dto.CreateUserDto {
+class br.fai.lds.elderconnect.dto.user.CreateUserDto {
 - String fullname
 - String cpf
 - String birthDate
@@ -198,7 +198,7 @@ interface br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.FindServi
 ~ List<T> findAll()
 }
 
-class br.fai.lds.elderconnect.dto.UpdateEmailDto {
+class br.fai.lds.elderconnect.dto.user.UpdateEmailDto {
 - int id
 - String email
 + UserModel toUserModel()
@@ -217,7 +217,7 @@ class br.fai.lds.elderconnect.domain.Message {
 - UserModel recipient
 }
 
-class br.fai.lds.elderconnect.dto.UpdateAddressDto {
+class br.fai.lds.elderconnect.dto.user.UpdateAddressDto {
 - int id
 - String streetAddress
 - String city

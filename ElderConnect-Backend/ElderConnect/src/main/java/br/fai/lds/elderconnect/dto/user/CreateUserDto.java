@@ -1,11 +1,9 @@
-package br.fai.lds.elderconnect.dto;
+package br.fai.lds.elderconnect.dto.user;
 
 import br.fai.lds.elderconnect.domain.UserModel;
 import br.fai.lds.elderconnect.domain.UserType;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.lang.model.type.UnionType;
 
 @Setter
 @Getter
