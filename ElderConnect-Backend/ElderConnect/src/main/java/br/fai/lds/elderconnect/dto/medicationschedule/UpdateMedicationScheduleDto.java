@@ -12,7 +12,7 @@ public class UpdateMedicationScheduleDto {
     private String dosageInstructions;
     private String intakeTime;
 
-    public MedicationSchedule medicationSchedule(){
+    public MedicationSchedule toMedicationSchedule(){
         final MedicationSchedule medicationSchedule = new MedicationSchedule();
         medicationSchedule.setId(id);
         medicationSchedule.setIntakeTime(intakeTime);
