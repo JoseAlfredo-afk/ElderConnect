@@ -14,8 +14,8 @@ public class Contract {
     private ContractStatus status;
     private String workingHours;
     private String description;
-    private UserModel senior;
-    private UserModel caregiver;
+    private int seniorId;
+    private int caregiverId;
     private String comment;
     private int rating;
 
