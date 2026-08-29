@@ -10,15 +10,14 @@ import lombok.Setter;
 public class CreateMessageDto {
     private String text;
     private String sentAt;
-    private UserModel sender;
-    private UserModel recipient;
+    private int senderId;
+    private int recipientId;
 
     public Message toMessage(){
         Message message = new Message();
         message.setText(text);
-        message.setSentAt(sentAt);
-        message.setSender(sender);
-        message.setRecipient(recipient);
+        message.setSenderId(senderId);
+        message.setRecipientId(recipientId);
         return message;
     }
 }

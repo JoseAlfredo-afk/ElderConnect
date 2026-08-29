@@ -9,6 +9,6 @@ public class Message {
     private int id;
     private String text;
     private String sentAt;
-    private UserModel sender;
-    private UserModel recipient;
+    private int senderId;
+    private int recipientId;
 }
