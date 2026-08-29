@@ -6,23 +6,23 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateContractDto {
+public class UpdateContractDto {
 
-    private String startDate;
+    private int id;
     private float contractValue;
     private String workingHours;
     private String description;
-    private int seniorId;
-    private int caregiverId;
 
     public Contract toContract(){
         final Contract contract = new Contract();
-        contract.setStartDate(startDate);
+        contract.setId(id);
         contract.setContractValue(contractValue);
         contract.setWorkingHours(workingHours);
         contract.setDescription(description);
-        contract.setSeniorId(seniorId);
-        contract.setCaregiverId(caregiverId);
         return contract;
     }
+
+
+
+
 }
