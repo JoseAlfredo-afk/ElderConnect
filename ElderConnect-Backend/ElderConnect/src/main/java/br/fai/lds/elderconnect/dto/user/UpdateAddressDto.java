@@ -1,4 +1,4 @@
-package br.fai.lds.elderconnect.dto;
+package br.fai.lds.elderconnect.dto.user;
 
 import br.fai.lds.elderconnect.domain.UserModel;
 import lombok.Getter;
