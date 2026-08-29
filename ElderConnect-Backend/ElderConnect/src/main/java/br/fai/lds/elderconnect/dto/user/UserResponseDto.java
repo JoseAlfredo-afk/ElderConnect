@@ -17,15 +17,15 @@ public class UserResponseDto {
     private String birthDate;
 
     public static UserResponseDto fromUserModel(UserModel userModel) {
-        UserResponseDto dto = new UserResponseDto();
+        UserResponseDto userResponseDto = new UserResponseDto();
 
-        dto.setId(userModel.getId());
-        dto.setFullname(userModel.getFullname());
-        dto.setEmail(userModel.getEmail());
-        dto.setPhoneNumber(userModel.getPhoneNumber());
-        dto.setUserType(userModel.getUserType());
-        dto.setBirthDate(userModel.getBirthDate());
+        userResponseDto.setId(userModel.getId());
+        userResponseDto.setFullname(userModel.getFullname());
+        userResponseDto.setEmail(userModel.getEmail());
+        userResponseDto.setPhoneNumber(userModel.getPhoneNumber());
+        userResponseDto.setUserType(userModel.getUserType());
+        userResponseDto.setBirthDate(userModel.getBirthDate());
 
-        return dto;
+        return userResponseDto;
     }
 }
