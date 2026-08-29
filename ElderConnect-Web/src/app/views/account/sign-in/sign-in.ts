@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/user/auth';
 
@@ -11,32 +11,47 @@ import { AuthService } from '../../../services/user/auth';
   templateUrl: './sign-in.html',
   styleUrl: './sign-in.css'
 })
-export class SignIn {
-  emailInput: string = '';
-  senhaInput: string = '';
-  mostrarSucesso: boolean = false;
-  
-  private authService = inject(AuthService); 
+
+export class SignIn implements OnInit{
+
+  email = new FormControl ('',[Validators.required, Validators.email]);
+  password = new FormControl('',[Validators.required])
+
+
+  private authService = inject(AuthService); // Nome correto: authService
   private router = inject(Router);
+
+  ngOnInit(): void {
+    
+  }
+
+
+  validateFields(): boolean {
+    return this.email.valid && this.password.valid;
+  }
+
 
   logar(event: Event) {
     event.preventDefault();
 
-    if (this.emailInput.trim() !== '' && this.senhaInput.trim() !== '') {
-      // 1. Marca o usuário como autenticado no serviço
-      this.authService.logar(); 
+    
+    if (!this.validateFields()) {
+      alert('Por favor, informe um e-mail válido e preencha a senha.');
+      return;
+    }
 
-      // 2. Simulação de perfil baseada no e-mail:
-      // Se o e-mail contiver "cuidador", vai para o dashboard de cuidador.
-      // Caso contrário, direciona para o novo Dashboard do Idoso.
-      if (this.emailInput.toLowerCase().includes('cuidador')) {
-        this.router.navigate(['/dashboard/caregiver']);
-      } else {
-        this.router.navigate(['/dashboard/elder']);
-      }
-      
+    const emailValue = this.email.value || '';
+
+   
+    this.authService.logar();
+
+    
+    if (emailValue.toLowerCase().includes('cuidador')) {
+      this.router.navigate(['/dashboard/caregiver']);
     } else {
-      alert('Por favor, preencha o e-mail e a senha de simulação.');
+      this.router.navigate(['/dashboard/elder']);
     }
   }
 }
+
+
