@@ -1,7 +1,7 @@
 package br.fai.lds.elderconnect.controller;
 
 import br.fai.lds.elderconnect.domain.UserModel;
-import br.fai.lds.elderconnect.dto.*;
+import br.fai.lds.elderconnect.dto.user.*;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
