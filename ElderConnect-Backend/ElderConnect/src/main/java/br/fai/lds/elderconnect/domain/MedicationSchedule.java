@@ -9,8 +9,8 @@ public class MedicationSchedule {
     private int id;
     private String dosageInstructions;
     private String intakeTime;
-    private UserModel senior;
-    private Medication medication;
+    private int seniorId;
+    private int medicationId;
 
 
 }
