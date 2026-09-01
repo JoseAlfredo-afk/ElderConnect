@@ -1,5 +1,6 @@
 package br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.configuration;
 
+import br.fai.lds.elderconnect.ports_and_adapters.port.service.tools.ResourceFilesService;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.*;
 
 public class PostgresConnectionManagerConfiguration {
@@ -23,12 +25,15 @@ public class PostgresConnectionManagerConfiguration {
     @Value("${spring.datasource.url}")
     private String databaseUrl;
 
+    ResourceFilesService resourceFilesService;
+
+
     @Bean
     public DataSource dataSource() throws SQLException{
 
         final DataSource build = DataSourceBuilder
                 .create()
-                .url(databaseUrl)
+                .url(databaseBaseUrl)
                 .username(databaseUsername)
                 .password(databasePassword)
                 .build();
@@ -57,24 +62,49 @@ public class PostgresConnectionManagerConfiguration {
 
         final Statement statement = connection.createStatement();
 
-        String sql = "SELECT COUNT(*) AS dbs";
-        sql += " FROM pg_catalog.pg_database";
-        sql += " WHERE lower(datname) = '" + databaseName + "';";
+        String sql = " SELECT COUNT(*) AS dbs ";
+        sql += " FROM pg_catalog.pg_database ";
+        sql += " WHERE lower(datname) = '" + databaseName + "'; ";
 
         ResultSet resultSet = statement.executeQuery(sql);
 
         boolean dbExists = resultSet.next();
-        if(dbExists || resultSet.getInt("dbs") != 0){
-            return;
+        if(!dbExists || resultSet.getInt("dbs") == 0){
+            String createDbSql = " CREATE DATABASE " + databaseName + " WITH ";
+            createDbSql += " OWNER = postgres ENCODING = 'UTF8' ";
+            createDbSql += " CONNECTION LIMIT = -1;";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(createDbSql);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
         }
 
-        String createDbSql = "CREATE DATABASE " + databaseName + " WITH";
-        createDbSql += " OWNER = postgres ENCODING = 'UTF8' ";
-        createDbSql += " CONNECTION LIMIT = -1 ";
 
-        PreparedStatement preparedStatement = connection.prepareStatement(createDbSql);
-        preparedStatement.executeUpdate();
-        preparedStatement.close();
+    }
+
+    private String getInsertScript(){
+        return "/insert-data-postgres-basic.sql";
+    }
+
+    @Bean
+    @DependsOn("getConnection")
+    public boolean createTableAndInsertData() throws IOException, SQLException {
+
+        Connection connection = getConnection();
+
+        final String basePath = "elderconnect-db-scripts";
+
+        final String createTablesSql = resourceFilesService.read(basePath + "/create-tables-postgres.sql");
+
+        PreparedStatement createStatement = connection.prepareStatement(createTablesSql);
+        createStatement.executeUpdate();
+        createStatement.close();
+
+        final String insertDataSql = resourceFilesService.read(basePath + "/insert-data-postgres-basic.sql");
+        final PreparedStatement insertStatement = connection.prepareStatement(insertDataSql);
+        insertStatement.execute();
+        insertStatement.close();
+        return true;
     }
 
 
