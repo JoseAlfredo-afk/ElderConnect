@@ -13,9 +13,11 @@ import { ElderDashboard } from './views/pages/elder-dashboard/elder';
 import { Help } from './views/pages/help/help';
 import { Home } from './views/pages/home/home';
 import { Medications } from './views/pages/medications/medication';
+import { Agenda } from './views/pages/agenda/agenda';
 import { ProfileCaregiver } from './views/pages/profile-caregiver/profile-caregiver';
 import { SearchCaregiver } from './views/pages/search-caregiver/search-caregiver';
 import { authenticationGuard } from './services/security/guard/authentication.guard';
+
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -25,6 +27,7 @@ export const routes: Routes = [
     { path: 'dashboard/elder', component: ElderDashboard },
     { path: 'dashboard/caregiver', component: CaregiverDashboard },
     { path: 'dashboard/search-caregiver', component: SearchCaregiver,canActivate: [authenticationGuard] },
+    { path: 'dashboard/agenda', component: Agenda },
     { path: 'dashboard/medications', component: Medications },
     { path: 'dashboard/profile', component: Profile },
     { path: 'profile-caregiver', component: ProfileCaregiver },
