@@ -19,6 +19,10 @@ public class Contract {
     private String comment;
     private int rating;
 
-
-
+    public enum ContractStatus {
+        PENDENTE,
+        ATIVO,
+        COMPLETO,
+        CANCELADO
+    }
 }

@@ -1,7 +1,7 @@
 package br.fai.lds.elderconnect.dto.contract;
 
 import br.fai.lds.elderconnect.domain.Contract;
-import br.fai.lds.elderconnect.domain.ContractStatus;
+import br.fai.lds.elderconnect.domain.Contract.ContractStatus;
 import lombok.Getter;
 import lombok.Setter;
 
