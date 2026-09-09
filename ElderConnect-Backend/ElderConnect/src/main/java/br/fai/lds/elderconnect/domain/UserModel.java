@@ -14,14 +14,17 @@ public class UserModel {
     private String password;
     private String phoneNumber;
     private UserType userType;
-    //Usuario IDOSO
     private String birthDate;
-    //USuario CUIDADOR
+    //Usuario CUIDADOR
     private String availabilitySchedule;
     private String streetAddress;
     private String specialization;
     private String city;
     private String neighborhood;
     private String experience;
+
+    public enum UserType {
+        IDOSO, CUIDADOR
+    }
 
 }
