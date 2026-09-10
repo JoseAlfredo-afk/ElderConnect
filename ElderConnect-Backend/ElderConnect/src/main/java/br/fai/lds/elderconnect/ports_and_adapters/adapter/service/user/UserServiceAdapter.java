@@ -92,7 +92,7 @@ public class UserServiceAdapter implements UserService {
     }
 
     @Override
-    public boolean updateProfile(int id, UserModel userModel) {
+    public boolean update(int id, UserModel userModel) {
         if(isIdInvalid(id) || userModel == null){
             return false;
         }
