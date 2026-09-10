@@ -7,17 +7,19 @@ import org.apache.catalina.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.sql.Connection;
+
 @Configuration
 public class AppConfiguration {
 
-    @Bean
+
     public UserDao getUserFakeDao(){
         return new UserFakeDaoAdapter();
     }
 
-
-    public UserDao getUserPostgresDao(){
-        return new UserPostgresDaoAdapter();
+    @Bean
+    public UserDao getUserPostgresDao(final Connection connection){
+        return new UserPostgresDaoAdapter(connection);
     }
 
 

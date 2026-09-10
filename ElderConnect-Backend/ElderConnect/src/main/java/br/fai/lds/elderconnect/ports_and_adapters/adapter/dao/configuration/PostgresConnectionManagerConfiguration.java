@@ -3,15 +3,18 @@ package br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.configuration;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.tools.ResourceFilesService;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.*;
 
+@Configuration
 public class PostgresConnectionManagerConfiguration {
 
     @Value("${spring.datasource.base.url}")
@@ -25,6 +28,7 @@ public class PostgresConnectionManagerConfiguration {
     @Value("${spring.datasource.url}")
     private String databaseUrl;
 
+    @Autowired
     ResourceFilesService resourceFilesService;
 
 
