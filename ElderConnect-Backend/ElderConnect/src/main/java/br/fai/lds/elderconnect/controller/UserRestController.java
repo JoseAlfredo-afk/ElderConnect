@@ -49,7 +49,7 @@ public class UserRestController {
     public ResponseEntity<UserModel> updateProfile(@PathVariable final int id, @RequestBody final UpdateProfileDto updateProfileDto){
         final UserModel userModel = updateProfileDto.toUserModel();
 
-        boolean response = userService.updateProfile(id, userModel);
+        boolean response = userService.update(id, userModel);
 
         return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
 
