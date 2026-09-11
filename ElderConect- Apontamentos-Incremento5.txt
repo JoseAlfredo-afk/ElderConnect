@@ -1,0 +1,34 @@
+ElderConect
+-  Verificar os comentários na documentação
+-  Diagrama de Sequencia: 
+	- Falta a camada de service
+	- Repository não valida a senha
+	- Login autorizado não deve vir diretamente do controller
+	-  Falta o fluxo alternativo poderia adicionar um fragmento
+	-  Numeração não é necessária na UML 2.0
+	-  Recuperar senha os nomes dos participantes precisam ser mais reais
+	-  Falta o serviço de email na recuperação de senha
+	-  Fluxo do funcionamento incorreto:  buscarPorEmail(email)
+retorna UserModel  ->  Confirma o envio do link, mas ninguem envia o link
+	-  Falta tratamento para o email existente
+	- Os retornos poderiam ser mais explicitos
+	- Barra de ativação muito longa:  na UML a ativação deve durar apenas enquanto o objeto esta sendo executando a operação
+
+- Diagrama de pacotes: 
+	- Separação inadequadas entre as camadas:  falta explicitar as dependências principais
+	- Faltou o pacote para as Exceptions
+	- Poderia ter o pacote de Enum
+	- Pacote de configuração está muito genérico, aconselho adicionar mais detalhes 
+	- Faltou a camada de segurança
+
+Diagrama de Classes: 
+	- UserModel está sobrecarregado:  a classe possui atributos de idoso, cuidador, Administrador misturados
+	- Password está como string
+	- Contrato usando string para datas
+	- ContractStatus não está sendo usado corretamente
+	- Tipo UserType:  mostrar o valor:  admin, senior, caregiver
+	- Enum ContractStatus está sem valores
+	- Verificar a associação userModel x Message
+	- Melhorar a modelagem do MedicationSchedule, e está usando string em objetos
+	- Senior Caregiver poderia ser uma classe associativa
+	- Verificar a cardinalidade do contrato
