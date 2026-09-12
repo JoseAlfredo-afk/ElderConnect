@@ -1,1 +1,103 @@
-<p>help works!</p>
+<div class="d-flex min-vh-100 bg-light">
+
+    <!-- Sidebar Lateral -->
+    <aside class="bg-white border-end d-flex flex-column justify-content-between p-3"
+        style="width: 240px; min-width: 240px;">
+        <div>
+            <nav class="nav nav-pills flex-column gap-2 pt-2">
+                <a routerLink="/dashboard/elder" class="nav-link text-dark fw-semibold">Home</a>
+                <a routerLink="/dashboard/search-caregiver" class="nav-link text-dark fw-semibold">Buscar cuidador</a>
+                <a routerLink="/dashboard/agenda" class="nav-link text-dark fw-semibold">Agenda</a>
+                <a routerLink="/dashboard/medications" class="nav-link text-dark fw-semibold">Medicamentos</a>
+                <a routerLink="/dashboard/about" class="nav-link text-dark fw-semibold">Sobre</a>
+                <a routerLink="/dashboard/help" class="nav-link active fw-semibold">Ajuda</a>
+            </nav>
+        </div>
+        <div>
+            <a routerLink="/account/sign-in" class="btn btn-link text-danger fw-bold text-decoration-none px-2">Sair</a>
+        </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="flex-grow-1 p-4 overflow-auto">
+
+        <!-- Cabeçalho -->
+        <header class="mb-4 pb-3 border-bottom">
+            <h1 class="h2 fw-bold text-dark mb-1">Central de Ajuda</h1>
+            <p class="text-muted mb-0">Tire suas dúvidas e saiba como aproveitar ao máximo o ElderConnect.</p>
+        </header>
+
+        <div class="row g-4">
+
+            <!-- Coluna Principal: FAQ -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-body p-4 p-md-5">
+                        <h3 class="h4 fw-bold text-dark mb-4 d-flex align-items-center">
+                            <span class="text-primary me-2">?</span> Perguntas Frequentes
+                        </h3>
+
+                        <!-- Acordeão Simples usando a lista do TS -->
+                        <div class="d-flex flex-column gap-3">
+                            <div *ngFor="let faq of faqs" class="bg-light p-4 rounded-3 border border-light-subtle">
+                                <h5 class="fw-bold text-dark mb-2 fs-6">{{ faq.pergunta }}</h5>
+                                <p class="text-secondary mb-0 small lh-lg">{{ faq.resposta }}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna Lateral: Suporte Técnico e Dicas -->
+            <div class="col-lg-4">
+
+                <!-- Card de Contato -->
+                <div class="card border-0 shadow-sm rounded-4 mb-4 bg-primary text-white">
+                    <div class="card-body p-4 text-center">
+                        <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                            style="width: 64px; height: 64px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M8 1a5 5 0 0 0-5 5v1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a6 6 0 1 1 12 0v6a2.5 2.5 0 0 1-2.5 2.5H9.366a1 1 0 0 1-.866.5h-1a1 1 0 1 1 0-2h1a1 1 0 0 1 .866.5H11.5A1.5 1.5 0 0 0 13 12h-1a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h1V6a5 5 0 0 0-5-5z" />
+                            </svg>
+                        </div>
+                        <h4 class="h5 fw-bold mb-2">Ainda precisa de ajuda?</h4>
+                        <p class="small text-white-50 mb-4">Nossa equipe de suporte está pronta para auxiliar você com
+                            qualquer dificuldade técnica.</p>
+
+                        <button (click)="falarComSuporte()"
+                            class="btn btn-light text-primary fw-bold w-100 btn-hover-opacity">
+                            Falar com o Suporte
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card de Dicas de Segurança -->
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold text-dark mb-3">Dicas de Segurança</h5>
+                        <ul class="list-unstyled text-muted small mb-0 lh-lg">
+                            <li class="mb-2 d-flex align-items-start">
+                                <span class="text-success me-2">✓</span> Confira sempre a avaliação do cuidador antes do
+                                vínculo.
+                            </li>
+                            <li class="mb-2 d-flex align-items-start">
+                                <span class="text-success me-2">✓</span> Mantenha a lista de medicamentos sempre
+                                atualizada.
+                            </li>
+                            <li class="d-flex align-items-start">
+                                <span class="text-success me-2">✓</span> Em caso de dúvidas sobre remédios, consulte um
+                                médico.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+</div>
