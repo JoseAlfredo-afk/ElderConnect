@@ -35,10 +35,11 @@
           Meu Perfil
         </a>
 
-        <button (click)="authService.logout()" class="btn btn-danger px-3 py-1.5 rounded-3 fw-bold border-0"
-          style="font-size: 0.95rem;">
+        <a routerLink="/home" (click)="authService.logout()"
+          class="btn btn-danger px-3 py-1.5 rounded-3 fw-bold border-0 text-decoration-none"
+          style="font-size: 0.95rem; cursor: pointer;">
           Sair
-        </button>
+        </a>
       </div>
 
     </div>
