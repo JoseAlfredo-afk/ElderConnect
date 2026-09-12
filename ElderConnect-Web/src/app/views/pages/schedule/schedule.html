@@ -1,488 +1,428 @@
-<div class="agenda-page">
+<div class="d-flex min-vh-100 bg-light">
 
-  <main class="agenda-container">
-
-    <!-- Cabeçalho -->
-    <div class="agenda-header">
-
-      <div>
-
-        <h1>
-          Agenda do idoso
-        </h1>
-
-        <p>
-          Gerencie os compromissos e horários.
-        </p>
-
-      </div>
-
-
-      <button
-        type="button"
-        class="btn-novo"
-        (click)="openNew()">
-
-        <i class="bi bi-plus-lg"></i>
-
-        Novo compromisso
-
-      </button>
-
+  <aside class="bg-white border-end d-flex flex-column justify-content-between p-3"
+    style="width: 240px; min-width: 240px;">
+    <div>
+      <nav class="nav nav-pills flex-column gap-2 pt-2">
+        <a routerLink="/dashboard/elder" class="nav-link text-dark fw-semibold">
+          Home
+        </a>
+        <a routerLink="/dashboard/search-caregiver" class="nav-link text-dark fw-semibold">
+          Buscar cuidador
+        </a>
+        <a routerLink="/dashboard/agenda" class="nav-link active fw-semibold">
+          Agenda
+        </a>
+        <a routerLink="/dashboard/medications" class="nav-link text-dark fw-semibold">
+          Medicamentos
+        </a>
+      </nav>
     </div>
 
+    <div>
+      <a routerLink="/account/sign-in" class="btn btn-link text-danger fw-bold text-decoration-none px-2">
+        Sair
+      </a>
+    </div>
+  </aside>
 
-    <!-- Tabela -->
-    <div class="agenda-card">
+  <main class="flex-grow-1 overflow-auto">
+    <div class="agenda-page">
 
-      <div class="table-responsive">
+      <main class="agenda-container">
 
-        <table class="agenda-table">
+        <div class="agenda-header">
 
-          <thead>
+          <div>
 
-            <tr>
+            <h1>
+              Agenda do idoso
+            </h1>
 
-              <th>
-                Data
-              </th>
+            <p>
+              Gerencie os compromissos e horários.
+            </p>
 
-              <th>
-                Horário
-              </th>
-
-              <th>
-                Compromisso
-              </th>
-
-              <th>
-                Tipo
-              </th>
-
-              <th>
-                Responsável
-              </th>
-
-              <th>
-                Ações
-              </th>
-
-            </tr>
-
-          </thead>
+          </div>
 
 
-          <tbody>
+          <button type="button" class="btn-novo" (click)="openNew()">
 
-            <tr
-              *ngFor="
-                let appointment of appointments;
-                let i = index
-              ">
+            <i class="bi bi-plus-lg"></i>
 
-              <!-- Data -->
-              <td class="data-coluna">
+            Novo compromisso
 
-                {{ appointment.date | date:'dd/MM/yyyy' }}
+          </button>
 
-              </td>
+        </div>
 
 
-              <!-- Horário -->
-              <td class="horario-coluna">
+        <div class="agenda-card">
 
-                <strong>
-                  {{ appointment.time }}
-                </strong>
+          <div class="table-responsive">
 
-              </td>
+            <table class="agenda-table">
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    Data
+                  </th>
+
+                  <th>
+                    Horário
+                  </th>
+
+                  <th>
+                    Compromisso
+                  </th>
+
+                  <th>
+                    Tipo
+                  </th>
+
+                  <th>
+                    Responsável
+                  </th>
+
+                  <th>
+                    Ações
+                  </th>
+
+                </tr>
+
+              </thead>
 
 
-              <!-- Compromisso -->
-              <td>
+              <tbody>
 
-                <div class="compromisso">
+                <tr *ngFor="
+                    let appointment of appointments;
+                    let i = index
+                  ">
 
-                  <div class="icone-compromisso">
+                  <td class="data-coluna">
 
-                    <i
-                      *ngIf="appointment.type === 'Consulta'"
-                      class="bi bi-calendar-check">
-                    </i>
+                    {{ appointment.date | date:'dd/MM/yyyy' }}
 
-                    <i
-                      *ngIf="appointment.type === 'Atividade'"
-                      class="bi bi-person-walking">
-                    </i>
-
-                    <i
-                      *ngIf="appointment.type === 'Saúde'"
-                      class="bi bi-heart-pulse">
-                    </i>
-
-                    <i
-                      *ngIf="appointment.type === 'Outro'"
-                      class="bi bi-calendar-event">
-                    </i>
-
-                  </div>
+                  </td>
 
 
-                  <div class="compromisso-texto">
+                  <td class="horario-coluna">
 
                     <strong>
-                      {{ appointment.title }}
+                      {{ appointment.time }}
                     </strong>
 
-                    <small>
-                      {{ appointment.notes }}
-                    </small>
-
-                  </div>
-
-                </div>
-
-              </td>
+                  </td>
 
 
-              <!-- Tipo -->
-              <td>
+                  <td>
 
-                {{ appointment.type }}
+                    <div class="compromisso">
 
-              </td>
+                      <div class="icone-compromisso">
 
+                        <i *ngIf="appointment.type === 'Consulta'" class="bi bi-calendar-check">
+                        </i>
 
-              <!-- Responsável -->
-              <td>
+                        <i *ngIf="appointment.type === 'Atividade'" class="bi bi-person-walking">
+                        </i>
 
-                {{ appointment.responsible }}
+                        <i *ngIf="appointment.type === 'Saúde'" class="bi bi-heart-pulse">
+                        </i>
 
-              </td>
+                        <i *ngIf="appointment.type === 'Outro'" class="bi bi-calendar-event">
+                        </i>
 
-
-              <!-- Ações -->
-              <td>
-
-                <div class="acoes">
-
-                  <button
-                    type="button"
-                    class="btn-editar"
-                    title="Editar"
-                    (click)="edit(i)">
-
-                    <i class="bi bi-pencil"></i>
-
-                  </button>
+                      </div>
 
 
-                  <button
-                    type="button"
-                    class="btn-excluir"
-                    title="Excluir"
-                    (click)="delete(i)">
+                      <div class="compromisso-texto">
 
-                    <i class="bi bi-trash"></i>
+                        <strong>
+                          {{ appointment.title }}
+                        </strong>
 
-                  </button>
+                        <small>
+                          {{ appointment.notes }}
+                        </small>
 
-                </div>
+                      </div>
 
-              </td>
+                    </div>
 
-            </tr>
+                  </td>
 
 
-            <!-- Nenhum compromisso -->
-            <tr
-              *ngIf="appointments.length === 0">
+                  <td>
 
-              <td
-                colspan="6"
-                class="nenhum">
+                    {{ appointment.type }}
 
-                <i class="bi bi-calendar-x"></i>
+                  </td>
 
-                <p>
-                  Nenhum compromisso cadastrado.
-                </p>
 
-                <button
-                  type="button"
-                  class="btn-novo-menor"
-                  (click)="openNew()">
+                  <td>
 
-                  Adicionar compromisso
+                    {{ appointment.responsible }}
 
-                </button>
+                  </td>
 
-              </td>
 
-            </tr>
+                  <td>
 
-          </tbody>
+                    <div class="acoes">
 
-        </table>
+                      <button type="button" class="btn-editar" title="Editar" (click)="edit(i)">
+
+                        <i class="bi bi-pencil"></i>
+
+                      </button>
+
+
+                      <button type="button" class="btn-excluir" title="Excluir" (click)="delete(i)">
+
+                        <i class="bi bi-trash"></i>
+
+                      </button>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+
+                <tr *ngIf="appointments.length === 0">
+
+                  <td colspan="6" class="nenhum">
+
+                    <i class="bi bi-calendar-x"></i>
+
+                    <p>
+                      Nenhum compromisso cadastrado.
+                    </p>
+
+                    <button type="button" class="btn-novo-menor" (click)="openNew()">
+
+                      Adicionar compromisso
+
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+
+        <div class="proximo" *ngIf="nextAppointment">
+
+          <i class="bi bi-info-circle"></i>
+
+          <span>
+
+            Próximo compromisso:
+
+            <strong>
+              {{ nextAppointment.title }}
+            </strong>
+
+            às
+
+            <strong>
+              {{ nextAppointment.time }}
+            </strong>
+
+            em
+
+            <strong>
+              {{ nextAppointment.date | date:'dd/MM/yyyy' }}
+            </strong>
+
+          </span>
+
+        </div>
+
+
+        <div class="voltar">
+
+          <a routerLink="/dashboard/elder">
+
+            <i class="bi bi-arrow-left"></i>
+
+            Voltar
+
+          </a>
+
+        </div>
+
+      </main>
+
+    </div>
+
+
+    <div class="modal-fundo" *ngIf="showForm" (click)="closeForm()">
+
+
+      <div class="agenda-modal" (click)="$event.stopPropagation()">
+
+
+        <div class="agenda-modal-header">
+
+          <div>
+
+            <h2>
+
+              {{ editMode
+              ? 'Editar compromisso'
+              : 'Novo compromisso' }}
+
+            </h2>
+
+            <p>
+              Informe os dados do compromisso.
+            </p>
+
+          </div>
+
+
+          <button type="button" class="fechar" (click)="closeForm()">
+
+            <i class="bi bi-x-lg"></i>
+
+          </button>
+
+        </div>
+
+
+        <form (ngSubmit)="save()">
+
+
+          <div class="campo">
+
+            <label for="date">
+              Data *
+            </label>
+
+            <input id="date" type="date" [(ngModel)]="date" name="date" required>
+
+          </div>
+
+
+          <div class="campo">
+
+            <label for="title">
+              Compromisso *
+            </label>
+
+            <input id="title" type="text" [(ngModel)]="title" name="title" placeholder="Ex.: Consulta médica" required>
+
+          </div>
+
+
+          <div class="linha">
+
+            <div class="campo">
+
+              <label for="type">
+                Tipo
+              </label>
+
+              <select id="type" [(ngModel)]="type" name="type">
+
+                <option value="Consulta">
+                  Consulta
+                </option>
+
+                <option value="Atividade">
+                  Atividade
+                </option>
+
+                <option value="Saúde">
+                  Saúde
+                </option>
+
+                <option value="Outro">
+                  Outro
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="campo">
+
+              <label for="time">
+                Horário *
+              </label>
+
+              <input id="time" type="time" [(ngModel)]="time" name="time" required>
+
+            </div>
+
+          </div>
+
+
+          <div class="campo">
+
+            <label for="responsible">
+              Responsável
+            </label>
+
+            <input id="responsible" type="text" [(ngModel)]="responsible" name="responsible" placeholder="Ex.: Maria">
+
+          </div>
+
+
+          <div class="campo">
+
+            <label for="notes">
+              Observação
+            </label>
+
+            <textarea id="notes" [(ngModel)]="notes" name="notes" rows="3"
+              placeholder="Observações sobre o compromisso">
+            </textarea>
+
+          </div>
+
+
+          <div class="modal-acoes">
+
+            <button type="button" class="btn-cancelar" (click)="closeForm()">
+
+              Cancelar
+
+            </button>
+
+
+            <button type="submit" class="btn-salvar">
+
+              {{ editMode
+              ? 'Salvar alterações'
+              : 'Cadastrar compromisso' }}
+
+            </button>
+
+          </div>
+
+        </form>
 
       </div>
 
     </div>
-
-
-    <!-- Próximo compromisso -->
-    <div
-      class="proximo"
-      *ngIf="nextAppointment">
-
-      <i class="bi bi-info-circle"></i>
-
-      <span>
-
-        Próximo compromisso:
-
-        <strong>
-          {{ nextAppointment.title }}
-        </strong>
-
-        às
-
-        <strong>
-          {{ nextAppointment.time }}
-        </strong>
-
-        em
-
-        <strong>
-          {{ nextAppointment.date | date:'dd/MM/yyyy' }}
-        </strong>
-
-      </span>
-
-    </div>
-
-
-    <!-- Voltar -->
-    <div class="voltar">
-
-      <a
-        routerLink="/dashboard/elder">
-
-        <i class="bi bi-arrow-left"></i>
-
-        Voltar
-
-      </a>
-
-    </div>
-
   </main>
 
 </div>
 
-
-<!-- =====================================================
-     MODAL
-     ===================================================== -->
-
-<div
-  class="modal-fundo"
-  *ngIf="showForm"
-  (click)="closeForm()">
-
-
-  <div
-    class="agenda-modal"
-    (click)="$event.stopPropagation()">
-
-
-    <!-- Cabeçalho -->
-    <div class="agenda-modal-header">
-
-      <div>
-
-        <h2>
-
-          {{ editMode
-            ? 'Editar compromisso'
-            : 'Novo compromisso' }}
-
-        </h2>
-
-        <p>
-          Informe os dados do compromisso.
-        </p>
-
-      </div>
-
-
-      <button
-        type="button"
-        class="fechar"
-        (click)="closeForm()">
-
-        <i class="bi bi-x-lg"></i>
-
-      </button>
-
-    </div>
-
-
-    <!-- Formulário -->
-    <form
-      (ngSubmit)="save()">
-
-
-      <!-- Data -->
-      <div class="campo">
-
-        <label for="date">
-          Data *
-        </label>
-
-        <input
-          id="date"
-          type="date"
-          [(ngModel)]="date"
-          name="date"
-          required>
-
-      </div>
-
-
-      <!-- Compromisso -->
-      <div class="campo">
-
-        <label for="title">
-          Compromisso *
-        </label>
-
-        <input
-          id="title"
-          type="text"
-          [(ngModel)]="title"
-          name="title"
-          placeholder="Ex.: Consulta médica"
-          required>
-
-      </div>
-
-
-      <!-- Tipo e horário -->
-      <div class="linha">
-
-        <div class="campo">
-
-          <label for="type">
-            Tipo
-          </label>
-
-          <select
-            id="type"
-            [(ngModel)]="type"
-            name="type">
-
-            <option value="Consulta">
-              Consulta
-            </option>
-
-            <option value="Atividade">
-              Atividade
-            </option>
-
-            <option value="Saúde">
-              Saúde
-            </option>
-
-            <option value="Outro">
-              Outro
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <div class="campo">
-
-          <label for="time">
-            Horário *
-          </label>
-
-          <input
-            id="time"
-            type="time"
-            [(ngModel)]="time"
-            name="time"
-            required>
-
-        </div>
-
-      </div>
-
-
-      <!-- Responsável -->
-      <div class="campo">
-
-        <label for="responsible">
-          Responsável
-        </label>
-
-        <input
-          id="responsible"
-          type="text"
-          [(ngModel)]="responsible"
-          name="responsible"
-          placeholder="Ex.: Maria">
-
-      </div>
-
-
-      <!-- Observação -->
-      <div class="campo">
-
-        <label for="notes">
-          Observação
-        </label>
-
-        <textarea
-          id="notes"
-          [(ngModel)]="notes"
-          name="notes"
-          rows="3"
-          placeholder="Observações sobre o compromisso">
-        </textarea>
-
-      </div>
-
-
-      <!-- Botões -->
-      <div class="modal-acoes">
-
-        <button
-          type="button"
-          class="btn-cancelar"
-          (click)="closeForm()">
-
-          Cancelar
-
-        </button>
-
-
-        <button
-          type="submit"
-          class="btn-salvar">
-
-          {{ editMode
-            ? 'Salvar alterações'
-            : 'Cadastrar compromisso' }}
-
-        </button>
-
-      </div>
-
-    </form>
-
-  </div>
-
-</div>
+```
