@@ -1,0 +1,690 @@
+/* =====================================================
+   PÁGINA
+   ===================================================== */
+
+.agenda-page {
+  min-height: 100vh;
+
+  background-color: #ffffff;
+
+  padding: 35px 25px;
+}
+
+.agenda-container {
+  width: 100%;
+
+  max-width: 1050px;
+
+  margin: 0 auto;
+}
+
+
+/* =====================================================
+   CABEÇALHO
+   ===================================================== */
+
+.agenda-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 20px;
+}
+
+.agenda-header h1 {
+  margin: 0 0 5px;
+
+  color: #212529;
+
+  font-size: 20px;
+
+  font-weight: 700;
+}
+
+.agenda-header p {
+  margin: 0;
+
+  color: #6c757d;
+
+  font-size: 12px;
+}
+
+
+/* =====================================================
+   BOTÃO NOVO
+   ===================================================== */
+
+.btn-novo {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  border: none;
+
+  border-radius: 5px;
+
+  padding: 9px 14px;
+
+  background-color: #198754;
+
+  color: #ffffff;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.btn-novo:hover {
+  background-color: #157347;
+}
+
+
+/* =====================================================
+   CARD
+   ===================================================== */
+
+.agenda-card {
+  width: 100%;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 7px;
+
+  background-color: #ffffff;
+
+  overflow: hidden;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =====================================================
+   TABELA
+   ===================================================== */
+
+.agenda-table {
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+.agenda-table thead {
+  background-color: #fafafa;
+}
+
+.agenda-table th {
+  padding: 13px 15px;
+
+  color: #374151;
+
+  text-align: left;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  white-space: nowrap;
+}
+
+.agenda-table td {
+  padding: 13px 15px;
+
+  color: #4b5563;
+
+  font-size: 12px;
+
+  border-bottom: 1px solid #eeeeee;
+
+  vertical-align: middle;
+}
+
+.agenda-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.agenda-table tbody tr:hover {
+  background-color: #fcfdff;
+}
+
+
+/* =====================================================
+   DATA
+   ===================================================== */
+
+.data-coluna {
+  color: #374151 !important;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   HORÁRIO
+   ===================================================== */
+
+.horario-coluna {
+  color: #212529 !important;
+
+  white-space: nowrap;
+}
+
+.horario-coluna strong {
+  font-weight: 700;
+}
+
+
+/* =====================================================
+   COMPROMISSO
+   ===================================================== */
+
+.compromisso {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+.icone-compromisso {
+  width: 29px;
+
+  height: 29px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 6px;
+
+  background-color: #eef6ff;
+
+  color: #0d6efd;
+
+  flex-shrink: 0;
+}
+
+.compromisso-texto {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.compromisso-texto strong {
+  color: #212529;
+
+  font-size: 12px;
+}
+
+.compromisso-texto small {
+  color: #6c757d;
+
+  font-size: 10px;
+}
+
+
+/* =====================================================
+   AÇÕES
+   ===================================================== */
+
+.acoes {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+.btn-editar,
+.btn-excluir {
+  width: 27px;
+
+  height: 27px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 5px;
+
+  background-color: #ffffff;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.btn-editar {
+  border: 1px solid #b6d4fe;
+
+  color: #0d6efd;
+}
+
+.btn-editar:hover {
+  background-color: #eaf3ff;
+
+  border-color: #0d6efd;
+}
+
+.btn-excluir {
+  border: 1px solid #f5c2c7;
+
+  color: #dc3545;
+}
+
+.btn-excluir:hover {
+  background-color: #fff0f1;
+
+  border-color: #dc3545;
+}
+
+
+/* =====================================================
+   PRÓXIMO COMPROMISSO
+   ===================================================== */
+
+.proximo {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 15px;
+
+  padding: 10px 13px;
+
+  border: 1px solid #cfe2ff;
+
+  border-radius: 6px;
+
+  background-color: #f3f8ff;
+
+  color: #0d6efd;
+
+  font-size: 11px;
+}
+
+.proximo i {
+  font-size: 14px;
+}
+
+.proximo strong {
+  font-weight: 700;
+}
+
+
+/* =====================================================
+   NENHUM COMPROMISSO
+   ===================================================== */
+
+.nenhum {
+  padding: 35px !important;
+
+  text-align: center;
+
+  color: #6c757d !important;
+}
+
+.nenhum i {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 26px;
+
+  color: #9ca3af;
+}
+
+.nenhum p {
+  margin: 0 0 12px;
+}
+
+.btn-novo-menor {
+  border: 1px solid #0d6efd;
+
+  border-radius: 5px;
+
+  padding: 7px 12px;
+
+  background-color: #ffffff;
+
+  color: #0d6efd;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.btn-novo-menor:hover {
+  background-color: #0d6efd;
+
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   VOLTAR
+   ===================================================== */
+
+.voltar {
+  margin-top: 18px;
+}
+
+.voltar a {
+  color: #6c757d;
+
+  text-decoration: none;
+
+  font-size: 12px;
+}
+
+.voltar a:hover {
+  color: #0d6efd;
+}
+
+
+/* =====================================================
+   FUNDO DO MODAL
+   ===================================================== */
+
+.modal-fundo {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+
+/* =====================================================
+   MODAL
+   ===================================================== */
+
+.agenda-modal {
+  width: 100%;
+
+  max-width: 520px;
+
+  background-color: #ffffff;
+
+  border-radius: 10px;
+
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+
+  overflow: hidden;
+}
+
+
+/* =====================================================
+   CABEÇALHO DO MODAL
+   ===================================================== */
+
+.agenda-modal-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  padding: 20px;
+
+  border-bottom: 1px solid #eeeeee;
+}
+
+.agenda-modal-header h2 {
+  margin: 0 0 4px;
+
+  color: #212529;
+
+  font-size: 17px;
+
+  font-weight: 700;
+}
+
+.agenda-modal-header p {
+  margin: 0;
+
+  color: #6c757d;
+
+  font-size: 11px;
+}
+
+
+/* =====================================================
+   FECHAR
+   ===================================================== */
+
+.fechar {
+  width: 30px;
+
+  height: 30px;
+
+  border: none;
+
+  border-radius: 5px;
+
+  background-color: transparent;
+
+  color: #6c757d;
+
+  cursor: pointer;
+}
+
+.fechar:hover {
+  background-color: #f1f1f1;
+
+  color: #212529;
+}
+
+
+/* =====================================================
+   FORMULÁRIO
+   ===================================================== */
+
+.agenda-modal form {
+  padding: 20px;
+}
+
+.campo {
+  margin-bottom: 15px;
+}
+
+.campo label {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #374151;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 9px 10px;
+
+  border: 1px solid #ced4da;
+
+  border-radius: 5px;
+
+  background-color: #ffffff;
+
+  color: #212529;
+
+  font-size: 12px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.campo textarea {
+  resize: vertical;
+
+  min-height: 70px;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  border-color: #86b7fe;
+
+  box-shadow:
+    0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+
+/* =====================================================
+   LINHA
+   ===================================================== */
+
+.linha {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 12px;
+}
+
+
+/* =====================================================
+   BOTÕES DO MODAL
+   ===================================================== */
+
+.modal-acoes {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 8px;
+
+  margin-top: 20px;
+
+  padding-top: 15px;
+
+  border-top: 1px solid #eeeeee;
+}
+
+.btn-cancelar,
+.btn-salvar {
+  padding: 8px 13px;
+
+  border-radius: 5px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  border: 1px solid #ced4da;
+
+  background-color: #ffffff;
+
+  color: #495057;
+}
+
+.btn-cancelar:hover {
+  background-color: #f8f9fa;
+}
+
+.btn-salvar {
+  border: 1px solid #0d6efd;
+
+  background-color: #0d6efd;
+
+  color: #ffffff;
+}
+
+.btn-salvar:hover {
+  background-color: #0b5ed7;
+}
+
+
+/* =====================================================
+   RESPONSIVIDADE
+   ===================================================== */
+
+@media (max-width: 800px) {
+
+  .agenda-page {
+    padding: 25px 15px;
+  }
+
+  .agenda-header {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 15px;
+  }
+
+  .btn-novo {
+    justify-content: center;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .agenda-table {
+    min-width: 750px;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .linha {
+    grid-template-columns: 1fr;
+  }
+
+  .agenda-modal {
+    max-height: 90vh;
+
+    overflow-y: auto;
+  }
+
+}
