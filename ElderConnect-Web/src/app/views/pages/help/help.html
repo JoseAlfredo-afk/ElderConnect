@@ -1,27 +1,6 @@
-<div class="d-flex min-vh-100 bg-light">
+<div class="min-vh-100 bg-light py-4">
+    <div class="container">
 
-    <!-- Sidebar Lateral -->
-    <aside class="bg-white border-end d-flex flex-column justify-content-between p-3"
-        style="width: 240px; min-width: 240px;">
-        <div>
-            <nav class="nav nav-pills flex-column gap-2 pt-2">
-                <a routerLink="/dashboard/elder" class="nav-link text-dark fw-semibold">Home</a>
-                <a routerLink="/dashboard/search-caregiver" class="nav-link text-dark fw-semibold">Buscar cuidador</a>
-                <a routerLink="/dashboard/agenda" class="nav-link text-dark fw-semibold">Agenda</a>
-                <a routerLink="/dashboard/medications" class="nav-link text-dark fw-semibold">Medicamentos</a>
-                <a routerLink="/dashboard/about" class="nav-link text-dark fw-semibold">Sobre</a>
-                <a routerLink="/dashboard/help" class="nav-link active fw-semibold">Ajuda</a>
-            </nav>
-        </div>
-        <div>
-            <a routerLink="/account/sign-in" class="btn btn-link text-danger fw-bold text-decoration-none px-2">Sair</a>
-        </div>
-    </aside>
-
-    <!-- Conteúdo Principal -->
-    <main class="flex-grow-1 p-4 overflow-auto">
-
-        <!-- Cabeçalho -->
         <header class="mb-4 pb-3 border-bottom">
             <h1 class="h2 fw-bold text-dark mb-1">Central de Ajuda</h1>
             <p class="text-muted mb-0">Tire suas dúvidas e saiba como aproveitar ao máximo o ElderConnect.</p>
@@ -29,15 +8,13 @@
 
         <div class="row g-4">
 
-            <!-- Coluna Principal: FAQ -->
             <div class="col-lg-8">
                 <div class="card border-0 shadow-sm rounded-4 mb-4">
                     <div class="card-body p-4 p-md-5">
                         <h3 class="h4 fw-bold text-dark mb-4 d-flex align-items-center">
-                            <span class="text-primary me-2">?</span> Perguntas Frequentes
+                            <span class="text-primary me-2"></span> Perguntas Frequentes
                         </h3>
 
-                        <!-- Acordeão Simples usando a lista do TS -->
                         <div class="d-flex flex-column gap-3">
                             <div *ngFor="let faq of faqs" class="bg-light p-4 rounded-3 border border-light-subtle">
                                 <h5 class="fw-bold text-dark mb-2 fs-6">{{ faq.pergunta }}</h5>
@@ -49,10 +26,8 @@
                 </div>
             </div>
 
-            <!-- Coluna Lateral: Suporte Técnico e Dicas -->
             <div class="col-lg-4">
 
-                <!-- Card de Contato -->
                 <div class="card border-0 shadow-sm rounded-4 mb-4 bg-primary text-white">
                     <div class="card-body p-4 text-center">
                         <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
@@ -74,7 +49,6 @@
                     </div>
                 </div>
 
-                <!-- Card de Dicas de Segurança -->
                 <div class="card border-0 shadow-sm rounded-4">
                     <div class="card-body p-4">
                         <h5 class="fw-bold text-dark mb-3">Dicas de Segurança</h5>
@@ -99,5 +73,5 @@
 
         </div>
 
-    </main>
+    </div>
 </div>
