@@ -17,6 +17,7 @@ import { Agenda } from './views/pages/schedule/schedule';
 import { ProfileCaregiver } from './views/pages/profile-caregiver/profile-caregiver';
 import { SearchCaregiver } from './views/pages/search-caregiver/search-caregiver';
 import { authenticationGuard } from './services/security/guard/authentication.guard';
+import { About } from './views/pages/about/about';
 
 
 export const routes: Routes = [
@@ -24,9 +25,10 @@ export const routes: Routes = [
 
     // Rotas de Páginas Principais e Dashboards
     { path: 'home', component: Home },
+    { path: 'about', component: About },
     { path: 'dashboard/elder', component: ElderDashboard },
     { path: 'dashboard/caregiver', component: CaregiverDashboard },
-    { path: 'dashboard/search-caregiver', component: SearchCaregiver,canActivate: [authenticationGuard] },
+    { path: 'dashboard/search-caregiver', component: SearchCaregiver, canActivate: [authenticationGuard] },
     { path: 'dashboard/agenda', component: Agenda },
     { path: 'dashboard/medications', component: Medications },
     { path: 'dashboard/profile', component: Profile },
