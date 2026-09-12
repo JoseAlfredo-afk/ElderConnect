@@ -13,7 +13,7 @@ import { ElderDashboard } from './views/pages/elder-dashboard/elder';
 import { Help } from './views/pages/help/help';
 import { Home } from './views/pages/home/home';
 import { Medications } from './views/pages/medications/medication';
-import { Agenda } from './views/pages/agenda/agenda';
+import { Agenda } from './views/pages/schedule/schedule';
 import { ProfileCaregiver } from './views/pages/profile-caregiver/profile-caregiver';
 import { SearchCaregiver } from './views/pages/search-caregiver/search-caregiver';
 import { authenticationGuard } from './services/security/guard/authentication.guard';
