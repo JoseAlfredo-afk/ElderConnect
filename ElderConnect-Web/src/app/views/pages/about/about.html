@@ -1,25 +1,6 @@
-<div class="d-flex min-vh-100 bg-light">
+<div class="min-vh-100 bg-light py-4">
+    <div class="container">
 
-    <!-- Sidebar Lateral -->
-    <aside class="bg-white border-end d-flex flex-column justify-content-between p-3"
-        style="width: 240px; min-width: 240px;">
-        <div>
-            <nav class="nav nav-pills flex-column gap-2 pt-2">
-                <a routerLink="/dashboard/elder" class="nav-link text-dark fw-semibold">Home</a>
-                <a routerLink="/dashboard/search-caregiver" class="nav-link text-dark fw-semibold">Buscar cuidador</a>
-                <a routerLink="/dashboard/agenda" class="nav-link text-dark fw-semibold">Agenda</a>
-                <a routerLink="/dashboard/medications" class="nav-link text-dark fw-semibold">Medicamentos</a>
-                <a routerLink="/dashboard/about" class="nav-link active fw-semibold">Sobre</a>
-            </nav>
-        </div>
-        <div>
-            <a routerLink="/account/sign-in" class="btn btn-link text-danger fw-bold text-decoration-none px-2">Sair</a>
-        </div>
-    </aside>
-
-    <main class="flex-grow-1 p-4 overflow-auto">
-
-       
         <header class="mb-4 pb-3 border-bottom">
             <h1 class="h2 fw-bold text-dark mb-1">Sobre o ElderConnect</h1>
             <p class="text-muted mb-0">Conheça o propósito, a metodologia e a tecnologia por trás do nosso sistema.</p>
@@ -40,12 +21,11 @@
                             </svg>
                         </div>
                         <h2 class="fw-bold mb-2">Conectando Cuidado e Confiança</h2>
+                        <p class="mb-0 text-white-50 fs-5">Projeto desenvolvido em destaque para a FAITEC.</p>
                     </div>
 
-                   
                     <div class="card-body p-4 p-md-5 bg-white">
 
-                       
                         <div class="mb-5">
                             <h3 class="h4 fw-bold text-dark mb-3 d-flex align-items-center">
                                 <span class="text-primary me-2">|</span> Nossa Missão
@@ -66,7 +46,6 @@
 
                         <hr class="text-muted my-5" />
 
-                        
                         <div>
                             <h3 class="h4 fw-bold text-dark mb-3 d-flex align-items-center">
                                 <span class="text-primary me-2">|</span> Como Funciona & Tecnologia
@@ -79,7 +58,6 @@
                                 medicamentos e acompanhamento da saúde do idoso.
                             </p>
 
-                            
                             <div class="row g-4 mb-4">
                                 <div class="col-md-6">
                                     <div class="bg-light p-3 rounded-3 h-100">
@@ -99,6 +77,14 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <p class="text-secondary lh-lg mb-0 text-justify" style="text-align: justify;">
+                                O sistema será desenvolvido com <strong>Java</strong> no backend e
+                                <strong>PostgreSQL</strong> como banco de dados, garantindo organização, segurança e
+                                escalabilidade. O objetivo principal é oferecer uma solução prática, segura e organizada
+                                para apoiar o cuidado com a pessoa idosa, promovendo mais tranquilidade aos familiares e
+                                maior profissionalização aos cuidadores.
+                            </p>
                         </div>
 
                     </div>
@@ -107,5 +93,5 @@
             </div>
         </div>
 
-    </main>
+    </div>
 </div>
