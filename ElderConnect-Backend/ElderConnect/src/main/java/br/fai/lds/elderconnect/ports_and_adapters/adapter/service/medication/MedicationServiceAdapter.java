@@ -3,13 +3,14 @@ package br.fai.lds.elderconnect.ports_and_adapters.adapter.service.medication;
 import br.fai.lds.elderconnect.domain.Medication;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.medication.MedicationDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.medication.MedicationService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class MedicationServiceAdapter implements MedicationService {
 
+    @Autowired
     private MedicationDao medicationDao;
-
 
     @Override
     public int create(Medication medication) {
