@@ -34,10 +34,10 @@ public class MedicationScheduleRestController {
     }
 
     @GetMapping("/senior/{id}")
-    public ResponseEntity<MedicationSchedule> getSeniorById(@PathVariable final int id){
-        MedicationSchedule medicationSchedule = medicationScheduleService.findById(id);
+    public ResponseEntity<List<MedicationSchedule>> getBySeniorId(@PathVariable final int seniorId){
+        List<MedicationSchedule> medicationSchedules = medicationScheduleService.findBySeniorId(seniorId);
 
-        return medicationSchedule == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(medicationSchedule);
+        return ResponseEntity.ok(medicationSchedules);
     }
 
     @DeleteMapping("/{id}")
