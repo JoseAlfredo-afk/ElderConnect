@@ -25,7 +25,7 @@ public class UserRestController {
         List<UserModel> userModels = userService.findAll();
 
         for (UserModel userModel: userModels){
-            UserResponseDto userResponseDto =UserResponseDto.fromUserModel(userModel);
+            UserResponseDto userResponseDto = UserResponseDto.fromUserModel(userModel);
             userResponseDtos.add(userResponseDto);
         }
 

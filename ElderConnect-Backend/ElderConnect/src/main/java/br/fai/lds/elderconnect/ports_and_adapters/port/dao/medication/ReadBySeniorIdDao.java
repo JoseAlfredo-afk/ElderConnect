@@ -4,7 +4,7 @@ import br.fai.lds.elderconnect.domain.MedicationSchedule;
 
 import java.util.List;
 
-public interface ReadBySeniorId {
+public interface ReadBySeniorIdDao {
 
     List<MedicationSchedule> readyBySeniorId(int seniorId);
 }

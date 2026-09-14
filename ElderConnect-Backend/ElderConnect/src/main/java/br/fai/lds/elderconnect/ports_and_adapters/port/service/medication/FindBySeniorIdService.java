@@ -4,7 +4,7 @@ import br.fai.lds.elderconnect.domain.MedicationSchedule;
 
 import java.util.List;
 
-public interface FindBySeniorId {
+public interface FindBySeniorIdService {
 
     public List<MedicationSchedule> findBySeniorId(final int seniorId);
 }
