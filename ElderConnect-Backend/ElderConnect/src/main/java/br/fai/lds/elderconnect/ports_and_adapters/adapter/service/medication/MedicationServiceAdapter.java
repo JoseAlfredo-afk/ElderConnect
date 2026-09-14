@@ -4,9 +4,11 @@ import br.fai.lds.elderconnect.domain.Medication;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.medication.MedicationDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.medication.MedicationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class MedicationServiceAdapter implements MedicationService {
 
     @Autowired

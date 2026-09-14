@@ -7,9 +7,11 @@ import br.fai.lds.elderconnect.ports_and_adapters.port.dao.medication.Medication
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.medication.MedicationScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class MedicationScheduleServiceAdapter implements MedicationScheduleService {
 
     @Autowired
@@ -42,7 +44,7 @@ public class MedicationScheduleServiceAdapter implements MedicationScheduleServi
             return 0;
         }
 
-        UserModel userSenior = findSeniorById(medicationSchedule.getId());
+        UserModel userSenior = findSeniorById(medicationSchedule.getSeniorId());
 
         if ((userSenior == null)){
             return 0;
@@ -117,15 +119,6 @@ public class MedicationScheduleServiceAdapter implements MedicationScheduleServi
 
 
         if(medicationSchedule.getDosageInstructions().isEmpty()){
-            return false;
-        }
-
-
-        if(medicationSchedule.getMedicationId() == 0){
-            return false;
-        }
-
-        if(medicationSchedule.getSeniorId() == 0){
             return false;
         }
 

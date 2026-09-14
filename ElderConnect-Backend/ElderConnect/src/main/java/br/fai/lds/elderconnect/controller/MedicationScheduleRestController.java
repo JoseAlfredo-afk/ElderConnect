@@ -33,7 +33,7 @@ public class MedicationScheduleRestController {
         return medicationSchedule == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(medicationSchedule);
     }
 
-    @GetMapping("/senior/{id}")
+    @GetMapping("/senior/{seniorId}")
     public ResponseEntity<List<MedicationSchedule>> getBySeniorId(@PathVariable final int seniorId){
         List<MedicationSchedule> medicationSchedules = medicationScheduleService.findBySeniorId(seniorId);
 
