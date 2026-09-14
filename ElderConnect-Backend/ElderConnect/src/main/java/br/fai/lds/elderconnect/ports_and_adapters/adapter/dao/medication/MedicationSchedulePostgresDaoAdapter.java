@@ -91,7 +91,7 @@ public class MedicationSchedulePostgresDaoAdapter implements MedicationScheduleD
 
             if (resultSet.next()) {
                 final int entityId = resultSet.getInt("id");
-                final String dosageInstructions = resultSet.getString("dosageInstructions");
+                final String dosageInstructions = resultSet.getString("dosage_instructions");
                 final String intakeTime = resultSet.getString("intake_time");
                 final int seniorId = resultSet.getInt("senior_id");
                 final int medicationId = resultSet.getInt("medication_id");
@@ -126,7 +126,7 @@ public class MedicationSchedulePostgresDaoAdapter implements MedicationScheduleD
 
             while (resultSet.next()) {
                 final int entityId = resultSet.getInt("id");
-                final String dosageInstructions = resultSet.getString("dosageInstructions");
+                final String dosageInstructions = resultSet.getString("dosage_instructions");
                 final String intakeTime = resultSet.getString("intake_time");
                 final int seniorId = resultSet.getInt("senior_id");
                 final int medicationId = resultSet.getInt("medication_id");
@@ -172,15 +172,18 @@ public class MedicationSchedulePostgresDaoAdapter implements MedicationScheduleD
     public List<MedicationSchedule> readyBySeniorId(int seniorId) {
         final List<MedicationSchedule> medicationSchedulesBySeniorId = new ArrayList<>();
 
-        final String sql = "SELECT * FROM medication_schudule WHERE senior_id = ? ";
+        final String sql = "SELECT * FROM medication_schedule WHERE senior_id = ? ";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1,seniorId);
+
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 final int entityId = resultSet.getInt("id");
-                final String dosageInstructions = resultSet.getString("dosageInstructions");
+                final String dosageInstructions = resultSet.getString("dosage_instructions");
                 final String intakeTime = resultSet.getString("intake_time");
                 final int medicationId = resultSet.getInt("medication_id");
 
