@@ -141,7 +141,7 @@ public class MedicationPostgresDaoAdapter implements MedicationDao {
     @Override
     public void updateInformation(int id, Medication entity) {
         String sql = " UPDATE medication SET medication_name = ?, dose = ? ";
-        sql += "WHERE id = ? ;";
+        sql += " WHERE id = ? ;";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
