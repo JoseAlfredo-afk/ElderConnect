@@ -41,8 +41,8 @@ CREATE TABLE medication_schedule(
 id SERIAL PRIMARY KEY,
 dosage_instructions varchar(100) not null,
 intake_time varchar(50) not null,
-senior_id int REFERENCES user_model(id) ON DELETE CASCADE UNIQUE,
-medication_id int REFERENCES medication(id) ON DELETE CASCADE,
+senior_id int REFERENCES user_model(id) ON DELETE CASCADE,
+medication_id int REFERENCES medication(id) ON DELETE CASCADE
 );
 
 
