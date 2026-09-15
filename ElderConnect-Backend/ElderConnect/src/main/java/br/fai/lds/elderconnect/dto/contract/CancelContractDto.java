@@ -8,10 +8,11 @@ import lombok.Setter;
 @Setter
 public class CancelContractDto {
 
-    private int id;
+    private String endDate;
 
     public Contract toContract(){
         Contract contract = new Contract();
+        contract.setEndDate(endDate);
         contract.setStatus(Contract.ContractStatus.CANCELADO);
         return contract;
     }

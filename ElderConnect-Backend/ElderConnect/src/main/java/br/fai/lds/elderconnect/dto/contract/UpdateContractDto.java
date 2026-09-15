@@ -8,14 +8,12 @@ import lombok.Setter;
 @Setter
 public class UpdateContractDto {
 
-    private int id;
     private float contractValue;
     private String workingHours;
     private String description;
 
     public Contract toContract(){
         final Contract contract = new Contract();
-        contract.setId(id);
         contract.setContractValue(contractValue);
         contract.setWorkingHours(workingHours);
         contract.setDescription(description);
