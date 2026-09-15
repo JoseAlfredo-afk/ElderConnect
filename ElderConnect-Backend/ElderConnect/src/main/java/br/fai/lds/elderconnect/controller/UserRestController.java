@@ -39,6 +39,13 @@ public class UserRestController {
         return userModel == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(UserResponseDto.fromUserModel(userModel));
     }
 
+    @GetMapping("/caregivers/{id}")
+    public ResponseEntity<UserResponseDto> getCaregiverById(@PathVariable final int id){
+        UserModel userModel = userService.findById(id);
+
+        return userModel == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(UserResponseDto.fromUserModel(userModel));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable final int id) {
         userService.delete(id);
@@ -53,6 +60,29 @@ public class UserRestController {
 
         return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
 
+    }
+
+    @PutMapping("/{id}/caregiver-profile")
+    public ResponseEntity<UserModel> updateCaregiverProfile(@PathVariable final int id, @RequestBody final CreateCaregiverProfileDto createCaregiverProfileDto){
+
+        final UserModel userModel = createCaregiverProfileDto.ToUserModel();
+
+        boolean response = userService.updateCaregiverProfile(id, userModel);
+
+        return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/caregivers")
+    public ResponseEntity<List<UserResponseDto>> getCaregivers(){
+        ArrayList<UserResponseDto> userResponseDtos = new ArrayList<>();
+        List<UserModel> caregivers = userService.findCaregivers();
+
+        for (UserModel userModel: caregivers){
+            UserResponseDto userResponseDto = UserResponseDto.fromUserModel(userModel);
+            userResponseDtos.add(userResponseDto);
+        }
+
+        return ResponseEntity.ok(userResponseDtos);
     }
 
     @PostMapping
