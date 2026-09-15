@@ -264,4 +264,82 @@ public class UserServiceAdapter implements UserService {
 
         return false;
     }
+
+    @Override
+    public UserModel findCaregiverById(int id) {
+
+        if (isIdInvalid(id)) {
+            return null;
+        }
+
+        UserModel userCaregiver = findById(id);
+
+        if (userCaregiver == null) {
+            return null;
+        }
+
+        if(userCaregiver.getUserType() != UserModel.UserType.CUIDADOR){
+            return null;
+        }
+
+        return userCaregiver;
+
+    }
+
+    @Override
+    public List<UserModel> findCaregivers() {
+        return userDao.readCaregivers();
+    }
+
+    @Override
+    public boolean updateCaregiverProfile(int id, UserModel userCaregiver) {
+
+        if (isIdInvalid(id)) {
+            return false;
+        }
+
+        if(userCaregiver == null){
+            return false;
+        }
+
+        if(userCaregiver.getId() != id){
+            return false;
+        }
+
+        if(userCaregiver.getUserType() != UserModel.UserType.CUIDADOR){
+            return false;
+        }
+
+        if(userCaregiver.getSpecialization() == null || userCaregiver.getSpecialization().isEmpty()){
+            return false;
+        }
+
+
+        if(userCaregiver.getExperience() == null || userCaregiver.getExperience().isEmpty()){
+            return false;
+        }
+
+
+        if(userCaregiver.getAvailabilitySchedule() == null || userCaregiver.getAvailabilitySchedule().isEmpty()){
+            return false;
+        }
+
+
+        if(userCaregiver.getStreetAddress() == null || userCaregiver.getStreetAddress().isEmpty()){
+            return false;
+        }
+
+
+        if(userCaregiver.getCity() == null || userCaregiver.getCity().isEmpty()){
+            return false;
+        }
+
+
+        if(userCaregiver.getNeighborhood() == null || userCaregiver.getNeighborhood().isEmpty()){
+            return false;
+        }
+
+        userDao.updateCaregiverProfile(id,userCaregiver);
+        return true;
+    }
 }
