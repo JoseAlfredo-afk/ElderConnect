@@ -18,7 +18,7 @@ public class ContractPostgresDaoAdapter implements ContractDao {
     @Override
     public int add(Contract entity) {
         String sql = " INSERT INTO contract(contract_number,start_date,contract_value,status,working_hours,description,senior_id,caregiver_id) ";
-        sql += " VALUES (?, ?, ?, ?, ?, ?,?,?); ";
+        sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?); ";
 
         PreparedStatement preparedStatement;
         ResultSet resultSet;

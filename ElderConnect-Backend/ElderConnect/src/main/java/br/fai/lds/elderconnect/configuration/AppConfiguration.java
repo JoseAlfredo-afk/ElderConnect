@@ -4,11 +4,13 @@ import br.fai.lds.elderconnect.domain.MedicationSchedule;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.contract.ContractPostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.medication.MedicationPostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.medication.MedicationSchedulePostgresDaoAdapter;
+import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.message.MessagePostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user.UserFakeDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user.UserPostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.contract.ContractDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.medication.MedicationDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.medication.MedicationScheduleDao;
+import br.fai.lds.elderconnect.ports_and_adapters.port.dao.message.MessageDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao;
 import org.apache.catalina.User;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +44,11 @@ public class AppConfiguration {
     @Bean
     public ContractDao getContractDao(final Connection connection){
         return new ContractPostgresDaoAdapter(connection);
+    }
+
+    @Bean
+    public MessageDao getMessageDao(final Connection connection){
+        return new MessagePostgresDaoAdapter(connection);
     }
 
 
