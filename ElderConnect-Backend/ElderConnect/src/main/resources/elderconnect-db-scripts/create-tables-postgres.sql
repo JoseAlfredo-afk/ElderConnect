@@ -60,12 +60,12 @@ contract_number varchar(50) not null UNIQUE,
 start_date date not null,
 end_date date,
 contract_value decimal(10,2) not null,
-status varchar(9) CHECK(status in('PENDENTE','ATIVO','COMPLETO','CANCELADO')),
+status varchar(9) not null CHECK(status in('PENDENTE','ATIVO','COMPLETO','CANCELADO')),
 working_hours varchar(50) not null,
 description text,
 rating int,
 comment text,
 
-senior_id int REFERENCES user_model(id) ON DELETE CASCADE,
-caregiver_id int REFERENCES user_model(id) ON DELETE CASCADE
+senior_id int not null REFERENCES user_model(id) ON DELETE CASCADE,
+caregiver_id int not null REFERENCES user_model(id) ON DELETE CASCADE
 );
