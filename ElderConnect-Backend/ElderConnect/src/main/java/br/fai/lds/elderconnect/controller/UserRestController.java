@@ -41,7 +41,7 @@ public class UserRestController {
 
     @GetMapping("/caregivers/{id}")
     public ResponseEntity<UserResponseDto> getCaregiverById(@PathVariable final int id){
-        UserModel caregiver = userService.findById(id);
+        UserModel caregiver = userService.findCaregiverById(id);
 
         return caregiver == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(UserResponseDto.fromUserModel(caregiver));
     }
