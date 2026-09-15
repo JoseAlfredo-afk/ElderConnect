@@ -21,7 +21,7 @@ public class MedicationPostgresDaoAdapter implements MedicationDao {
 
     @Override
     public int add(Medication entity) {
-        String sql = " INSERT INTO medication(medication_name, dose)";
+        String sql = " INSERT INTO medication(medication_name, dose) ";
         sql += " VALUES (?, ? ); ";
 
         PreparedStatement preparedStatement;
