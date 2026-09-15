@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 public class CreateMessageDto {
     private String text;
-    private String sentAt;
     private int senderId;
     private int recipientId;
 
