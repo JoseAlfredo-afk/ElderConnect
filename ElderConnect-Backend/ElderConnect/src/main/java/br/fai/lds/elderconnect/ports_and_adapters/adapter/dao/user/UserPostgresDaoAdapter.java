@@ -161,7 +161,6 @@ public class UserPostgresDaoAdapter implements UserDao {
                 final String neighborhood = resultSet.getString("neighborhood");
                 final String experience = resultSet.getString("experience");
 
-
                 final UserModel data = new UserModel();
                 data.setId(entityId);
                 data.setCpf(cpf);
@@ -188,7 +187,6 @@ public class UserPostgresDaoAdapter implements UserDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
@@ -347,6 +345,85 @@ public class UserPostgresDaoAdapter implements UserDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,email);
             preparedStatement.setInt(2,id);
+
+            preparedStatement.execute();
+            preparedStatement.close();
+
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<UserModel> readCaregivers() {
+        List<UserModel> caregivers = new ArrayList<>();
+        final String sql = " SELECT * FROM user_model WHERE user_type = 'CUIDADOR'; ";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                final int entityId = resultSet.getInt("id");
+                final String cpf = resultSet.getString("cpf");
+                final String fullname = resultSet.getString("fullname");
+                final String email = resultSet.getString("email");
+                final String password = resultSet.getString("password");
+                final String phoneNumber = resultSet.getString("phone_number");
+                final String auxType = resultSet.getString("user_type");
+                final UserModel.UserType userType = UserModel.UserType.valueOf(auxType);
+                final String birthDate = resultSet.getString("birth_date");
+                final String availabilitySchedule = resultSet.getString("availability_schedule");
+                final String streetAddress = resultSet.getString("street_address");
+                final String specialization = resultSet.getString("specialization");
+                final String city = resultSet.getString("city");
+                final String neighborhood = resultSet.getString("neighborhood");
+                final String experience = resultSet.getString("experience");
+
+
+                final UserModel data = new UserModel();
+                data.setId(entityId);
+                data.setCpf(cpf);
+                data.setFullname(fullname);
+                data.setEmail(email);
+                data.setPassword(password);
+                data.setPhoneNumber(phoneNumber);
+                data.setUserType(userType);
+                data.setBirthDate(birthDate);
+                data.setAvailabilitySchedule(availabilitySchedule);
+                data.setStreetAddress(streetAddress);
+                data.setSpecialization(specialization);
+                data.setCity(city);
+                data.setNeighborhood(neighborhood);
+                data.setExperience(experience);
+
+                caregivers.add(data);
+            }
+
+                preparedStatement.close();
+                resultSet.close();
+
+                return caregivers;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean updateCaregiverProfile(int id, UserModel caregiver) {
+        String sql = " UPDATE user_model SET availability_schedule = ?, street_address = ?, specialization = ?, city = ?, neighborhood = ?, experience = ? ";
+        sql += " WHERE id = ? ;";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, caregiver.getAvailabilitySchedule());
+            preparedStatement.setString(2, caregiver.getStreetAddress());
+            preparedStatement.setString(3, caregiver.getSpecialization());
+            preparedStatement.setString(4, caregiver.getCity());
+            preparedStatement.setString(5, caregiver.getNeighborhood());
+            preparedStatement.setString(6, caregiver.getExperience());
+            preparedStatement.setInt(7,id);
 
             preparedStatement.execute();
             preparedStatement.close();
