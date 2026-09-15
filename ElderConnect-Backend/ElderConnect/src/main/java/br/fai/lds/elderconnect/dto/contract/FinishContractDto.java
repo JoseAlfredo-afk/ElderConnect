@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 public class FinishContractDto {
 
-    private int id;
     private String endDate;
 
 

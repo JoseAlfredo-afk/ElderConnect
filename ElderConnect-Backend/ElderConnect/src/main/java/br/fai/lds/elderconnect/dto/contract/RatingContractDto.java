@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 public class RatingContractDto {
 
-    private int id;
     private int rating;
     private String comment;
 
