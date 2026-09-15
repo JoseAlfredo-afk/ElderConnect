@@ -292,54 +292,52 @@ public class UserServiceAdapter implements UserService {
     }
 
     @Override
-    public boolean updateCaregiverProfile(int id, UserModel userCaregiver) {
+    public boolean updateCaregiverProfile(int id, UserModel caregiverProfile) {
 
         if (isIdInvalid(id)) {
             return false;
         }
 
+        if(caregiverProfile == null){
+            return false;
+        }
+
+        UserModel userCaregiver = findCaregiverById(id);
+
         if(userCaregiver == null){
             return false;
         }
 
-        if(userCaregiver.getId() != id){
-            return false;
-        }
-
-        if(userCaregiver.getUserType() != UserModel.UserType.CUIDADOR){
-            return false;
-        }
-
-        if(userCaregiver.getSpecialization() == null || userCaregiver.getSpecialization().isEmpty()){
+        if(caregiverProfile.getSpecialization() == null || caregiverProfile.getSpecialization().isEmpty()){
             return false;
         }
 
 
-        if(userCaregiver.getExperience() == null || userCaregiver.getExperience().isEmpty()){
+        if(caregiverProfile.getExperience() == null || caregiverProfile.getExperience().isEmpty()){
             return false;
         }
 
 
-        if(userCaregiver.getAvailabilitySchedule() == null || userCaregiver.getAvailabilitySchedule().isEmpty()){
+        if(caregiverProfile.getAvailabilitySchedule() == null || caregiverProfile.getAvailabilitySchedule().isEmpty()){
             return false;
         }
 
 
-        if(userCaregiver.getStreetAddress() == null || userCaregiver.getStreetAddress().isEmpty()){
+        if(caregiverProfile.getStreetAddress() == null || caregiverProfile.getStreetAddress().isEmpty()){
             return false;
         }
 
 
-        if(userCaregiver.getCity() == null || userCaregiver.getCity().isEmpty()){
+        if(caregiverProfile.getCity() == null || caregiverProfile.getCity().isEmpty()){
             return false;
         }
 
 
-        if(userCaregiver.getNeighborhood() == null || userCaregiver.getNeighborhood().isEmpty()){
+        if(caregiverProfile.getNeighborhood() == null || caregiverProfile.getNeighborhood().isEmpty()){
             return false;
         }
 
-        userDao.updateCaregiverProfile(id,userCaregiver);
+        userDao.updateCaregiverProfile(id,caregiverProfile);
         return true;
     }
 }
