@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../services/user/auth';
+import { Authentication } from '../../../services/security/authentication';
 
 @Component({
   selector: 'app-sign-in',
@@ -15,8 +15,8 @@ export class SignIn {
   emailInput: string = '';
   senhaInput: string = '';
   mostrarSucesso: boolean = false;
-  
-  private authService = inject(AuthService); 
+
+  private authService = inject(Authentication);
   private router = inject(Router);
 
   logar(event: Event) {
@@ -24,7 +24,7 @@ export class SignIn {
 
     if (this.emailInput.trim() !== '' && this.senhaInput.trim() !== '') {
       // 1. Marca o usuário como autenticado no serviço
-      this.authService.logar(); 
+      this.authService.logar();
 
       // 2. Simulação de perfil baseada no e-mail:
       // Se o e-mail contiver "cuidador", vai para o dashboard de cuidador.
@@ -34,7 +34,7 @@ export class SignIn {
       } else {
         this.router.navigate(['/dashboard/elder']);
       }
-      
+
     } else {
       alert('Por favor, preencha o e-mail e a senha de simulação.');
     }

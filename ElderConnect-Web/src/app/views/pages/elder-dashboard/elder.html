@@ -1,6 +1,5 @@
 <div class="d-flex min-vh-100 bg-light">
 
-  <!-- Sidebar Lateral -->
   <aside class="bg-white border-end d-flex flex-column justify-content-between p-3"
     style="width: 240px; min-width: 240px;">
     <div>
@@ -20,7 +19,6 @@
       </nav>
     </div>
 
-    <!-- Botão Sair no Rodapé da Sidebar -->
     <div>
       <a routerLink="/account/sign-in" class="btn btn-link text-danger fw-bold text-decoration-none px-2">
         Sair
@@ -28,10 +26,8 @@
     </div>
   </aside>
 
-  <!-- Conteúdo Principal -->
   <main class="flex-grow-1 p-4 overflow-auto">
 
-    <!-- Cabeçalho / Saudação -->
     <header class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
       <div>
         <h1 class="h2 fw-bold text-dark mb-1">Olá, {{ nomeIdoso }}</h1>
@@ -44,7 +40,6 @@
       </div>
     </header>
 
-    <!-- Cards de Resumo -->
     <div class="row g-3 mb-4">
       <div class="col-md-4">
         <div class="card border-0 shadow-sm text-center p-3">
@@ -66,10 +61,8 @@
       </div>
     </div>
 
-    <!-- Conteúdo Principal -->
     <div class="row g-4">
 
-      <!-- Seção: Próximos Medicamentos -->
       <div class="col-lg-6">
         <div class="card border-0 shadow-sm h-100">
           <div class="card-body p-4">
@@ -89,14 +82,12 @@
         </div>
       </div>
 
-      <!-- Seção: Cuidador Contratado -->
       <div class="col-lg-6">
         <div class="card border-0 shadow-sm h-100">
           <div class="card-body p-4 d-flex flex-column justify-content-between">
             <div>
               <h3 class="h5 fw-bold text-dark mb-3">Cuidador Contratado</h3>
 
-              <!-- Estado COM cuidador -->
               <div *ngIf="cuidadorContratado; else semCuidador" class="bg-light p-3 rounded border">
                 <div class="d-flex align-items-center justify-content-between mb-3">
                   <div class="d-flex align-items-center">
@@ -111,7 +102,6 @@
                     </div>
                   </div>
 
-                  <!-- Botão Ver Perfil no canto direito -->
                   <a routerLink="/profile-caregiver" class="btn btn-outline-primary btn-sm fw-semibold">
                     Ver perfil
                   </a>
@@ -121,9 +111,8 @@
                   <strong>Contato:</strong> {{ cuidadorContratado.telefone }}
                 </p>
 
-                <!-- Botões de Ação -->
                 <div class="d-flex flex-column gap-2">
-                  <button (click)="desfazerVinculo()" class="btn btn-outline-danger btn-sm w-100">
+                  <button (click)="abrirModalEncerrarVinculo()" class="btn btn-outline-danger btn-sm w-100">
                     Encerrar Vínculo
                   </button>
                   <button (click)="abrirModalAvaliacao()" class="btn btn-primary btn-sm w-100 fw-semibold">
@@ -132,7 +121,6 @@
                 </div>
               </div>
 
-              <!-- Estado SEM cuidador -->
               <ng-template #semCuidador>
                 <div class="text-center py-4 my-auto">
                   <p class="text-muted mb-3">Nenhum cuidador contratado no momento.</p>
@@ -150,9 +138,39 @@
   </main>
 </div>
 
-<!-- Pop-up Modal de Avaliação -->
-<div *ngIf="exibirModalAvaliacao" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);">
-  <div class="modal-dialog modal-dialog-centered">
+<div *ngIf="exibirModalEncerrarVinculo" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);"
+  (click)="fecharModalEncerrarVinculo()">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;" (click)="$event.stopPropagation()">
+    <div class="modal-content border-0 shadow-lg rounded-4 p-4 text-center">
+
+      <div
+        class="bg-danger-subtle text-danger rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+        style="width: 72px; height: 72px;">
+        <i class="bi bi-exclamation-triangle-fill fs-1 text-danger"></i>
+      </div>
+
+      <h4 class="fw-bold text-dark mb-2">Deseja encerrar o vínculo?</h4>
+      <p class="text-muted small mb-4">Tem certeza de que deseja encerrar o vínculo com <strong>{{
+          cuidadorContratado?.cuidadorNome }}</strong>?</p>
+
+      <div class="d-flex gap-2 justify-content-center">
+        <button type="button" class="btn btn-light fw-bold px-4 py-2 rounded-3 border text-secondary flex-grow-1"
+          (click)="fecharModalEncerrarVinculo()">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-danger fw-bold px-4 py-2 rounded-3 flex-grow-1"
+          (click)="confirmarEncerramentoVinculo()">
+          Sim, encerrar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div *ngIf="exibirModalAvaliacao" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);"
+  (click)="fecharModalAvaliacao()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
     <div class="modal-content border-0 shadow rounded-4">
 
       <div class="modal-header border-bottom-0 pb-0">
