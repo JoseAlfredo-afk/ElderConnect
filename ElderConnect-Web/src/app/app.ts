@@ -1,7 +1,7 @@
 import { Component, inject, signal, effect } from '@angular/core';
 import { RouterOutlet, RouterLink, NavigationEnd, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from './services/user/auth';
+import { Authentication } from './services/security/authentication';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -13,7 +13,7 @@ import { filter } from 'rxjs/operators';
 })
 export class App {
   protected readonly title = signal('ElderConnect-Web');
-  protected readonly authService = inject(AuthService);
+  protected readonly authService = inject(Authentication);
   
   protected mostrarAlertaLogin = signal<boolean>(false);
   protected mostrarAlertaCadastro = signal<boolean>(false);
