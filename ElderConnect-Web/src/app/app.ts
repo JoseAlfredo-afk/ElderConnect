@@ -1,4 +1,4 @@
-import { Component, inject, signal, effect } from '@angular/core';
+import { Component, signal, effect } from '@angular/core';
 import { RouterOutlet, RouterLink, NavigationEnd, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Authentication } from './services/security/authentication';
@@ -13,12 +13,14 @@ import { filter } from 'rxjs/operators';
 })
 export class App {
   protected readonly title = signal('ElderConnect-Web');
-  protected readonly authService = inject(Authentication);
-  
+
   protected mostrarAlertaLogin = signal<boolean>(false);
   protected mostrarAlertaCadastro = signal<boolean>(false);
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    protected authService: Authentication,
+  ) {
     effect(() => {
       if (this.authService.usuarioLogado()) {
         this.mostrarAlertaLogin.set(true);
@@ -26,13 +28,12 @@ export class App {
       }
     });
 
-    
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       if (this.authService.mostrarAlertaCadastroGlobal) {
         this.mostrarAlertaCadastro.set(true);
-        this.authService.mostrarAlertaCadastroGlobal = false; 
+        this.authService.mostrarAlertaCadastroGlobal = false;
 
         setTimeout(() => {
           this.mostrarAlertaCadastro.set(false);
