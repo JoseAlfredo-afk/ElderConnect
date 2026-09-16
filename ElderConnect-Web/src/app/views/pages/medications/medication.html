@@ -1,6 +1,5 @@
 <div class="d-flex min-vh-100 bg-light">
 
-  <!-- Sidebar Lateral -->
   <aside class="bg-white border-end d-flex flex-column justify-content-between p-3"
     style="width: 240px; min-width: 240px;">
     <div>
@@ -17,7 +16,6 @@
     </div>
   </aside>
 
-  <!-- Conteúdo Principal -->
   <main class="flex-grow-1 p-4 overflow-auto">
 
     <header class="mb-4 pb-3 border-bottom">
@@ -27,126 +25,125 @@
 
     <div class="row g-4">
 
-      <!-- Coluna Esquerda: Formulários de Cadastro -->
-      <div class="col-lg-5">
+      <div class="col-lg-6 d-flex flex-column gap-4">
 
-        <!-- Formulário de Medicamento -->
-        <div class="card border-0 shadow-sm mb-4">
+        <div class="card border-0 shadow-sm rounded-4">
           <div class="card-body p-4">
-            <h3 class="h5 fw-bold text-dark mb-3">Novo Medicamento</h3>
+            <h5 class="fw-bold text-dark mb-3">Novo Medicamento</h5>
 
-            <form (ngSubmit)="adicionarMedicamento()">
+            <form (ngSubmit)="cadastrarMedicamento()">
               <div class="mb-3">
-                <label class="form-label text-secondary fw-semibold small">Nome do Medicamento *</label>
-                <input type="text" class="form-control" [(ngModel)]="novoNome" name="nome" placeholder="Ex: Paracetamol"
-                  required />
+                <label class="form-label small fw-semibold text-muted">Nome do Medicamento *</label>
+                <input type="text" class="form-control rounded-3 border-secondary-subtle" placeholder="Ex: Paracetamol"
+                  [(ngModel)]="novoMedicamento.nome" name="nome" required>
               </div>
 
-              <div class="row g-2 mb-3">
-                <div class="col-md-6">
-                  <label class="form-label text-secondary fw-semibold small">Dosagem</label>
-                  <input type="text" class="form-control" [(ngModel)]="novaDosagem" name="dosagem"
-                    placeholder="Ex: 500mg" />
+              <div class="row g-3 mb-3">
+                <div class="col-6">
+                  <label class="form-label small fw-semibold text-muted">Dosagem</label>
+                  <input type="text" class="form-control rounded-3 border-secondary-subtle" placeholder="Ex: 500mg"
+                    [(ngModel)]="novoMedicamento.dosagem" name="dosagem">
                 </div>
-                <div class="col-md-6">
-                  <label class="form-label text-secondary fw-semibold small">Horário *</label>
-                  <input type="time" class="form-control" [(ngModel)]="novoHorario" name="horario" required />
+                <div class="col-6">
+                  <label class="form-label small fw-semibold text-muted">Horário *</label>
+                  <input type="time" class="form-control rounded-3 border-secondary-subtle"
+                    [(ngModel)]="novoMedicamento.horario" name="horario" required>
                 </div>
               </div>
 
-              <div class="mb-3">
-                <label class="form-label text-secondary fw-semibold small">Instruções</label>
-                <textarea class="form-control" rows="2" [(ngModel)]="novasInstrucoes" name="instrucoes"
-                  placeholder="Ex: Tomar após as refeições"></textarea>
+              <div class="mb-4">
+                <label class="form-label small fw-semibold text-muted">Instruções</label>
+                <textarea class="form-control rounded-3 border-secondary-subtle" rows="2"
+                  placeholder="Ex: Tomar após as refeições" [(ngModel)]="novoMedicamento.instrucoes"
+                  name="instrucoes"></textarea>
               </div>
 
-              <button type="submit" class="btn btn-primary w-100 fw-semibold">Cadastrar Medicamento</button>
+              <button type="submit" class="btn btn-primary fw-bold w-100 py-2 rounded-3">Cadastrar Medicamento</button>
             </form>
           </div>
         </div>
 
-        <!-- Formulário de Aviso -->
-        <div class="card border-0 shadow-sm">
+        <div class="card border-0 shadow-sm rounded-4">
           <div class="card-body p-4">
-            <h3 class="h5 fw-bold text-dark mb-3">Novo Aviso Importante</h3>
+            <h5 class="fw-bold text-dark mb-3">Novo Aviso Importante</h5>
 
-            <form (ngSubmit)="adicionarAviso()">
-              <div class="mb-3">
-                <label class="form-label text-secondary fw-semibold small">Tipo de Aviso</label>
-                <select class="form-select" [(ngModel)]="novoTipoAviso" name="tipoAviso">
-                  <option value="Aviso">Aviso</option>
-                  <option value="Urgente">Urgente</option>
-                  <option value="Alerta">Alerta</option>
-                </select>
+            <form (ngSubmit)="cadastrarAviso()">
+              <div class="mb-4">
+                <label class="form-label small fw-semibold text-muted">Tipo de Aviso</label>
+                <input type="text" class="form-control rounded-3 border-secondary-subtle"
+                  placeholder="Ex: Acompanhar medição de pressão" [(ngModel)]="novoAvisoTexto" name="aviso">
               </div>
 
-              <div class="mb-3">
-                <label class="form-label text-secondary fw-semibold small">Mensagem *</label>
-                <textarea class="form-control" rows="2" [(ngModel)]="novaMensagemAviso" name="mensagemAviso"
-                  placeholder="Descreva o aviso..." required></textarea>
-              </div>
-
-              <button type="submit" class="btn btn-outline-primary w-100 fw-semibold">Adicionar Aviso</button>
+              <button type="submit" class="btn btn-primary fw-bold w-100 py-2 rounded-3">Cadastrar Aviso</button>
             </form>
           </div>
         </div>
 
       </div>
 
-      <!-- Coluna Direta: Listagens -->
-      <div class="col-lg-7">
+      <div class="col-lg-6 d-flex flex-column gap-4">
 
-        <!-- Lista de Medicamentos -->
-        <div class="card border-0 shadow-sm mb-4">
+        <div class="card border-0 shadow-sm rounded-4">
           <div class="card-body p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h3 class="h5 fw-bold text-dark mb-0">Medicamentos Cadastrados</h3>
-              <span class="badge bg-secondary rounded-pill px-3 py-2">{{ medicamentos.length }}</span>
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h5 class="fw-bold text-dark mb-0">Medicamentos Cadastrados</h5>
+              <span class="badge bg-secondary rounded-circle px-2 py-1">{{ medicamentos.length }}</span>
             </div>
 
-            <div *ngIf="medicamentos.length > 0; else semMeds" class="list-group list-group-flush">
+            <div class="d-flex flex-column gap-3">
               <div *ngFor="let med of medicamentos; let i = index"
-                class="list-group-item d-flex justify-content-between align-items-center px-0 py-3 border-bottom">
+                class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3 border border-light-subtle">
                 <div>
                   <div class="d-flex align-items-center gap-2 mb-1">
-                    <h6 class="fw-bold mb-0 text-dark">{{ med.nome }}</h6>
-                    <span class="badge bg-light text-primary border">{{ med.dosagem }}</span>
+                    <strong class="text-dark">{{ med.nome }}</strong>
+                    <span *ngIf="med.dosagem"
+                      class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill font-monospace fw-normal">{{
+                      med.dosagem }}</span>
                   </div>
-                  <small class="text-muted d-block">{{ med.instrucoes }}</small>
+                  <small class="text-muted d-block">{{ med.instrucoes || 'Sem instruções' }}</small>
                 </div>
-                <div class="d-flex align-items-center gap-3">
-                  <span class="badge bg-primary rounded-pill px-3 py-2 fs-6">{{ med.horario }}</span>
-                  <button (click)="removerMedicamento(i)" class="btn btn-outline-danger btn-sm">&times;</button>
+
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge bg-primary px-3 py-2 fs-6 rounded-3 font-monospace">{{ med.horario }}</span>
+                  <button type="button" class="btn btn-outline-danger btn-sm border-0 rounded-3 px-2 py-1"
+                    (click)="solicitarExclusao('medicamento', i)">
+                    <i class="bi bi-x-lg"></i>
+                  </button>
                 </div>
               </div>
+
+              <div *ngIf="medicamentos.length === 0" class="text-center py-4 text-muted small">
+                Nenhum medicamento cadastrado.
+              </div>
             </div>
-            <ng-template #semMeds>
-              <p class="text-muted text-center py-3 mb-0">Nenhum medicamento cadastrado.</p>
-            </ng-template>
           </div>
         </div>
 
-        <!-- Lista de Avisos -->
-        <div class="card border-0 shadow-sm">
+        <div class="card border-0 shadow-sm rounded-4">
           <div class="card-body p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h3 class="h5 fw-bold text-dark mb-0">Avisos do Idoso</h3>
-              <span class="badge bg-secondary rounded-pill px-3 py-2">{{ avisos.length }}</span>
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h5 class="fw-bold text-dark mb-0">Avisos do Idoso</h5>
+              <span class="badge bg-secondary rounded-circle px-2 py-1">{{ avisos.length }}</span>
             </div>
 
-            <div *ngIf="avisos.length > 0; else semAvisos" class="d-flex flex-column gap-2">
-              <div *ngFor="let aviso of avisos; let j = index"
-                class="alert alert-warning border-0 d-flex justify-content-between align-items-center mb-0">
-                <div class="d-flex align-items-center gap-3">
-                  <span class="badge bg-warning text-dark">{{ aviso.tipo }}</span>
-                  <p class="mb-0 text-dark small">{{ aviso.mensagem }}</p>
+            <div class="d-flex flex-column gap-2">
+              <div *ngFor="let aviso of avisos; let i = index"
+                class="d-flex align-items-center justify-content-between p-3 rounded-3"
+                style="background-color: #fff8e6; border: 1px solid #ffeeba;">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge bg-warning text-dark fw-bold">Aviso</span>
+                  <span class="small text-dark">{{ aviso.texto }}</span>
                 </div>
-                <button (click)="removerAviso(j)" class="btn btn-outline-danger btn-sm">&times;</button>
+                <button type="button" class="btn btn-outline-danger btn-sm border-0 rounded-3 px-2 py-1"
+                  (click)="solicitarExclusao('aviso', i)">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </div>
+
+              <div *ngIf="avisos.length === 0" class="text-center py-4 text-muted small">
+                Nenhum aviso cadastrado.
               </div>
             </div>
-            <ng-template #semAvisos>
-              <p class="text-muted text-center py-3 mb-0">Nenhum aviso cadastrado.</p>
-            </ng-template>
           </div>
         </div>
 
@@ -155,4 +152,34 @@
     </div>
 
   </main>
+</div>
+
+<div *ngIf="exibindoModalExclusao" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);"
+  (click)="cancelarExclusao()">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;" (click)="$event.stopPropagation()">
+    <div class="modal-content border-0 shadow-lg rounded-4 p-4 text-center">
+
+      <div
+        class="bg-danger-subtle text-danger rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+        style="width: 72px; height: 72px;">
+        <i class="bi bi-exclamation-triangle-fill fs-1 text-danger"></i>
+      </div>
+
+      <h4 class="fw-bold text-dark mb-2">Deseja realmente excluir este {{ itemParaExcluir?.tipo === 'medicamento' ?
+        'medicamento' : 'aviso' }}?</h4>
+      <p class="text-muted small mb-4">Esta ação não pode ser desfeita.</p>
+
+      <div class="d-flex gap-2 justify-content-center">
+        <button type="button" class="btn btn-light fw-bold px-4 py-2 rounded-3 border text-secondary flex-grow-1"
+          (click)="cancelarExclusao()">
+          Não
+        </button>
+        <button type="button" class="btn btn-danger fw-bold px-4 py-2 rounded-3 flex-grow-1"
+          (click)="confirmarExclusao()">
+          Sim, excluir
+        </button>
+      </div>
+
+    </div>
+  </div>
 </div>
