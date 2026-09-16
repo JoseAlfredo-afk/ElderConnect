@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 
 export interface IdosoVinculado {
   cuidadorId: number;
@@ -33,6 +32,7 @@ export interface Aviso {
 export class CaregiverDashboard implements OnInit {
   nomeCuidador: string = 'Maria Silva';
   idosoVinculado: IdosoVinculado | null = null;
+  exibirModalEncerrarVinculo: boolean = false;
 
   medicamentos: Medicamento[] = [
     {
@@ -67,7 +67,6 @@ export class CaregiverDashboard implements OnInit {
       try {
         const dados = JSON.parse(vinculoSalvo);
 
-        // Trata o nome do idoso garantindo que não seja igual ao da cuidadora
         let nomeIdosoFinal = dados.nome;
         if (!nomeIdosoFinal || nomeIdosoFinal === this.nomeCuidador) {
           nomeIdosoFinal = 'José da Silva';
@@ -102,13 +101,17 @@ export class CaregiverDashboard implements OnInit {
     };
   }
 
-  desfazerVinculo(): void {
-    const confirmacao = window.confirm('Tem certeza que deseja encerrar o vínculo com este idoso?');
+  abrirModalEncerrarVinculo(): void {
+    this.exibirModalEncerrarVinculo = true;
+  }
 
-    if (confirmacao) {
-      localStorage.removeItem('elderconnect_vinculo');
-      this.idosoVinculado = null;
-      alert('Vínculo encerrado com sucesso.');
-    }
+  fecharModalEncerrarVinculo(): void {
+    this.exibirModalEncerrarVinculo = false;
+  }
+
+  confirmarEncerramentoVinculo(): void {
+    localStorage.removeItem('elderconnect_vinculo');
+    this.idosoVinculado = null;
+    this.fecharModalEncerrarVinculo();
   }
 }

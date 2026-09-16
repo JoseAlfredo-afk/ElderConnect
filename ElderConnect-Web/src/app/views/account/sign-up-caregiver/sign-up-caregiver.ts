@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../services/user/auth';
+import { Authentication } from '../../../services/security/authentication';
 
 @Component({
   selector: 'app-sign-up-caregiver',
@@ -13,7 +13,7 @@ import { AuthService } from '../../../services/user/auth';
 export class SignUpCaregiver {
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  protected authService = inject(AuthService);
+  protected authService = inject(Authentication);
 
   caregiverForm: FormGroup = this.fb.group({
     experiencia: ['', [Validators.required]],
