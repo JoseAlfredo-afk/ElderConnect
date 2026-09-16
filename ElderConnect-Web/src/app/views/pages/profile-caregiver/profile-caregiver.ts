@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
 export interface CuidadorPerfil {
@@ -18,7 +19,7 @@ export interface CuidadorPerfil {
 @Component({
   selector: 'app-profile-caregiver',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './profile-caregiver.html'
 })
 export class ProfileCaregiver implements OnInit {
@@ -35,10 +36,19 @@ export class ProfileCaregiver implements OnInit {
     telefone: '(35) 99988-7766'
   };
 
+  exibindoModalVinculo = false;
+  idosoSelecionado = 'José da Silva (78 anos)';
+  dataInicio = '';
+
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    // 1. Tenta carregar o perfil específico clicado na busca
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    this.dataInicio = `${year}-${month}-${day}`;
+
     const perfilAtivo = localStorage.getItem('elderconnect_perfil_ativo');
     if (perfilAtivo) {
       try {
@@ -56,7 +66,6 @@ export class ProfileCaregiver implements OnInit {
           telefone: dados.telefone
         };
 
-        // 2. Verifica se há avaliações atualizadas salvas para este ID específico
         const chaveCuidador = `elderconnect_cuidador_${dados.id}`;
         const dadosSalvos = localStorage.getItem(chaveCuidador);
         if (dadosSalvos) {
@@ -71,6 +80,14 @@ export class ProfileCaregiver implements OnInit {
   }
 
   solicitarVinculo(): void {
+    this.exibindoModalVinculo = true;
+  }
+
+  cancelarVinculo(): void {
+    this.exibindoModalVinculo = false;
+  }
+
+  confirmarVinculo(): void {
     const dadosVinculo = {
       cuidadorId: this.cuidador.id,
       cuidadorNome: this.cuidador.nome,
@@ -80,11 +97,12 @@ export class ProfileCaregiver implements OnInit {
       idade: '78 anos',
       cidade: this.cuidador.cidade,
       responsavel: 'Ana Silva (Filha) - (35) 99887-1122',
-      observacoes: 'Acompanhamento regular solicitado via plataforma.'
+      observacoes: 'Acompanhamento regular solicitado via plataforma.',
+      dataInicio: this.dataInicio
     };
 
     localStorage.setItem('elderconnect_vinculo', JSON.stringify(dadosVinculo));
-    alert(`Solicitação de vínculo enviada para ${this.cuidador.nome} com sucesso!`);
+    this.exibindoModalVinculo = false;
     this.router.navigate(['/dashboard/elder']);
   }
 }

@@ -28,10 +28,11 @@ export class ElderDashboard implements OnInit {
   cuidadorContratado: CuidadorContratado | null = null;
   medicamentos: Medicamento[] = [];
 
-  // Pop-up / Modal de Avaliação
   exibirModalAvaliacao: boolean = false;
   estrelasSelecionadas: number = 5;
   comentarioAvaliacao: string = '';
+
+  exibirModalEncerrarVinculo: boolean = false;
 
   ngOnInit(): void {
     this.carregarCuidadorVinculado();
@@ -89,17 +90,20 @@ export class ElderDashboard implements OnInit {
     }
   }
 
-  desfazerVinculo(): void {
-    const confirmacao = window.confirm('Tem certeza que deseja encerrar o vínculo com este cuidador?');
-
-    if (confirmacao) {
-      localStorage.removeItem('elderconnect_vinculo');
-      this.cuidadorContratado = null;
-      alert('Vínculo encerrado com sucesso.');
-    }
+  abrirModalEncerrarVinculo(): void {
+    this.exibirModalEncerrarVinculo = true;
   }
 
-  // Métodos do Pop-up de Avaliação
+  fecharModalEncerrarVinculo(): void {
+    this.exibirModalEncerrarVinculo = false;
+  }
+
+  confirmarEncerramentoVinculo(): void {
+    localStorage.removeItem('elderconnect_vinculo');
+    this.cuidadorContratado = null;
+    this.fecharModalEncerrarVinculo();
+  }
+
   abrirModalAvaliacao(): void {
     this.estrelasSelecionadas = 5;
     this.comentarioAvaliacao = '';
@@ -120,7 +124,6 @@ export class ElderDashboard implements OnInit {
     const novaNota = this.estrelasSelecionadas;
     const cuidadorId = this.cuidadorContratado.cuidadorId;
 
-    // 1. Salva o histórico de avaliações individuais
     const avaliacao = {
       cuidadorId: cuidadorId,
       cuidadorNome: this.cuidadorContratado.cuidadorNome,
@@ -133,7 +136,6 @@ export class ElderDashboard implements OnInit {
     avaliacoesSalvas.push(avaliacao);
     localStorage.setItem('elderconnect_avaliacoes', JSON.stringify(avaliacoesSalvas));
 
-    // 2. Atualiza o perfil acumulado do cuidador no localStorage
     const chaveCuidador = `elderconnect_cuidador_${cuidadorId}`;
     const dadosCuidadorSalvos = localStorage.getItem(chaveCuidador);
 
@@ -155,7 +157,6 @@ export class ElderDashboard implements OnInit {
 
     localStorage.setItem(chaveCuidador, JSON.stringify(dadosCuidador));
 
-    alert(`Avaliação enviada com sucesso! A nova média de ${dadosCuidador.nome} é ${dadosCuidador.avaliacao} ★ (${dadosCuidador.totalAvaliacoes} avaliações).`);
     this.fecharModalAvaliacao();
   }
 }

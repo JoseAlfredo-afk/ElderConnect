@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../services/user/auth'; 
+import { Authentication } from '../../../services/security/authentication';
 
 @Component({
   selector: 'app-sign-up',
@@ -16,7 +16,7 @@ export class SignUp {
 
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  protected authService = inject(AuthService);
+  protected authService = inject(Authentication);
 
   cadastroForm: FormGroup = this.fb.group({
     nome: ['', [Validators.required]],
@@ -55,12 +55,12 @@ export class SignUp {
   submeter() {
     if (this.cadastroForm.valid) {
       console.log('Dados do cadastro base:', this.cadastroForm.value);
-      
+
       if (this.tipoConta === 'cuidador') {
-      
+
         this.router.navigate(['/account/complete-profile']);
       } else {
-        this.authService.mostrarAlertaCadastroGlobal = true; 
+        this.authService.mostrarAlertaCadastroGlobal = true;
         this.router.navigate(['/account/sign-in']);
       }
     } else {

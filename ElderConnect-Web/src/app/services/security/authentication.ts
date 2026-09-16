@@ -1,6 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
-export class Authentication {}
+export class Authentication {
+
+  public usuarioLogado = signal<boolean>(false);
+  public mostrarAlertaCadastroGlobal: boolean = false;
+
+  logar() {
+    this.usuarioLogado.set(true);
+  }
+
+  logout() {
+    this.usuarioLogado.set(false);
+  }
+}
