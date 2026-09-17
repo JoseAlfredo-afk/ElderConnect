@@ -26,13 +26,17 @@ public class ContractRestController {
 
     @GetMapping
     public ResponseEntity<List<ContractResponseDto>> getEntities() {
+
         ArrayList<ContractResponseDto> contractResponseDtos = new ArrayList<>();
         List<Contract> contracts = contractService.findAll();
 
         for (Contract contract : contracts) {
+
             UserModel seniorName = userService.findById(contract.getSeniorId());
             UserModel caregiverName = userService.findById(contract.getCaregiverId());
+
             ContractResponseDto contractResponseDto = ContractResponseDto.fromContract(contract, seniorName.getFullname(), caregiverName.getFullname());
+
             contractResponseDtos.add(contractResponseDto);
         }
 
@@ -40,32 +44,37 @@ public class ContractRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ContractResponseDto> getEntityById(@PathVariable final int id){
+    public ResponseEntity<ContractResponseDto> getEntityById(@PathVariable final int id) {
+
         Contract contract = contractService.findById(id);
 
-        if(contract == null){
+        if (contract == null) {
             return ResponseEntity.notFound().build();
         }
 
         UserModel seniorName = userService.findById(contract.getSeniorId());
         UserModel caregiverName = userService.findById(contract.getCaregiverId());
 
-        if(seniorName == null || caregiverName == null){
+        if (seniorName == null || caregiverName == null) {
             return ResponseEntity.notFound().build();
         }
 
         return ResponseEntity.ok(ContractResponseDto.fromContract(contract, seniorName.getFullname(), caregiverName.getFullname()));
-        }
+    }
 
     @GetMapping("/senior-contracts/{seniorId}")
     public ResponseEntity<List<ContractResponseDto>> getEntitiesBySeniorId(@PathVariable final int seniorId) {
+
         ArrayList<ContractResponseDto> contractResponseDtos = new ArrayList<>();
         List<Contract> contracts = contractService.findBySeniorId(seniorId);
 
         for (Contract contract : contracts) {
+
             UserModel seniorName = userService.findById(contract.getSeniorId());
             UserModel caregiverName = userService.findById(contract.getCaregiverId());
+
             ContractResponseDto contractResponseDto = ContractResponseDto.fromContract(contract, seniorName.getFullname(), caregiverName.getFullname());
+
             contractResponseDtos.add(contractResponseDto);
         }
 
@@ -74,13 +83,17 @@ public class ContractRestController {
 
     @GetMapping("/caregiver-contracts/{caregiverId}")
     public ResponseEntity<List<ContractResponseDto>> getEntitiesByCaregiverId(@PathVariable final int caregiverId) {
+
         ArrayList<ContractResponseDto> contractResponseDtos = new ArrayList<>();
         List<Contract> contracts = contractService.findByCaregiverId(caregiverId);
 
         for (Contract contract : contracts) {
+
             UserModel seniorName = userService.findById(contract.getSeniorId());
             UserModel caregiverName = userService.findById(contract.getCaregiverId());
+
             ContractResponseDto contractResponseDto = ContractResponseDto.fromContract(contract, seniorName.getFullname(), caregiverName.getFullname());
+
             contractResponseDtos.add(contractResponseDto);
         }
 
@@ -104,50 +117,52 @@ public class ContractRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Contract> update(@PathVariable final int id, @RequestBody final UpdateContractDto updateContractDto){
+    public ResponseEntity<Contract> update(@PathVariable final int id, @RequestBody final UpdateContractDto updateContractDto) {
+
         final Contract contract = updateContractDto.toContract();
 
-        boolean response = contractService.update(id,contract);
+        boolean response = contractService.update(id, contract);
 
         return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
-
     }
 
     @PatchMapping("/{id}/activate")
-    public ResponseEntity<Void> activateContract(@PathVariable final int id){
+    public ResponseEntity<Void> activateContract(@PathVariable final int id) {
+
         final boolean response = contractService.activateContract(id);
 
         return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
     @PatchMapping("/{id}/finish")
-    public ResponseEntity<Void> finishContract(@PathVariable final int id, @RequestBody final FinishContractDto finishContractDto){
-        final boolean response = contractService.finishContract(id,finishContractDto.getEndDate());
+    public ResponseEntity<Void> finishContract(@PathVariable final int id, @RequestBody final FinishContractDto finishContractDto) {
+
+        final boolean response = contractService.finishContract(id, finishContractDto.getEndDate());
 
         return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
     @PatchMapping("/{id}/rating")
-    public ResponseEntity<Void> ratingContract(@PathVariable final int id, @RequestBody final RatingContractDto ratingContractDto){
+    public ResponseEntity<Void> ratingContract(@PathVariable final int id, @RequestBody final RatingContractDto ratingContractDto) {
+
         final boolean response = contractService.ratingContract(id, ratingContractDto.getRating(), ratingContractDto.getComment());
 
         return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
     @PatchMapping("/{id}/cancel")
-    public ResponseEntity<Void> cancelContract(@PathVariable final int id, @RequestBody final CancelContractDto cancelContractDto){
-        final boolean response = contractService.cancelContract(id,cancelContractDto.getEndDate());
+    public ResponseEntity<Void> cancelContract(@PathVariable final int id, @RequestBody final CancelContractDto cancelContractDto) {
+
+        final boolean response = contractService.cancelContract(id, cancelContractDto.getEndDate());
 
         return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable final int id){
+    public ResponseEntity<Void> delete(@PathVariable final int id) {
+
         contractService.delete(id);
+
         return ResponseEntity.noContent().build();
     }
-
-
-
-
 }

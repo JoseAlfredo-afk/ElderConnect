@@ -2,7 +2,6 @@ package br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.medication;
 
 import br.fai.lds.elderconnect.domain.Medication;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.medication.MedicationDao;
-import br.fai.lds.elderconnect.ports_and_adapters.port.service.medication.MedicationService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,19 +31,20 @@ public class MedicationPostgresDaoAdapter implements MedicationDao {
 
             preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
-            preparedStatement.setString(1,entity.getMedicationName());
-            preparedStatement.setString(2,entity.getDose());
+            preparedStatement.setString(1, entity.getMedicationName());
+            preparedStatement.setString(2, entity.getDose());
 
             preparedStatement.execute();
 
             resultSet = preparedStatement.getGeneratedKeys();
             int id = 0;
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 id = resultSet.getInt(1);
             }
             connection.commit();
             resultSet.close();
             preparedStatement.close();
+
             return id;
         } catch (SQLException e) {
             try {
@@ -65,7 +65,7 @@ public class MedicationPostgresDaoAdapter implements MedicationDao {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(1, id);
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -81,11 +81,11 @@ public class MedicationPostgresDaoAdapter implements MedicationDao {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 final int entityId = resultSet.getInt("id");
                 final String medicationName = resultSet.getString("medication_name");
                 final String dose = resultSet.getString("dose");
@@ -115,7 +115,7 @@ public class MedicationPostgresDaoAdapter implements MedicationDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 final int entityId = resultSet.getInt("id");
                 final String medicationName = resultSet.getString("medication_name");
                 final String dose = resultSet.getString("dose");
@@ -147,7 +147,7 @@ public class MedicationPostgresDaoAdapter implements MedicationDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, entity.getMedicationName());
             preparedStatement.setString(2, entity.getDose());
-            preparedStatement.setInt(3,entity.getId());
+            preparedStatement.setInt(3, entity.getId());
 
             preparedStatement.execute();
             preparedStatement.close();

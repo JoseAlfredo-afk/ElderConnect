@@ -19,28 +19,32 @@ public class MessageRestController {
     private MessageService messageService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Message> getEntityById(@PathVariable final int id){
+    public ResponseEntity<Message> getEntityById(@PathVariable final int id) {
+
         Message message = messageService.findById(id);
 
         return message == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(message);
     }
 
     @GetMapping("/{user1Id}/{user2Id}")
-    public ResponseEntity<List<Message>> getCoversationByUsersIds(@PathVariable final int user1Id, @PathVariable final int user2Id){
-        List<Message> messages = messageService.findConversationByUsersIds(user1Id,user2Id);
+    public ResponseEntity<List<Message>> getCoversationByUsersIds(@PathVariable final int user1Id, @PathVariable final int user2Id) {
+
+        List<Message> messages = messageService.findConversationByUsersIds(user1Id, user2Id);
 
         return ResponseEntity.ok(messages);
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Message>> getMessagesByUserId(@PathVariable final int userId){
+    public ResponseEntity<List<Message>> getMessagesByUserId(@PathVariable final int userId) {
+
         List<Message> messages = messageService.findByUserId(userId);
 
         return ResponseEntity.ok(messages);
     }
 
     @PostMapping
-    public ResponseEntity<Message> create(@RequestBody final CreateMessageDto createMessageDto){
+    public ResponseEntity<Message> create(@RequestBody final CreateMessageDto createMessageDto) {
+
         Message message = createMessageDto.toMessage();
 
         final int id = messageService.create(message);

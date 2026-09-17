@@ -12,8 +12,10 @@ public class UserFakeDaoAdapter implements UserDao {
     private static final List<UserModel> entities = new ArrayList<>();
     private static int ID = 0;
 
-    public UserFakeDaoAdapter(){
+    public UserFakeDaoAdapter() {
+
         UserModel senior1 = new UserModel();
+
         senior1.setId(getNextID());
         senior1.setCpf("111.111.111-11");
         senior1.setFullname("Maria de Olinda");
@@ -24,6 +26,7 @@ public class UserFakeDaoAdapter implements UserDao {
         senior1.setBirthDate("21/04/1938");
 
         UserModel senior2 = new UserModel();
+
         senior2.setId(getNextID());
         senior2.setCpf("222.222.222-22");
         senior2.setFullname("João Silva");
@@ -34,6 +37,7 @@ public class UserFakeDaoAdapter implements UserDao {
         senior2.setBirthDate("27/06/1945");
 
         UserModel caregiver1 = new UserModel();
+
         caregiver1.setId(getNextID());
         caregiver1.setCpf("333.333.333-33");
         caregiver1.setFullname("Juliana Mota");
@@ -49,6 +53,7 @@ public class UserFakeDaoAdapter implements UserDao {
         caregiver1.setExperience("5 anos de experiência com cuidados domiciliares");
 
         UserModel caregiver2 = new UserModel();
+
         caregiver2.setId(getNextID());
         caregiver2.setCpf("444.444.444-44");
         caregiver2.setFullname("Paulo Santos");
@@ -65,6 +70,7 @@ public class UserFakeDaoAdapter implements UserDao {
 
 
         UserModel caregiver3 = new UserModel();
+
         caregiver3.setId(getNextID());
         caregiver3.setCpf("111.111.111-55");
         caregiver3.setFullname("Larissa Silva");
@@ -84,48 +90,54 @@ public class UserFakeDaoAdapter implements UserDao {
         entities.add(caregiver1);
         entities.add(caregiver2);
         entities.add(caregiver3);
-
     }
 
-    private int getNextID(){
+    private int getNextID() {
         ID += 1;
         return ID;
     }
 
     @Override
     public int add(UserModel entity) {
+
         final int id = getNextID();
         entity.setId(id);
         entities.add(entity);
+
         return id;
     }
+
     @Override
     public void remove(int id) {
+
         int itemIndex = -1;
 
         for (int i = 0; i < entities.size(); i++) {
             final UserModel entity = entities.get(i);
-            if (entity.getId() == id){
+            if (entity.getId() == id) {
                 itemIndex = i;
                 break;
             }
         }
 
-        if(itemIndex == -1){
+        if (itemIndex == -1) {
             return;
         }
 
         UserModel removedData = entities.remove(itemIndex);
         System.out.println("A entidade " + removedData.getFullname() + "foi removida com sucesso.");
+
     }
 
     @Override
     public UserModel readyById(int id) {
-        for (UserModel entity : entities){
-            if (entity.getId() == id){
+
+        for (UserModel entity : entities) {
+            if (entity.getId() == id) {
                 return entity;
             }
         }
+
         return null;
     }
 
@@ -136,8 +148,9 @@ public class UserFakeDaoAdapter implements UserDao {
 
     @Override
     public void updateInformation(int id, UserModel entity) {
-        for(UserModel data : entities){
-            if(data.getId() == id){
+
+        for (UserModel data : entities) {
+            if (data.getId() == id) {
                 data.setFullname(entity.getFullname());
                 data.setPhoneNumber(entity.getPhoneNumber());
                 break;
@@ -147,8 +160,8 @@ public class UserFakeDaoAdapter implements UserDao {
 
     @Override
     public UserModel readByEmail(String email) {
-        for (UserModel entity : entities){
-            if(entity.getEmail().equalsIgnoreCase(email)){
+        for (UserModel entity : entities) {
+            if (entity.getEmail().equalsIgnoreCase(email)) {
                 return entity;
             }
         }
@@ -156,8 +169,8 @@ public class UserFakeDaoAdapter implements UserDao {
     }
 
     public UserModel readByCpf(String cpf) {
-        for (UserModel entity : entities){
-            if(entity.getCpf().equals(cpf)){
+        for (UserModel entity : entities) {
+            if (entity.getCpf().equals(cpf)) {
                 return entity;
             }
         }
@@ -168,8 +181,8 @@ public class UserFakeDaoAdapter implements UserDao {
     public boolean updatePassword(int id, String password) {
         boolean response = false;
 
-        for(UserModel entity : entities){
-            if(entity.getId() == id){
+        for (UserModel entity : entities) {
+            if (entity.getId() == id) {
                 entity.setPassword(password);
                 response = true;
                 break;
@@ -190,5 +203,15 @@ public class UserFakeDaoAdapter implements UserDao {
             }
         }
         return response;
+    }
+
+    @Override
+    public List<UserModel> readCaregivers() {
+        return List.of();
+    }
+
+    @Override
+    public boolean updateCaregiverProfile(int id, UserModel caregiver) {
+        return false;
     }
 }

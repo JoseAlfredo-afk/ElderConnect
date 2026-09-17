@@ -4,7 +4,6 @@ import br.fai.lds.elderconnect.domain.UserModel;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 public class CreateCaregiverProfileDto {
@@ -16,14 +15,17 @@ public class CreateCaregiverProfileDto {
     private String neighborhood;
     private String experience;
 
-    public UserModel ToUserModel(){
+    public UserModel ToUserModel() {
+
         UserModel userModel = new UserModel();
+
         userModel.setAvailabilitySchedule(availabilitySchedule);
         userModel.setStreetAddress(streetAddress);
         userModel.setNeighborhood(neighborhood);
         userModel.setCity(city);
         userModel.setExperience(experience);
         userModel.setSpecialization(specialization);
+
         return userModel;
     }
 }

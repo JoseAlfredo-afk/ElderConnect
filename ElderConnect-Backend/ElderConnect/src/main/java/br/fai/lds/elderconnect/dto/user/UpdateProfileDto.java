@@ -14,10 +14,13 @@ public class UpdateProfileDto {
     private String phoneNumber;
 
     public UserModel toUserModel() {
+
         final UserModel userModel = new UserModel();
+
         userModel.setId(id);
         userModel.setFullname(fullname);
         userModel.setPhoneNumber(phoneNumber);
+
         return userModel;
     }
 }

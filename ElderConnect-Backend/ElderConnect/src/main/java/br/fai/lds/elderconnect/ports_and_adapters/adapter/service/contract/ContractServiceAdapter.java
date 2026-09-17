@@ -22,6 +22,7 @@ public class ContractServiceAdapter implements ContractService {
 
     @Override
     public int create(Contract contract) {
+
         if (contract == null) {
             return 0;
         }
@@ -38,11 +39,11 @@ public class ContractServiceAdapter implements ContractService {
             return 0;
         }
 
-        if (contract.getContractValue() <= 0){
+        if (contract.getContractValue() <= 0) {
             return 0;
         }
 
-        if ( contract.getWorkingHours() == null ||contract.getWorkingHours().isEmpty()) {
+        if (contract.getWorkingHours() == null || contract.getWorkingHours().isEmpty()) {
             return 0;
         }
 
@@ -50,7 +51,7 @@ public class ContractServiceAdapter implements ContractService {
             return 0;
         }
 
-        if (contract.getDescription() == null || contract.getDescription().isEmpty()){
+        if (contract.getDescription() == null || contract.getDescription().isEmpty()) {
             return 0;
         }
 
@@ -62,22 +63,25 @@ public class ContractServiceAdapter implements ContractService {
         contract.setComment(null);
 
         return contractDao.add(contract);
-
     }
 
     @Override
     public void delete(int id) {
+
         if (isIdInvalid(id)) {
             return;
         }
+
         contractDao.remove(id);
     }
 
     @Override
     public Contract findById(int id) {
+
         if (isIdInvalid(id)) {
             return null;
         }
+
         return contractDao.readyById(id);
     }
 
@@ -89,7 +93,6 @@ public class ContractServiceAdapter implements ContractService {
     @Override
     public boolean update(int id, Contract contract) {
 
-
         if (isIdInvalid(id) || contract == null) {
             return false;
         }
@@ -100,15 +103,15 @@ public class ContractServiceAdapter implements ContractService {
             return false;
         }
 
-        if (contract.getContractValue() <= 0){
+        if (contract.getContractValue() <= 0) {
             return false;
         }
 
-        if ( contract.getWorkingHours() == null ||contract.getWorkingHours().isEmpty()) {
+        if (contract.getWorkingHours() == null || contract.getWorkingHours().isEmpty()) {
             return false;
         }
 
-        if (contract.getDescription() == null || contract.getDescription().isEmpty()){
+        if (contract.getDescription() == null || contract.getDescription().isEmpty()) {
             return false;
         }
 
@@ -116,15 +119,18 @@ public class ContractServiceAdapter implements ContractService {
         dataToUpdate.setWorkingHours(contract.getWorkingHours());
         dataToUpdate.setDescription(contract.getDescription());
 
-        contractDao.updateInformation(id,dataToUpdate);
+        contractDao.updateInformation(id, dataToUpdate);
+
         return true;
     }
 
     @Override
     public boolean finishContract(int id, String endDate) {
+
         if (isIdInvalid(id)) {
             return false;
         }
+
         Contract contract = contractDao.readyById(id);
 
         if (contract == null) {
@@ -135,12 +141,11 @@ public class ContractServiceAdapter implements ContractService {
             return false;
         }
 
-        if(endDate == null || endDate.isEmpty()){
+        if (endDate == null || endDate.isEmpty()) {
             return false;
         }
 
         return contractDao.finishContract(id, endDate);
-
     }
 
     @Override
@@ -152,19 +157,19 @@ public class ContractServiceAdapter implements ContractService {
 
         Contract contract = contractDao.readyById(id);
 
-        if(contract == null){
+        if (contract == null) {
             return false;
         }
 
-        if(rating <= 0 || rating > 5){
+        if (rating <= 0 || rating > 5) {
             return false;
         }
 
-        if(comment == null || comment.isEmpty()){
+        if (comment == null || comment.isEmpty()) {
             return false;
         }
 
-        if(contract.getStatus() != Contract.ContractStatus.COMPLETO){
+        if (contract.getStatus() != Contract.ContractStatus.COMPLETO) {
             return false;
         }
 
@@ -183,11 +188,11 @@ public class ContractServiceAdapter implements ContractService {
 
         Contract contract = contractDao.readyById(id);
 
-        if(contract == null){
+        if (contract == null) {
             return false;
         }
 
-        if(endDate == null || endDate.isEmpty()){
+        if (endDate == null || endDate.isEmpty()) {
             return false;
         }
 
@@ -195,20 +200,19 @@ public class ContractServiceAdapter implements ContractService {
             return false;
         }
 
-        return contractDao.cancelContract(id,endDate);
-
+        return contractDao.cancelContract(id, endDate);
     }
 
     @Override
     public List<Contract> findByCaregiverId(int caregiverId) {
 
-        if(isIdInvalid(caregiverId)){
+        if (isIdInvalid(caregiverId)) {
             return List.of();
         }
 
         UserModel caregiver = findCaregiverById(caregiverId);
 
-        if(caregiver == null){
+        if (caregiver == null) {
             return List.of();
         }
 
@@ -217,13 +221,14 @@ public class ContractServiceAdapter implements ContractService {
 
     @Override
     public List<Contract> findBySeniorId(int seniorId) {
-        if(isIdInvalid(seniorId)){
+
+        if (isIdInvalid(seniorId)) {
             return List.of();
         }
 
         UserModel senior = findSeniorById(seniorId);
 
-        if(senior == null){
+        if (senior == null) {
             return List.of();
         }
 
@@ -232,15 +237,15 @@ public class ContractServiceAdapter implements ContractService {
 
     private String generateContractNumber() {
 
-        return "ECCT-" + UUID.randomUUID().toString().substring(0,15).toUpperCase();
+        return "ECCT-" + UUID.randomUUID().toString().substring(0, 15).toUpperCase();
 
     }
 
     private boolean isIdInvalid(int id) {
-        return id <= 0 ? true: false;
+        return id <= 0 ? true : false;
     }
 
-    private UserModel findCaregiverById(int id){
+    private UserModel findCaregiverById(int id) {
 
         UserModel userCaregiver = userDao.readyById(id);
 
@@ -255,7 +260,7 @@ public class ContractServiceAdapter implements ContractService {
         return userCaregiver;
     }
 
-    private UserModel findSeniorById(int id){
+    private UserModel findSeniorById(int id) {
 
         UserModel userSenior = userDao.readyById(id);
 
@@ -272,6 +277,7 @@ public class ContractServiceAdapter implements ContractService {
 
     @Override
     public boolean activateContract(int id) {
+
         if (isIdInvalid(id)) {
             return false;
         }

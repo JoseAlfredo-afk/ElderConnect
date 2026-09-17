@@ -5,7 +5,6 @@ import br.fai.lds.elderconnect.dto.user.AuthenticationDto;
 import br.fai.lds.elderconnect.ports_and_adapters.port.rest_controllers.AuthenticationRestController;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.security.AuthenticationService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

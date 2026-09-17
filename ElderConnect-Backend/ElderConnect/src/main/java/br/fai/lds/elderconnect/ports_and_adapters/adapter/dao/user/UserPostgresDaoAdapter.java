@@ -2,7 +2,6 @@ package br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user;
 
 import br.fai.lds.elderconnect.domain.UserModel;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao;
-import org.springframework.context.annotation.Bean;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -31,12 +30,12 @@ public class UserPostgresDaoAdapter implements UserDao {
 
             preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
-            preparedStatement.setString(1,entity.getCpf());
-            preparedStatement.setString(2,entity.getFullname());
-            preparedStatement.setString(3,entity.getEmail());
-            preparedStatement.setString(4,entity.getPassword());
-            preparedStatement.setString(5,entity.getPhoneNumber());
-            preparedStatement.setString(6,entity.getUserType().name());
+            preparedStatement.setString(1, entity.getCpf());
+            preparedStatement.setString(2, entity.getFullname());
+            preparedStatement.setString(3, entity.getEmail());
+            preparedStatement.setString(4, entity.getPassword());
+            preparedStatement.setString(5, entity.getPhoneNumber());
+            preparedStatement.setString(6, entity.getUserType().name());
             preparedStatement.setDate(7, Date.valueOf(entity.getBirthDate()));
 
             preparedStatement.execute();
@@ -70,7 +69,7 @@ public class UserPostgresDaoAdapter implements UserDao {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(1, id);
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -87,11 +86,11 @@ public class UserPostgresDaoAdapter implements UserDao {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 final int entityId = resultSet.getInt("id");
                 final String cpf = resultSet.getString("cpf");
                 final String fullname = resultSet.getString("fullname");
@@ -144,7 +143,7 @@ public class UserPostgresDaoAdapter implements UserDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 final int entityId = resultSet.getInt("id");
                 final String cpf = resultSet.getString("cpf");
                 final String fullname = resultSet.getString("fullname");
@@ -213,11 +212,11 @@ public class UserPostgresDaoAdapter implements UserDao {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1,email);
+            preparedStatement.setString(1, email);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 final int entityId = resultSet.getInt("id");
                 final String cpf = resultSet.getString("cpf");
                 final String fullname = resultSet.getString("fullname");
@@ -267,11 +266,11 @@ public class UserPostgresDaoAdapter implements UserDao {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1,cpf);
+            preparedStatement.setString(1, cpf);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 final int entityId = resultSet.getInt("id");
                 final String fullname = resultSet.getString("fullname");
                 final String email = resultSet.getString("email");
@@ -322,8 +321,8 @@ public class UserPostgresDaoAdapter implements UserDao {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1,password);
-            preparedStatement.setInt(2,id);
+            preparedStatement.setString(1, password);
+            preparedStatement.setInt(2, id);
 
             preparedStatement.execute();
             preparedStatement.close();
@@ -335,7 +334,6 @@ public class UserPostgresDaoAdapter implements UserDao {
     }
 
 
-
     @Override
     public boolean updateEmail(int id, String email) {
         String sql = " UPDATE user_model SET email = ? ";
@@ -343,8 +341,8 @@ public class UserPostgresDaoAdapter implements UserDao {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1,email);
-            preparedStatement.setInt(2,id);
+            preparedStatement.setString(1, email);
+            preparedStatement.setInt(2, id);
 
             preparedStatement.execute();
             preparedStatement.close();
@@ -361,6 +359,7 @@ public class UserPostgresDaoAdapter implements UserDao {
         final String sql = " SELECT * FROM user_model WHERE user_type = 'CUIDADOR'; ";
 
         try {
+
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -401,10 +400,10 @@ public class UserPostgresDaoAdapter implements UserDao {
                 caregivers.add(data);
             }
 
-                preparedStatement.close();
-                resultSet.close();
+            preparedStatement.close();
+            resultSet.close();
 
-                return caregivers;
+            return caregivers;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -412,18 +411,21 @@ public class UserPostgresDaoAdapter implements UserDao {
 
     @Override
     public boolean updateCaregiverProfile(int id, UserModel caregiver) {
+
         String sql = " UPDATE user_model SET availability_schedule = ?, street_address = ?, specialization = ?, city = ?, neighborhood = ?, experience = ? ";
         sql += " WHERE id = ? ;";
 
         try {
+
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
             preparedStatement.setString(1, caregiver.getAvailabilitySchedule());
             preparedStatement.setString(2, caregiver.getStreetAddress());
             preparedStatement.setString(3, caregiver.getSpecialization());
             preparedStatement.setString(4, caregiver.getCity());
             preparedStatement.setString(5, caregiver.getNeighborhood());
             preparedStatement.setString(6, caregiver.getExperience());
-            preparedStatement.setInt(7,id);
+            preparedStatement.setInt(7, id);
 
             preparedStatement.execute();
             preparedStatement.close();

@@ -11,10 +11,13 @@ public class CreateMedicationDto {
     private String medicationName;
     private String dose;
 
-    public Medication toMedication(){
+    public Medication toMedication() {
+
         final Medication medication = new Medication();
+
         medication.setMedicationName(medicationName);
         medication.setDose(dose);
+
         return medication;
     }
 }

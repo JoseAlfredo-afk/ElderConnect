@@ -7,4 +7,5 @@ import java.util.List;
 public interface FindByUserIdService {
 
     List<Message> findByUserId(final int userId);
+
 }

@@ -5,4 +5,5 @@ import br.fai.lds.elderconnect.domain.UserModel;
 public interface UpdateCaregiverProfileService {
 
     boolean updateCaregiverProfile(int id, UserModel userCaregiver);
+
 }

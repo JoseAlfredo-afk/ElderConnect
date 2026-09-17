@@ -20,31 +20,35 @@ public class MedicationRestController {
     private MedicationService medicationService;
 
     @GetMapping
-    public ResponseEntity<List<Medication>> getEntities(){
+    public ResponseEntity<List<Medication>> getEntities() {
         List<Medication> medications = medicationService.findAll();
         return ResponseEntity.ok(medications);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Medication> getMedicationById(@PathVariable final int id){
+    public ResponseEntity<Medication> getMedicationById(@PathVariable final int id) {
+
         Medication medication = medicationService.findById(id);
 
         return medication == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(medication);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable final int id){
+    public ResponseEntity<Void> delete(@PathVariable final int id) {
+
         medicationService.delete(id);
+
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping
-    public ResponseEntity<Medication> create(@RequestBody final CreateMedicationDto createMedicationDto){
+    public ResponseEntity<Medication> create(@RequestBody final CreateMedicationDto createMedicationDto) {
+
         Medication medication = createMedicationDto.toMedication();
 
         final int id = medicationService.create(medication);
 
-        if(id == 0){
+        if (id == 0) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -54,7 +58,7 @@ public class MedicationRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Medication> update(@PathVariable final int id, @RequestBody final UpdateMedicationDto updateMedicationDto){
+    public ResponseEntity<Medication> update(@PathVariable final int id, @RequestBody final UpdateMedicationDto updateMedicationDto) {
 
         final Medication medication = updateMedicationDto.toMedication();
 
@@ -62,11 +66,4 @@ public class MedicationRestController {
 
         return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
-
-
-
-
-
-
-
 }

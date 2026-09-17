@@ -5,4 +5,5 @@ import br.fai.lds.elderconnect.domain.UserModel;
 public interface FindCaregiverByIdService {
 
     UserModel findCaregiverById(int id);
+
 }

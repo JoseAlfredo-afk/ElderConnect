@@ -15,14 +15,17 @@ public class CreateContractDto {
     private int seniorId;
     private int caregiverId;
 
-    public Contract toContract(){
+    public Contract toContract() {
+
         final Contract contract = new Contract();
+
         contract.setStartDate(startDate);
         contract.setContractValue(contractValue);
         contract.setWorkingHours(workingHours);
         contract.setDescription(description);
         contract.setSeniorId(seniorId);
         contract.setCaregiverId(caregiverId);
+
         return contract;
     }
 }

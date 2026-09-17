@@ -13,12 +13,15 @@ public class UpdateAddressDto {
     private String city;
     private String neighborhood;
 
-    public UserModel toUserModel(){
+    public UserModel toUserModel() {
+
         final UserModel userModel = new UserModel();
+
         userModel.setId(id);
         userModel.setStreetAddress(streetAddress);
         userModel.setCity(city);
         userModel.setNeighborhood(neighborhood);
+
         return userModel;
     }
 }

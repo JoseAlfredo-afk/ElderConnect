@@ -31,9 +31,8 @@ public class PostgresConnectionManagerConfiguration {
     @Autowired
     ResourceFilesService resourceFilesService;
 
-
     @Bean
-    public DataSource dataSource() throws SQLException{
+    public DataSource dataSource() throws SQLException {
 
         final DataSource build = DataSourceBuilder
                 .create()
@@ -51,14 +50,15 @@ public class PostgresConnectionManagerConfiguration {
 
     @Bean
     @DependsOn("dataSource")
-    public Connection getConnection() throws SQLException{
+    public Connection getConnection() throws SQLException {
+
         HikariConfig hikariConfig = new HikariConfig();
 
         hikariConfig.setJdbcUrl(databaseUrl);
         hikariConfig.setUsername(databaseUsername);
         hikariConfig.setPassword(databasePassword);
 
-        return  new HikariDataSource(hikariConfig).getConnection();
+        return new HikariDataSource(hikariConfig).getConnection();
 
     }
 
@@ -73,7 +73,8 @@ public class PostgresConnectionManagerConfiguration {
         ResultSet resultSet = statement.executeQuery(sql);
 
         boolean dbExists = resultSet.next();
-        if(!dbExists || resultSet.getInt("dbs") == 0){
+
+        if (!dbExists || resultSet.getInt("dbs") == 0) {
             String createDbSql = " CREATE DATABASE " + databaseName + " WITH ";
             createDbSql += " OWNER = postgres ENCODING = 'UTF8' ";
             createDbSql += " CONNECTION LIMIT = -1;";
@@ -82,11 +83,9 @@ public class PostgresConnectionManagerConfiguration {
             preparedStatement.executeUpdate();
             preparedStatement.close();
         }
-
-
     }
 
-    private String getInsertScript(){
+    private String getInsertScript() {
         return "/insert-data-postgres-basic.sql";
     }
 
@@ -108,8 +107,7 @@ public class PostgresConnectionManagerConfiguration {
         final PreparedStatement insertStatement = connection.prepareStatement(insertDataSql);
         insertStatement.execute();
         insertStatement.close();
+
         return true;
     }
-
-
 }

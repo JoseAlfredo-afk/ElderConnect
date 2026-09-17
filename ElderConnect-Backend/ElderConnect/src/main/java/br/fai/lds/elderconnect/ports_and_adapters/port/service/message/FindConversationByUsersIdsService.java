@@ -7,4 +7,5 @@ import java.util.List;
 public interface FindConversationByUsersIdsService {
 
     List<Message> findConversationByUsersIds(final int user1Id, final int user2Id);
+
 }

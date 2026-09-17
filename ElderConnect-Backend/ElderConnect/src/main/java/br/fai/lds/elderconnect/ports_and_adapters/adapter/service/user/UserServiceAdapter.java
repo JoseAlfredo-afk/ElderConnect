@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class UserServiceAdapter implements UserService {
@@ -16,67 +15,65 @@ public class UserServiceAdapter implements UserService {
     private UserDao userDao;
 
 
-
     @Override
     public int create(UserModel userModel) {
 
-        if(userModel == null){
+        if (userModel == null) {
             return 0;
         }
 
-        if(isPasswordInvalid(userModel.getPassword())){
+        if (isPasswordInvalid(userModel.getPassword())) {
             return 0;
         }
 
-        if(isFullnameInvalid(userModel.getFullname())){
+        if (isFullnameInvalid(userModel.getFullname())) {
             return 0;
         }
 
-        if(isEmailInvalid(userModel.getEmail())){
+        if (isEmailInvalid(userModel.getEmail())) {
             return 0;
         }
 
-        if(userDao.readByEmail(userModel.getEmail()) != null){
+        if (userDao.readByEmail(userModel.getEmail()) != null) {
             return 0;
         }
 
-        if(isCpfInvalid(userModel.getCpf())){
+        if (isCpfInvalid(userModel.getCpf())) {
             return 0;
         }
 
-        if(userDao.readByCpf(userModel.getCpf()) != null){
+        if (userDao.readByCpf(userModel.getCpf()) != null) {
             return 0;
         }
 
-
-        if(isPhoneNumberInvalid(userModel.getPhoneNumber())){
+        if (isPhoneNumberInvalid(userModel.getPhoneNumber())) {
             return 0;
         }
 
-        if (userModel.getUserType() == null){
+        if (userModel.getUserType() == null) {
             return 0;
         }
-
 
         return userDao.add(userModel);
     }
 
-    public UserModel login(String email, String password){
-        if(isEmailInvalid(email)){
+    public UserModel login(String email, String password) {
+
+        if (isEmailInvalid(email)) {
             return null;
         }
 
-        if(isPasswordInvalid(password)){
+        if (isPasswordInvalid(password)) {
             return null;
         }
 
         UserModel userModel = userDao.readByEmail(email);
 
-        if(userModel == null){
+        if (userModel == null) {
             return null;
         }
 
-        if(!userModel.getPassword().equals(password)) {
+        if (!userModel.getPassword().equals(password)) {
             return null;
         }
 
@@ -85,21 +82,24 @@ public class UserServiceAdapter implements UserService {
 
     @Override
     public void delete(int id) {
+
         if (isIdInvalid(id)) {
             return;
         }
+
         userDao.remove(id);
     }
 
     @Override
     public boolean update(int id, UserModel userModel) {
-        if(isIdInvalid(id) || userModel == null){
+
+        if (isIdInvalid(id) || userModel == null) {
             return false;
         }
 
         UserModel dataToUpdate = findById(id);
 
-        if(dataToUpdate == null) {
+        if (dataToUpdate == null) {
             return false;
         }
 
@@ -114,15 +114,18 @@ public class UserServiceAdapter implements UserService {
         dataToUpdate.setFullname(userModel.getFullname());
         dataToUpdate.setPhoneNumber(userModel.getPhoneNumber());
 
-        userDao.updateInformation(id,dataToUpdate);
+        userDao.updateInformation(id, dataToUpdate);
+
         return true;
     }
 
     @Override
     public UserModel findById(int id) {
-        if (isIdInvalid(id)){
+
+        if (isIdInvalid(id)) {
             return null;
         }
+
         return userDao.readyById(id);
     }
 
@@ -133,10 +136,12 @@ public class UserServiceAdapter implements UserService {
 
     @Override
     public UserModel findByEmail(String email) {
-        if (email.isEmpty()){
+
+        if (email.isEmpty()) {
             return null;
         }
-        if(!email.contains("@")){
+
+        if (!email.contains("@")) {
             return null;
         }
 
@@ -146,48 +151,52 @@ public class UserServiceAdapter implements UserService {
 
     @Override
     public boolean updatePassword(int id, String oldPassword, String newPassword) {
-       if(isIdInvalid(id)){
-           return false;
-       }
 
-       UserModel userModel = userDao.readyById(id);
-       if(userModel == null){
-           return false;
-       }
-
-       if(!userModel.getPassword().equals(oldPassword)){
-           return false;
-       }
-
-        if(isPasswordInvalid(newPassword)){
-            return false;
-        }
-
-       return userDao.updatePassword(id, newPassword);
-    }
-
-    @Override
-    public boolean updateEmail(int id, String password, String newEmail) {
-        if(isIdInvalid(id)){
+        if (isIdInvalid(id)) {
             return false;
         }
 
         UserModel userModel = userDao.readyById(id);
-        if(userModel == null){
+
+        if (userModel == null) {
             return false;
         }
 
-        if(!userModel.getPassword().equals(password)){
+        if (!userModel.getPassword().equals(oldPassword)) {
             return false;
         }
 
-        if(isEmailInvalid(newEmail)){
+        if (isPasswordInvalid(newPassword)) {
+            return false;
+        }
+
+        return userDao.updatePassword(id, newPassword);
+    }
+
+    @Override
+    public boolean updateEmail(int id, String password, String newEmail) {
+
+        if (isIdInvalid(id)) {
+            return false;
+        }
+
+        UserModel userModel = userDao.readyById(id);
+
+        if (userModel == null) {
+            return false;
+        }
+
+        if (!userModel.getPassword().equals(password)) {
+            return false;
+        }
+
+        if (isEmailInvalid(newEmail)) {
             return false;
         }
 
         UserModel userSameEmail = userDao.readByEmail(newEmail);
 
-        if(userSameEmail != null && userSameEmail.getId() != id){
+        if (userSameEmail != null && userSameEmail.getId() != id) {
             return false;
         }
 
@@ -195,70 +204,73 @@ public class UserServiceAdapter implements UserService {
     }
 
     private boolean isIdInvalid(int id) {
-        return id <= 0 ? true: false;
+        return id <= 0 ? true : false;
     }
 
 
-    private boolean isPasswordInvalid(String password){
+    private boolean isPasswordInvalid(String password) {
 
-        if(password == null){
+        if (password == null) {
             return true;
         }
 
         if (password.isEmpty()) {
             return true;
         }
+
         return password.length() < 8 ? true : false;
     }
 
-    private boolean isFullnameInvalid(String fullname){
+    private boolean isFullnameInvalid(String fullname) {
 
-        if(fullname == null){
+        if (fullname == null) {
             return true;
         }
 
-        if(fullname.isEmpty()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean isEmailInvalid(String email){
-
-        if(email == null){
-            return true;
-        }
-
-        if(email.isEmpty()){
-            return true;
-        }
-
-        if(!email.contains("@")){
+        if (fullname.isEmpty()) {
             return true;
         }
 
         return false;
     }
 
-    private boolean isCpfInvalid(String cpf){
-        if(cpf == null){
+    private boolean isEmailInvalid(String email) {
+
+        if (email == null) {
             return true;
         }
 
-        if(cpf.isEmpty()) {
+        if (email.isEmpty()) {
+            return true;
+        }
+
+        if (!email.contains("@")) {
             return true;
         }
 
         return false;
     }
 
-    private boolean isPhoneNumberInvalid(String phoneNumber){
-        if(phoneNumber == null){
+    private boolean isCpfInvalid(String cpf) {
+
+        if (cpf == null) {
             return true;
         }
 
-        if(phoneNumber.isEmpty()) {
+        if (cpf.isEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isPhoneNumberInvalid(String phoneNumber) {
+
+        if (phoneNumber == null) {
+            return true;
+        }
+
+        if (phoneNumber.isEmpty()) {
             return true;
         }
 
@@ -278,12 +290,11 @@ public class UserServiceAdapter implements UserService {
             return null;
         }
 
-        if(userCaregiver.getUserType() != UserModel.UserType.CUIDADOR){
+        if (userCaregiver.getUserType() != UserModel.UserType.CUIDADOR) {
             return null;
         }
 
         return userCaregiver;
-
     }
 
     @Override
@@ -298,46 +309,42 @@ public class UserServiceAdapter implements UserService {
             return false;
         }
 
-        if(caregiverProfile == null){
+        if (caregiverProfile == null) {
             return false;
         }
 
         UserModel userCaregiver = findCaregiverById(id);
 
-        if(userCaregiver == null){
+        if (userCaregiver == null) {
             return false;
         }
 
-        if(caregiverProfile.getSpecialization() == null || caregiverProfile.getSpecialization().isEmpty()){
+        if (caregiverProfile.getSpecialization() == null || caregiverProfile.getSpecialization().isEmpty()) {
             return false;
         }
 
-
-        if(caregiverProfile.getExperience() == null || caregiverProfile.getExperience().isEmpty()){
+        if (caregiverProfile.getExperience() == null || caregiverProfile.getExperience().isEmpty()) {
             return false;
         }
 
-
-        if(caregiverProfile.getAvailabilitySchedule() == null || caregiverProfile.getAvailabilitySchedule().isEmpty()){
+        if (caregiverProfile.getAvailabilitySchedule() == null || caregiverProfile.getAvailabilitySchedule().isEmpty()) {
             return false;
         }
 
-
-        if(caregiverProfile.getStreetAddress() == null || caregiverProfile.getStreetAddress().isEmpty()){
+        if (caregiverProfile.getStreetAddress() == null || caregiverProfile.getStreetAddress().isEmpty()) {
             return false;
         }
 
-
-        if(caregiverProfile.getCity() == null || caregiverProfile.getCity().isEmpty()){
+        if (caregiverProfile.getCity() == null || caregiverProfile.getCity().isEmpty()) {
             return false;
         }
 
-
-        if(caregiverProfile.getNeighborhood() == null || caregiverProfile.getNeighborhood().isEmpty()){
+        if (caregiverProfile.getNeighborhood() == null || caregiverProfile.getNeighborhood().isEmpty()) {
             return false;
         }
 
-        userDao.updateCaregiverProfile(id,caregiverProfile);
+        userDao.updateCaregiverProfile(id, caregiverProfile);
+
         return true;
     }
 }

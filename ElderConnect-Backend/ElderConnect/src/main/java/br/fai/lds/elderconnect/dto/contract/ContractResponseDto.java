@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ContractResponseDto {
+
     private int id;
     private String contractNumber;
     private String seniorName;
@@ -20,7 +21,7 @@ public class ContractResponseDto {
     private int rating;
     private String comment;
 
-    public static ContractResponseDto fromContract(Contract contract, String seniorName, String caregiverName){
+    public static ContractResponseDto fromContract(Contract contract, String seniorName, String caregiverName) {
 
         ContractResponseDto contractResponseDto = new ContractResponseDto();
 

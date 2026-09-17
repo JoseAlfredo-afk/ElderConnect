@@ -21,38 +21,45 @@ public class MedicationScheduleRestController {
     private MedicationScheduleService medicationScheduleService;
 
     @GetMapping
-    public ResponseEntity<List<MedicationSchedule>> getEntities(){
+    public ResponseEntity<List<MedicationSchedule>> getEntities() {
+
         List<MedicationSchedule> medicationSchedules = medicationScheduleService.findAll();
+
         return ResponseEntity.ok(medicationSchedules);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MedicationSchedule> getScheduleById(@PathVariable final int id){
+    public ResponseEntity<MedicationSchedule> getScheduleById(@PathVariable final int id) {
+
         MedicationSchedule medicationSchedule = medicationScheduleService.findById(id);
 
         return medicationSchedule == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(medicationSchedule);
     }
 
     @GetMapping("/senior/{seniorId}")
-    public ResponseEntity<List<MedicationSchedule>> getBySeniorId(@PathVariable final int seniorId){
+    public ResponseEntity<List<MedicationSchedule>> getBySeniorId(@PathVariable final int seniorId) {
+
         List<MedicationSchedule> medicationSchedules = medicationScheduleService.findBySeniorId(seniorId);
 
         return ResponseEntity.ok(medicationSchedules);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable final int id){
+    public ResponseEntity<Void> delete(@PathVariable final int id) {
+
         medicationScheduleService.delete(id);
+
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping
-    public ResponseEntity<MedicationSchedule> create(@RequestBody final CreateMedicationScheduleDto createMedicationScheduleDto){
+    public ResponseEntity<MedicationSchedule> create(@RequestBody final CreateMedicationScheduleDto createMedicationScheduleDto) {
+
         MedicationSchedule medicationSchedule = createMedicationScheduleDto.toMedicationSchedule();
 
         final int id = medicationScheduleService.create(medicationSchedule);
 
-        if(id == 0){
+        if (id == 0) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -62,7 +69,7 @@ public class MedicationScheduleRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MedicationSchedule> update(@PathVariable final int id, @RequestBody final UpdateMedicationScheduleDto updateMedicationScheduleDto){
+    public ResponseEntity<MedicationSchedule> update(@PathVariable final int id, @RequestBody final UpdateMedicationScheduleDto updateMedicationScheduleDto) {
 
         final MedicationSchedule medicationSchedule = updateMedicationScheduleDto.toMedicationSchedule();
 
@@ -70,23 +77,4 @@ public class MedicationScheduleRestController {
 
         return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

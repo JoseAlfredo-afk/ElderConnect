@@ -11,11 +11,13 @@ public class FinishContractDto {
 
     private String endDate;
 
+    public Contract toContract() {
 
-    public Contract toContract(){
         Contract contract = new Contract();
+
         contract.setEndDate(endDate);
         contract.setStatus(ContractStatus.COMPLETO);
+
         return contract;
     }
 }

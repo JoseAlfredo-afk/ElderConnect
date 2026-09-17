@@ -14,10 +14,13 @@ public class UpdateMedicationDto {
     private String dose;
 
     public Medication toMedication() {
+
         final Medication medication = new Medication();
+
         medication.setId(id);
         medication.setMedicationName(medicationName);
         medication.setDose(dose);
+
         return medication;
     }
 }

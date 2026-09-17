@@ -10,5 +10,4 @@ public class AuthenticationDto {
     private String email;
     private String password;
 
-
 }
