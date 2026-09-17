@@ -10,10 +10,12 @@ public class CancelContractDto {
 
     private String endDate;
 
-    public Contract toContract(){
+    public Contract toContract() {
         Contract contract = new Contract();
+
         contract.setEndDate(endDate);
         contract.setStatus(Contract.ContractStatus.CANCELADO);
+
         return contract;
     }
 }

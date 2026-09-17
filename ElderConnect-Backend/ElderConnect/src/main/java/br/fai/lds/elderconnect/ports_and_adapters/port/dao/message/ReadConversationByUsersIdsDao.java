@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface ReadConversationByUsersIdsDao {
 
-    public List<Message> readConversationByUsersIds(final int user1Id, final int user2Id);
+    List<Message> readConversationByUsersIds(final int user1Id, final int user2Id);
+
 }

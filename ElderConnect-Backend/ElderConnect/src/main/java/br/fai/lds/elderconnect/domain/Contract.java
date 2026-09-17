@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Contract {
+
     private int id;
     private String contractNumber;
     private String startDate;

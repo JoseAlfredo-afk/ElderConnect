@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface ReadByUserIdDao {
 
-    public List<Message> readByUserId(int userId);
+    List<Message> readByUserId(int userId);
+
 }

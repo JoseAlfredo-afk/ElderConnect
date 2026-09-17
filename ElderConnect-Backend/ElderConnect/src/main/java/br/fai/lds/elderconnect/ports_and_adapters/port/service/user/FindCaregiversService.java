@@ -8,4 +8,5 @@ import java.util.List;
 public interface FindCaregiversService {
 
     List<UserModel> findCaregivers();
+
 }

@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class UserModel {
+
     private int id;
     private String cpf;
     private String fullname;
@@ -26,5 +27,4 @@ public class UserModel {
     public enum UserType {
         IDOSO, CUIDADOR
     }
-
 }

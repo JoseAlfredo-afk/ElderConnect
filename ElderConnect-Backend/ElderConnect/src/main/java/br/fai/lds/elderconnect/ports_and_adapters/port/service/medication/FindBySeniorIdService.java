@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface FindBySeniorIdService {
 
-    public List<MedicationSchedule> findBySeniorId(final int seniorId);
+    List<MedicationSchedule> findBySeniorId(final int seniorId);
+
 }

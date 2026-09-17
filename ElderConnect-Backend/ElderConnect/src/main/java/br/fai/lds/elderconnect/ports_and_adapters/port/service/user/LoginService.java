@@ -5,4 +5,5 @@ import br.fai.lds.elderconnect.domain.UserModel;
 public interface LoginService {
 
     UserModel login(String email, String password);
+
 }

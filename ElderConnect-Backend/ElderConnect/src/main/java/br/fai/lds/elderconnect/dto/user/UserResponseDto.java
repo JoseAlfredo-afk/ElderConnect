@@ -23,8 +23,8 @@ public class UserResponseDto {
     private String neighborhood;
     private String experience;
 
-
     public static UserResponseDto fromUserModel(UserModel userModel) {
+
         UserResponseDto userResponseDto = new UserResponseDto();
 
         userResponseDto.setId(userModel.getId());
@@ -34,7 +34,7 @@ public class UserResponseDto {
         userResponseDto.setUserType(userModel.getUserType().name());
         userResponseDto.setBirthDate(userModel.getBirthDate());
 
-        if(userModel.getUserType() == UserModel.UserType.CUIDADOR){
+        if (userModel.getUserType() == UserModel.UserType.CUIDADOR) {
             userResponseDto.setAvailabilitySchedule(userModel.getAvailabilitySchedule());
             userResponseDto.setStreetAddress(userModel.getStreetAddress());
             userResponseDto.setSpecialization(userModel.getSpecialization());

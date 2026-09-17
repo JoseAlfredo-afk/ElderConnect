@@ -1,4 +1,5 @@
 package br.fai.lds.elderconnect.ports_and_adapters.adapter.service.medication;
+
 import br.fai.lds.elderconnect.domain.Medication;
 import br.fai.lds.elderconnect.domain.MedicationSchedule;
 import br.fai.lds.elderconnect.domain.UserModel;
@@ -26,27 +27,27 @@ public class MedicationScheduleServiceAdapter implements MedicationScheduleServi
     @Override
     public int create(MedicationSchedule medicationSchedule) {
 
-        if (medicationSchedule == null){
+        if (medicationSchedule == null) {
             return 0;
         }
 
-        if(medicationSchedule.getDosageInstructions().isEmpty()){
+        if (medicationSchedule.getDosageInstructions().isEmpty()) {
             return 0;
         }
 
-        if (medicationSchedule.getIntakeTime().isEmpty()){
+        if (medicationSchedule.getIntakeTime().isEmpty()) {
             return 0;
         }
 
         Medication medication = medicationDao.readyById(medicationSchedule.getMedicationId());
 
-        if (medication == null){
+        if (medication == null) {
             return 0;
         }
 
         UserModel userSenior = findSeniorById(medicationSchedule.getSeniorId());
 
-        if ((userSenior == null)){
+        if ((userSenior == null)) {
             return 0;
         }
 
@@ -55,28 +56,33 @@ public class MedicationScheduleServiceAdapter implements MedicationScheduleServi
 
     @Override
     public void delete(int id) {
+
         if (isIdInvalid(id)) {
             return;
         }
+
         medicationScheduleDao.remove(id);
     }
 
     @Override
     public MedicationSchedule findById(int id) {
+
         if (isIdInvalid(id)) {
             return null;
         }
+
         return medicationScheduleDao.readyById(id);
     }
 
-    private UserModel findSeniorById(int id){
+    private UserModel findSeniorById(int id) {
+
         UserModel userSenior = userDao.readyById(id);
 
-        if (userSenior == null){
+        if (userSenior == null) {
             return null;
         }
 
-        if (userSenior.getUserType() != UserModel.UserType.IDOSO){
+        if (userSenior.getUserType() != UserModel.UserType.IDOSO) {
             return null;
         }
 
@@ -89,11 +95,11 @@ public class MedicationScheduleServiceAdapter implements MedicationScheduleServi
     }
 
     @Override
-    public List<MedicationSchedule> findBySeniorId(final int seniorId){
+    public List<MedicationSchedule> findBySeniorId(final int seniorId) {
 
         UserModel userSenior = findSeniorById(seniorId);
 
-        if(userSenior == null){
+        if (userSenior == null) {
             return null;
         }
 
@@ -102,34 +108,34 @@ public class MedicationScheduleServiceAdapter implements MedicationScheduleServi
 
     @Override
     public boolean update(int id, MedicationSchedule medicationSchedule) {
+
         if (isIdInvalid(id) || medicationSchedule == null) {
             return false;
         }
 
         MedicationSchedule dataToUpdate = findById(id);
 
-        if(dataToUpdate == null){
-           return false;
-        }
-
-
-        if(medicationSchedule.getIntakeTime().isEmpty()){
+        if (dataToUpdate == null) {
             return false;
         }
 
+        if (medicationSchedule.getIntakeTime().isEmpty()) {
+            return false;
+        }
 
-        if(medicationSchedule.getDosageInstructions().isEmpty()){
+        if (medicationSchedule.getDosageInstructions().isEmpty()) {
             return false;
         }
 
         dataToUpdate.setDosageInstructions(medicationSchedule.getDosageInstructions());
         dataToUpdate.setIntakeTime(medicationSchedule.getIntakeTime());
 
-        medicationScheduleDao.updateInformation(id,dataToUpdate);
+        medicationScheduleDao.updateInformation(id, dataToUpdate);
+
         return true;
     }
 
     private boolean isIdInvalid(int id) {
-        return id <= 0 ? true: false;
+        return id <= 0 ? true : false;
     }
 }

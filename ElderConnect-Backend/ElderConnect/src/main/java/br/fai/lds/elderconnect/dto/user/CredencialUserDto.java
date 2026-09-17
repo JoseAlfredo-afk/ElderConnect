@@ -1,6 +1,5 @@
 package br.fai.lds.elderconnect.dto.user;
 
-
 import lombok.Getter;
 import lombok.Setter;
 

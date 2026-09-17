@@ -5,4 +5,5 @@ import java.io.IOException;
 public interface ResourceFilesService {
 
     String read(final String resourcePath) throws IOException;
+
 }

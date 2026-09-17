@@ -17,15 +17,15 @@ public class MedicationServiceAdapter implements MedicationService {
     @Override
     public int create(Medication medication) {
 
-        if(medication == null){
+        if (medication == null) {
             return 0;
         }
 
-        if(medication.getMedicationName().isEmpty()){
+        if (medication.getMedicationName().isEmpty()) {
             return 0;
         }
 
-        if(medication.getDose().isEmpty()){
+        if (medication.getDose().isEmpty()) {
             return 0;
         }
 
@@ -34,18 +34,21 @@ public class MedicationServiceAdapter implements MedicationService {
 
     @Override
     public void delete(int id) {
-        if(isIdInvalid(id)){
+
+        if (isIdInvalid(id)) {
             return;
         }
-        medicationDao.remove(id);
 
+        medicationDao.remove(id);
     }
 
     @Override
     public Medication findById(int id) {
+
         if (isIdInvalid(id)) {
             return null;
         }
+
         return medicationDao.readyById(id);
     }
 
@@ -56,6 +59,7 @@ public class MedicationServiceAdapter implements MedicationService {
 
     @Override
     public boolean update(int id, Medication medication) {
+
         if (isIdInvalid(id) || medication == null) {
             return false;
         }
@@ -77,11 +81,12 @@ public class MedicationServiceAdapter implements MedicationService {
         dataToUpdate.setMedicationName(medication.getMedicationName());
         dataToUpdate.setDose(medication.getDose());
 
-        medicationDao.updateInformation(id,dataToUpdate);
+        medicationDao.updateInformation(id, dataToUpdate);
+
         return true;
     }
 
     private boolean isIdInvalid(int id) {
-        return id <= 0 ? true: false;
+        return id <= 0 ? true : false;
     }
 }

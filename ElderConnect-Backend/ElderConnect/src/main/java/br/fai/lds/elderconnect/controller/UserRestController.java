@@ -20,11 +20,12 @@ public class UserRestController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDto>> getEntities(){
+    public ResponseEntity<List<UserResponseDto>> getEntities() {
+
         ArrayList<UserResponseDto> userResponseDtos = new ArrayList<>();
         List<UserModel> userModels = userService.findAll();
 
-        for (UserModel userModel: userModels){
+        for (UserModel userModel : userModels) {
             UserResponseDto userResponseDto = UserResponseDto.fromUserModel(userModel);
             userResponseDtos.add(userResponseDto);
         }
@@ -33,14 +34,16 @@ public class UserRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDto> getEntityById(@PathVariable final int id){
+    public ResponseEntity<UserResponseDto> getEntityById(@PathVariable final int id) {
+
         UserModel userModel = userService.findById(id);
 
         return userModel == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(UserResponseDto.fromUserModel(userModel));
     }
 
     @GetMapping("/caregivers/{id}")
-    public ResponseEntity<UserResponseDto> getCaregiverById(@PathVariable final int id){
+    public ResponseEntity<UserResponseDto> getCaregiverById(@PathVariable final int id) {
+
         UserModel caregiver = userService.findCaregiverById(id);
 
         return caregiver == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(UserResponseDto.fromUserModel(caregiver));
@@ -48,22 +51,24 @@ public class UserRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable final int id) {
+
         userService.delete(id);
+
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/profile/{id}")
-    public ResponseEntity<UserModel> updateProfile(@PathVariable final int id, @RequestBody final UpdateProfileDto updateProfileDto){
+    public ResponseEntity<UserModel> updateProfile(@PathVariable final int id, @RequestBody final UpdateProfileDto updateProfileDto) {
+
         final UserModel userModel = updateProfileDto.toUserModel();
 
         boolean response = userService.update(id, userModel);
 
         return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
-
     }
 
     @PutMapping("/{id}/caregiver-profile")
-    public ResponseEntity<UserModel> updateCaregiverProfile(@PathVariable final int id, @RequestBody final CreateCaregiverProfileDto createCaregiverProfileDto){
+    public ResponseEntity<UserModel> updateCaregiverProfile(@PathVariable final int id, @RequestBody final CreateCaregiverProfileDto createCaregiverProfileDto) {
 
         final UserModel userModel = createCaregiverProfileDto.ToUserModel();
 
@@ -73,11 +78,12 @@ public class UserRestController {
     }
 
     @GetMapping("/caregivers")
-    public ResponseEntity<List<UserResponseDto>> getCaregivers(){
+    public ResponseEntity<List<UserResponseDto>> getCaregivers() {
+
         ArrayList<UserResponseDto> userResponseDtos = new ArrayList<>();
         List<UserModel> caregivers = userService.findCaregivers();
 
-        for (UserModel userModel: caregivers){
+        for (UserModel userModel : caregivers) {
             UserResponseDto userResponseDto = UserResponseDto.fromUserModel(userModel);
             userResponseDtos.add(userResponseDto);
         }
@@ -92,7 +98,7 @@ public class UserRestController {
 
         final int id = userService.create(userModel);
 
-        if(id == 0){
+        if (id == 0) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -102,11 +108,11 @@ public class UserRestController {
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<UserResponseDto> signIn(@RequestBody CredencialUserDto credencialUserDto){
+    public ResponseEntity<UserResponseDto> signIn(@RequestBody CredencialUserDto credencialUserDto) {
 
-        UserModel user = userService.login(credencialUserDto.getEmail(),credencialUserDto.getPassword());
+        UserModel user = userService.login(credencialUserDto.getEmail(), credencialUserDto.getPassword());
 
-        if(user == null){
+        if (user == null) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -114,16 +120,20 @@ public class UserRestController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<UserResponseDto> getEntityByEmail(@PathVariable final String email){
+    public ResponseEntity<UserResponseDto> getEntityByEmail(@PathVariable final String email) {
+
         final UserModel entity = userService.findByEmail(email);
-        if(entity == null){
+
+        if (entity == null) {
             return ResponseEntity.notFound().build();
         }
+
         return ResponseEntity.ok(UserResponseDto.fromUserModel(entity));
     }
 
     @PatchMapping("/update-password")
-    public ResponseEntity<Void> updatePassword(@RequestBody final UpdatePasswordDto updatePasswordDto){
+    public ResponseEntity<Void> updatePassword(@RequestBody final UpdatePasswordDto updatePasswordDto) {
+
         final boolean response = userService.updatePassword(updatePasswordDto.getId(), updatePasswordDto.getOldPassword(), updatePasswordDto.getNewPassword());
 
         return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
@@ -132,10 +142,8 @@ public class UserRestController {
     @PatchMapping("/update-email")
     public ResponseEntity<Void> updateEmail(@RequestBody final UpdateEmailDto updateEmailDto) {
 
-        final boolean response = userService.updateEmail(updateEmailDto.getId(),updateEmailDto.getPassword(), updateEmailDto.getNewEmail());
+        final boolean response = userService.updateEmail(updateEmailDto.getId(), updateEmailDto.getPassword(), updateEmailDto.getNewEmail());
 
         return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
-
-
 }

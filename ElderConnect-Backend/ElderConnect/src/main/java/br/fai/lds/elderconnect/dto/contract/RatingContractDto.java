@@ -11,10 +11,13 @@ public class RatingContractDto {
     private int rating;
     private String comment;
 
-    public Contract toContract(){
+    public Contract toContract() {
+
         Contract contract = new Contract();
+
         contract.setRating(rating);
         contract.setComment(comment);
+
         return contract;
     }
 

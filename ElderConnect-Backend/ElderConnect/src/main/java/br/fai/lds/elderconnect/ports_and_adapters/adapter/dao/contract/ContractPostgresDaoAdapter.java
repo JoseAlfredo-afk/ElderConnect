@@ -17,6 +17,7 @@ public class ContractPostgresDaoAdapter implements ContractDao {
 
     @Override
     public int add(Contract entity) {
+
         String sql = " INSERT INTO contract(contract_number,start_date,contract_value,status,working_hours,description,senior_id,caregiver_id) ";
         sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?); ";
 
@@ -40,17 +41,25 @@ public class ContractPostgresDaoAdapter implements ContractDao {
             preparedStatement.execute();
 
             resultSet = preparedStatement.getGeneratedKeys();
+
             int id = 0;
+
             if (resultSet.next()) {
                 id = resultSet.getInt(1);
             }
+
             connection.commit();
             resultSet.close();
             preparedStatement.close();
+
             return id;
+
         } catch (SQLException e) {
+
             try {
+
                 connection.rollback();
+
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
@@ -67,13 +76,13 @@ public class ContractPostgresDaoAdapter implements ContractDao {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(1, id);
             preparedStatement.execute();
             preparedStatement.close();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
@@ -83,11 +92,12 @@ public class ContractPostgresDaoAdapter implements ContractDao {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if(resultSet.next()){
+            if (resultSet.next()) {
+
                 final int entityId = resultSet.getInt("id");
                 final String contractNumber = resultSet.getString("contract_number");
                 final String startDate = resultSet.getString("start_date");
@@ -125,12 +135,11 @@ public class ContractPostgresDaoAdapter implements ContractDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     @Override
     public List<Contract> readAll() {
+
         final List<Contract> contracts = new ArrayList<>();
         final String sql = " SELECT * FROM contract ";
 
@@ -138,7 +147,8 @@ public class ContractPostgresDaoAdapter implements ContractDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while(resultSet.next()){
+            while (resultSet.next()) {
+
                 final int entityId = resultSet.getInt("id");
                 final String contractNumber = resultSet.getString("contract_number");
                 final String startDate = resultSet.getString("start_date");
@@ -154,6 +164,7 @@ public class ContractPostgresDaoAdapter implements ContractDao {
                 final int rating = resultSet.getInt("rating");
 
                 final Contract data = new Contract();
+
                 data.setId(entityId);
                 data.setContractNumber(contractNumber);
                 data.setStartDate(startDate);
@@ -172,6 +183,7 @@ public class ContractPostgresDaoAdapter implements ContractDao {
 
             resultSet.close();
             preparedStatement.close();
+
             return contracts;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -180,18 +192,20 @@ public class ContractPostgresDaoAdapter implements ContractDao {
 
     @Override
     public void updateInformation(int id, Contract entity) {
+
         String sql = "UPDATE contract SET contract_value = ?, working_hours = ?, description = ? ";
         sql += "WHERE id = ?;";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setFloat(1,entity.getContractValue());
+            preparedStatement.setFloat(1, entity.getContractValue());
             preparedStatement.setString(2, entity.getWorkingHours());
             preparedStatement.setString(3, entity.getDescription());
-            preparedStatement.setInt(4,id);
+            preparedStatement.setInt(4, id);
 
             preparedStatement.execute();
             preparedStatement.close();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -199,18 +213,20 @@ public class ContractPostgresDaoAdapter implements ContractDao {
 
     @Override
     public boolean cancelContract(int id, String endDate) {
+
         String sql = "UPDATE contract SET status = ?, end_date = ? ";
         sql += "WHERE id = ?;";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1,Contract.ContractStatus.CANCELADO.name());
+            preparedStatement.setString(1, Contract.ContractStatus.CANCELADO.name());
             preparedStatement.setDate(2, Date.valueOf(endDate));
-            preparedStatement.setInt(3,id);
+            preparedStatement.setInt(3, id);
 
             preparedStatement.execute();
             preparedStatement.close();
+
             return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -219,18 +235,20 @@ public class ContractPostgresDaoAdapter implements ContractDao {
 
     @Override
     public boolean finishContract(int id, String endDate) {
+
         String sql = "UPDATE contract SET status = ?, end_date = ? ";
         sql += "WHERE id = ?;";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1,Contract.ContractStatus.COMPLETO.name());
+            preparedStatement.setString(1, Contract.ContractStatus.COMPLETO.name());
             preparedStatement.setDate(2, Date.valueOf(endDate));
-            preparedStatement.setInt(3,id);
+            preparedStatement.setInt(3, id);
 
             preparedStatement.execute();
             preparedStatement.close();
+
             return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -239,19 +257,22 @@ public class ContractPostgresDaoAdapter implements ContractDao {
 
     @Override
     public boolean ratingContract(int id, int rating, String comment) {
+
         String sql = "UPDATE contract SET rating = ?, comment = ? ";
         sql += "WHERE id = ?;";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1,rating);
-            preparedStatement.setString(2,comment);
-            preparedStatement.setInt(3,id);
+            preparedStatement.setInt(1, rating);
+            preparedStatement.setString(2, comment);
+            preparedStatement.setInt(3, id);
 
             preparedStatement.execute();
             preparedStatement.close();
+
             return true;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -266,11 +287,12 @@ public class ContractPostgresDaoAdapter implements ContractDao {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1,caregiverId);
+            preparedStatement.setInt(1, caregiverId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while(resultSet.next()){
+            while (resultSet.next()) {
+
                 final int entityId = resultSet.getInt("id");
                 final String contractNumber = resultSet.getString("contract_number");
                 final String startDate = resultSet.getString("start_date");
@@ -286,6 +308,7 @@ public class ContractPostgresDaoAdapter implements ContractDao {
                 final int rating = resultSet.getInt("rating");
 
                 final Contract data = new Contract();
+
                 data.setId(entityId);
                 data.setContractNumber(contractNumber);
                 data.setStartDate(startDate);
@@ -304,6 +327,7 @@ public class ContractPostgresDaoAdapter implements ContractDao {
 
             resultSet.close();
             preparedStatement.close();
+
             return contracts;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -319,11 +343,12 @@ public class ContractPostgresDaoAdapter implements ContractDao {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1,seniorId);
+            preparedStatement.setInt(1, seniorId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while(resultSet.next()){
+            while (resultSet.next()) {
+
                 final int entityId = resultSet.getInt("id");
                 final String contractNumber = resultSet.getString("contract_number");
                 final String startDate = resultSet.getString("start_date");
@@ -334,10 +359,12 @@ public class ContractPostgresDaoAdapter implements ContractDao {
                 final String workingHours = resultSet.getString("working_hours");
                 final String description = resultSet.getString("description");
                 final int Id = resultSet.getInt("senior_id");
-                final int caregiverId = resultSet.getInt("caregiver_id");final String comment = resultSet.getString("comment");
+                final int caregiverId = resultSet.getInt("caregiver_id");
+                final String comment = resultSet.getString("comment");
                 final int rating = resultSet.getInt("rating");
 
                 final Contract data = new Contract();
+
                 data.setId(entityId);
                 data.setContractNumber(contractNumber);
                 data.setStartDate(startDate);
@@ -356,6 +383,7 @@ public class ContractPostgresDaoAdapter implements ContractDao {
 
             resultSet.close();
             preparedStatement.close();
+
             return contracts;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -365,17 +393,19 @@ public class ContractPostgresDaoAdapter implements ContractDao {
 
     @Override
     public boolean activateContract(int id) {
+
         String sql = " UPDATE contract SET status = ?";
         sql += " WHERE id = ?; ";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1,Contract.ContractStatus.ATIVO.name());
-            preparedStatement.setInt(2,id);
+            preparedStatement.setString(1, Contract.ContractStatus.ATIVO.name());
+            preparedStatement.setInt(2, id);
 
             preparedStatement.execute();
             preparedStatement.close();
+
             return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);

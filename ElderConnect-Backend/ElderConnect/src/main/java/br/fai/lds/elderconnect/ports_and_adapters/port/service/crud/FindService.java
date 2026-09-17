@@ -7,4 +7,5 @@ public interface FindService<T> {
     T findById(final int id);
 
     List<T> findAll();
+
 }

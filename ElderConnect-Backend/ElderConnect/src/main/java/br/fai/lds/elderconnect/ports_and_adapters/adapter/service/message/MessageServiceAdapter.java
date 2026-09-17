@@ -8,7 +8,6 @@ import br.fai.lds.elderconnect.ports_and_adapters.port.service.message.MessageSe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -34,28 +33,27 @@ public class MessageServiceAdapter implements MessageService {
             return 0;
         }
 
-        if(isIdInvalid(message.getSenderId())){
+        if (isIdInvalid(message.getSenderId())) {
             return 0;
         }
 
-        if(isIdInvalid(message.getRecipientId())){
+        if (isIdInvalid(message.getRecipientId())) {
             return 0;
         }
 
-        if(message.getSenderId() == message.getRecipientId()){
+        if (message.getSenderId() == message.getRecipientId()) {
             return 0;
         }
 
         UserModel sender = userDao.readyById(message.getSenderId());
 
-        if(sender == null){
+        if (sender == null) {
             return 0;
         }
 
         UserModel recipient = userDao.readyById(message.getRecipientId());
 
-
-        if(recipient == null){
+        if (recipient == null) {
             return 0;
         }
 
@@ -66,6 +64,7 @@ public class MessageServiceAdapter implements MessageService {
 
     @Override
     public Message findById(int id) {
+
         if (isIdInvalid(id)) {
             return null;
         }
@@ -80,6 +79,7 @@ public class MessageServiceAdapter implements MessageService {
 
     @Override
     public List<Message> findConversationByUsersIds(int user1Id, int user2Id) {
+
         if (isIdInvalid(user1Id)) {
             return List.of();
         }
@@ -104,7 +104,7 @@ public class MessageServiceAdapter implements MessageService {
             return List.of();
         }
 
-        return messageDao.readConversationByUsersIds(user1Id,user2Id);
+        return messageDao.readConversationByUsersIds(user1Id, user2Id);
     }
 
     @Override
@@ -124,13 +124,15 @@ public class MessageServiceAdapter implements MessageService {
     }
 
     private boolean isIdInvalid(int id) {
-        return id <= 0 ? true: false;
+        return id <= 0 ? true : false;
     }
 
     private String generateSentAt() {
+
         LocalDateTime dateTimeNow = LocalDateTime.now();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
         return formatter.format(dateTimeNow);
     }
 }

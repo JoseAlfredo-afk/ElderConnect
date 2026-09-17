@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface AuthenticationRestController {
 
     @PostMapping
-    public ResponseEntity<UserModel> authenticate(@RequestBody final AuthenticationDto authenticationDto);
-
+    ResponseEntity<UserModel> authenticate(@RequestBody final AuthenticationDto authenticationDto);
 
 }

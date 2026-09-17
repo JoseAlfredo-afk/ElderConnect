@@ -12,15 +12,16 @@ public class UpdateContractDto {
     private String workingHours;
     private String description;
 
-    public Contract toContract(){
+    public Contract toContract() {
+
         final Contract contract = new Contract();
+
         contract.setContractValue(contractValue);
         contract.setWorkingHours(workingHours);
         contract.setDescription(description);
+
         return contract;
     }
-
-
 
 
 }

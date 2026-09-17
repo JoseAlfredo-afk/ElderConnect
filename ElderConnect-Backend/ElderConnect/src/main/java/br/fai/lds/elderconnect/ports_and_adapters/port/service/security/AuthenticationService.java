@@ -5,4 +5,5 @@ import br.fai.lds.elderconnect.domain.UserModel;
 public interface AuthenticationService {
 
     UserModel authenticate(final String email, final String password);
+
 }

@@ -13,12 +13,15 @@ public class CreateMedicationScheduleDto {
     private int seniorId;
     private int medicationId;
 
-    public MedicationSchedule toMedicationSchedule(){
+    public MedicationSchedule toMedicationSchedule() {
+
         final MedicationSchedule medicationSchedule = new MedicationSchedule();
+
         medicationSchedule.setMedicationId(medicationId);
         medicationSchedule.setSeniorId(seniorId);
         medicationSchedule.setDosageInstructions(dosageInstructions);
         medicationSchedule.setIntakeTime(intakeTime);
+
         return medicationSchedule;
 
     }
