@@ -37,7 +37,7 @@ export class SignIn {
 
       next: (user) => {
 
-        this.authentication.logar();
+        this.authentication.logar(user);
 
         if (user.userType === 'CUIDADOR') {
           this.router.navigate(['/dashboard/caregiver']);

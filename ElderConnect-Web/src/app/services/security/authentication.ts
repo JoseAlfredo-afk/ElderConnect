@@ -15,6 +15,7 @@ export class Authentication {
   private readonly apiUrl = 'http://localhost:8081/api/user';
 
   public usuarioLogado = signal<boolean>(false);
+  public usuarioAtual = signal<AuthenticatedUserDto | null>(null);
   public mostrarAlertaCadastroGlobal: boolean = false;
 
   login(credentials: UserCredentialDto): Observable<AuthenticatedUserDto> {
@@ -24,11 +25,13 @@ export class Authentication {
     );
   }
 
-  logar() {
-    this.usuarioLogado.set(true);
-  }
+logar(user: AuthenticatedUserDto) {
+  this.usuarioAtual.set(user);
+  this.usuarioLogado.set(true);
+}
 
   logout() {
-    this.usuarioLogado.set(false);
+     this.usuarioAtual.set(null);
+  this.usuarioLogado.set(false);
   }
 }
