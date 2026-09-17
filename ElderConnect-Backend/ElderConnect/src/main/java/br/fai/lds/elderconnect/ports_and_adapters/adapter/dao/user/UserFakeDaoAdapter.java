@@ -191,4 +191,14 @@ public class UserFakeDaoAdapter implements UserDao {
         }
         return response;
     }
+
+    @Override
+    public List<UserModel> readCaregivers() {
+        return List.of();
+    }
+
+    @Override
+    public boolean updateCaregiverProfile(int id, UserModel caregiver) {
+        return false;
+    }
 }
