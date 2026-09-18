@@ -47,6 +47,7 @@ public class UserPostgresDaoAdapter implements UserDao {
                 id = resultSet.getInt(1);
             }
             connection.commit();
+            connection.setAutoCommit(true);
             resultSet.close();
             preparedStatement.close();
             return id;

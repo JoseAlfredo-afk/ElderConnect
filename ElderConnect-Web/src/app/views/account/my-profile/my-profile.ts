@@ -1,8 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { Authentication } from '../../../services/security/authentication';
+
 
 export interface PerfilUsuario {
   nome: string;
@@ -20,6 +22,7 @@ export interface PerfilUsuario {
 export class Profile implements OnInit {
 
   private authentication = inject(Authentication);
+  private router = inject(Router);
 
   usuario: PerfilUsuario = {
     nome: '',
@@ -39,6 +42,8 @@ export class Profile implements OnInit {
   carregarDadosPerfil() {
 
     const user = this.authentication.usuarioAtual();
+      console.log('USUÁRIO ATUAL:', user);
+      console.log('ID DO USUÁRIO:', user?.id);
 
     if (user) {
       this.usuario.nome = user.fullname;
@@ -117,7 +122,7 @@ this.authentication.updatePassword(
 
       console.log('E-mail no formulário:', this.usuario.email);
       console.log('E-mail do usuário logado:', user.email);
-      console.log('Senha atual preenchida:', this.senhaAtual ? 'SIM' : 'NÃO');''
+      console.log('Senha atual preenchida:', this.senhaAtual ? 'SIM' : 'NÃO');
 
       if (this.usuario.email !== user.email) {
 
@@ -156,7 +161,37 @@ this.authentication.updatePassword(
       alert('Não foi possível atualizar os dados pessoais.');
     }
   });
-}
+  }
+
+  apagarUsuario() {
+  const user = this.authentication.usuarioAtual();
+
+  if (!user) {
+    alert('Usuário não encontrado.');
+    return;
+  }
+
+  const confirmar = confirm(
+    'Tem certeza que deseja apagar sua conta? Essa ação não pode ser desfeita.'
+  );
+
+  if (!confirmar) {
+    return;
+  }
+
+  this.authentication.deleteUser(user.id).subscribe({
+    next: () => {
+      alert('Conta apagada com sucesso!');
+
+      this.authentication.logout();
+      this.router.navigate(['/']);
+    },
+    error: (erro) => {
+      console.error('Erro ao apagar conta:', erro);
+      alert('Não foi possível apagar sua conta.');
+    }
+  });
+  }
 
 
 
