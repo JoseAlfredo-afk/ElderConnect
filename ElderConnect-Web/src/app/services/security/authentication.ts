@@ -40,4 +40,44 @@ export class Authentication {
      this.usuarioAtual.set(null);
   this.usuarioLogado.set(false);
   }
+
+  updateProfile(id: number, fullname: string, phoneNumber: string): Observable<void> {
+  return this.http.put<void>(
+    `${this.apiUrl}/profile/${id}`,
+    {
+      id: id,
+      fullname: fullname,
+      phoneNumber: phoneNumber
+    }
+  );
+  }
+
+  updateEmail(id: number, password: string, newEmail: string): Observable<void> {
+  return this.http.patch<void>(
+    `${this.apiUrl}/update-email`,
+    {
+      id: id,
+      password: password,
+      newEmail: newEmail
+    }
+  );
+  }
+
+  updatePassword(
+  id: number,
+  oldPassword: string,
+  newPassword: string
+): Observable<void> {
+  return this.http.patch<void>(
+    `${this.apiUrl}/update-password`,
+    {
+      id: id,
+      oldPassword: oldPassword,
+      newPassword: newPassword
+    }
+  );
 }
+
+  
+}
+

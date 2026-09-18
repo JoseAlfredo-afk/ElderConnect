@@ -48,23 +48,9 @@ export class Profile implements OnInit {
     }
   }
 
-  salvarAlteracoes() {
-    if (!this.usuario.nome || !this.usuario.email || !this.usuario.telefone) {
-      alert('Por favor, preencha todos os campos dos Dados Pessoais!');
-      return;
-    }
-
-    localStorage.setItem(
-      'elderconnect_profile',
-      JSON.stringify(this.usuario)
-    );
-
-    localStorage.setItem('user_name', this.usuario.nome);
-
-    alert('Dados pessoais atualizados com sucesso!');
-  }
 
   atualizarSenha() {
+
     if (!this.senhaAtual || !this.novaSenha || !this.confirmarNovaSenha) {
       alert('Preencha todos os campos de senha!');
       return;
@@ -80,12 +66,98 @@ export class Profile implements OnInit {
       return;
     }
 
-    localStorage.setItem('user_password', this.novaSenha);
+    const user = this.authentication.usuarioAtual();
 
+if (!user) {
+  alert('Usuário não encontrado.');
+  return;
+}
+
+this.authentication.updatePassword(
+  user.id,
+  this.senhaAtual,
+  this.novaSenha
+).subscribe({
+  next: () => {
     alert('Senha alterada com sucesso!');
 
     this.senhaAtual = '';
     this.novaSenha = '';
     this.confirmarNovaSenha = '';
+  },
+  error: (erro) => {
+    console.error('Erro ao atualizar senha:', erro);
+    alert('Não foi possível alterar a senha. Verifique sua senha atual.');
   }
+});
+  }
+
+  salvarAlteracoes() {
+  if (!this.usuario.nome || !this.usuario.telefone || !this.usuario.email) {
+    alert('Por favor, preencha todos os campos dos Dados Pessoais!');
+    return;
+  }
+
+  const user = this.authentication.usuarioAtual();
+
+  if (!user) {
+    alert('Usuário não encontrado.');
+    return;
+  }
+
+  this.authentication.updateProfile(
+    user.id,
+    this.usuario.nome,
+    this.usuario.telefone
+  ).subscribe({
+    next: () => {
+
+      user.fullname = this.usuario.nome;
+      user.phoneNumber = this.usuario.telefone;
+
+      console.log('E-mail no formulário:', this.usuario.email);
+      console.log('E-mail do usuário logado:', user.email);
+      console.log('Senha atual preenchida:', this.senhaAtual ? 'SIM' : 'NÃO');''
+
+      if (this.usuario.email !== user.email) {
+
+        if (!this.senhaAtual) {
+          alert('Informe sua senha atual para alterar o e-mail.');
+          return;
+        }
+
+        this.authentication.updateEmail(
+          user.id,
+          this.senhaAtual,
+          this.usuario.email
+        ).subscribe({
+          next: () => {
+            user.email = this.usuario.email;
+            this.authentication.usuarioAtual.set(user);
+
+            alert('Dados pessoais atualizados com sucesso!');
+          },
+          error: (erro) => {
+            console.error('Erro ao atualizar e-mail:', erro);
+            alert('Não foi possível atualizar o e-mail. Verifique sua senha atual.');
+          }
+        });
+
+      } else {
+
+        this.authentication.usuarioAtual.set(user);
+
+        alert('Dados pessoais atualizados com sucesso!');
+      }
+    },
+
+    error: (erro) => {
+      console.error('Erro ao atualizar dados:', erro);
+      alert('Não foi possível atualizar os dados pessoais.');
+    }
+  });
+}
+
+
+
 }
