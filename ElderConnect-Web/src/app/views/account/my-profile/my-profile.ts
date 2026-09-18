@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+import { Authentication } from '../../../services/security/authentication';
 
 export interface PerfilUsuario {
   nome: string;
@@ -16,15 +18,16 @@ export interface PerfilUsuario {
   templateUrl: './my-profile.html'
 })
 export class Profile implements OnInit {
-  // Dados Pessoais do Usuário
+
+  private authentication = inject(Authentication);
+
   usuario: PerfilUsuario = {
-    nome: 'Maria Silva',
-    email: 'maria@email.com',
-    telefone: '(35) 99999-8888',
-    cpf: '123.456.789-00'
+    nome: '',
+    email: '',
+    telefone: '',
+    cpf: ''
   };
 
-  // Campos para Alteração de Senha
   senhaAtual: string = '';
   novaSenha: string = '';
   confirmarNovaSenha: string = '';
@@ -33,39 +36,42 @@ export class Profile implements OnInit {
     this.carregarDadosPerfil();
   }
 
-  // Carrega os dados gravados no localStorage
   carregarDadosPerfil() {
-    const salvos = localStorage.getItem('elderconnect_profile');
-    if (salvos) {
-      this.usuario = JSON.parse(salvos);
+
+    const user = this.authentication.usuarioAtual();
+
+    if (user) {
+      this.usuario.nome = user.fullname;
+      this.usuario.cpf = user.cpf;
+      this.usuario.email = user.email;
+      this.usuario.telefone = user.phoneNumber;
     }
   }
 
-  // Salva Nome, E-mail e Telefone alterados
   salvarAlteracoes() {
     if (!this.usuario.nome || !this.usuario.email || !this.usuario.telefone) {
       alert('Por favor, preencha todos os campos dos Dados Pessoais!');
       return;
     }
 
-    // Salva o objeto completo do perfil no localStorage
-    localStorage.setItem('elderconnect_profile', JSON.stringify(this.usuario));
+    localStorage.setItem(
+      'elderconnect_profile',
+      JSON.stringify(this.usuario)
+    );
 
-    // Atualiza também o nome global para refletir nos Dashboards
     localStorage.setItem('user_name', this.usuario.nome);
 
     alert('Dados pessoais atualizados com sucesso!');
   }
 
-  // Processa a troca de senha
   atualizarSenha() {
     if (!this.senhaAtual || !this.novaSenha || !this.confirmarNovaSenha) {
       alert('Preencha todos os campos de senha!');
       return;
     }
 
-    if (this.novaSenha.length < 6) {
-      alert('A nova senha deve ter no mínimo 6 caracteres!');
+    if (this.novaSenha.length < 8) {
+      alert('A nova senha deve ter no mínimo 8 caracteres!');
       return;
     }
 
@@ -74,10 +80,10 @@ export class Profile implements OnInit {
       return;
     }
 
-    // Grava a nova senha mockada
     localStorage.setItem('user_password', this.novaSenha);
 
     alert('Senha alterada com sucesso!');
+
     this.senhaAtual = '';
     this.novaSenha = '';
     this.confirmarNovaSenha = '';

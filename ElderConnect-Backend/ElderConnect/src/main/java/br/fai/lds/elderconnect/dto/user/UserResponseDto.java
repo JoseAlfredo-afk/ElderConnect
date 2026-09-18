@@ -12,6 +12,7 @@ public class UserResponseDto {
 
     private int id;
     private String fullname;
+    private String cpf;
     private String email;
     private String phoneNumber;
     private String userType;
@@ -29,6 +30,7 @@ public class UserResponseDto {
 
         userResponseDto.setId(userModel.getId());
         userResponseDto.setFullname(userModel.getFullname());
+        userResponseDto.setCpf(userModel.getCpf());
         userResponseDto.setEmail(userModel.getEmail());
         userResponseDto.setPhoneNumber(userModel.getPhoneNumber());
         userResponseDto.setUserType(userModel.getUserType().name());
