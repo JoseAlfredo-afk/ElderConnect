@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { UserCredentialDto } from '../../models/dto/user-credential-dto';
 import { AuthenticatedUserDto } from '../../models/dto/authenticated-user-dto';
+import { CreateUserDto } from '../../models/dto/create-user-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -25,10 +26,15 @@ export class Authentication {
     );
   }
 
-logar(user: AuthenticatedUserDto) {
-  this.usuarioAtual.set(user);
-  this.usuarioLogado.set(true);
-}
+  signUp(user:CreateUserDto): Observable<void>{
+      return this.http.post<void>
+      (this.apiUrl,user);
+  }
+
+  logar(user: AuthenticatedUserDto) {
+    this.usuarioAtual.set(user);
+    this.usuarioLogado.set(true);
+  }
 
   logout() {
      this.usuarioAtual.set(null);
