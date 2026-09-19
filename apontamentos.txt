@@ -1,0 +1,7 @@
+Campo para comprovação de documentos/certificados do cuidador
+Deixar senha não visivel
+aumentar espaço do campo para experiencia do cuidador
+LGPD
+Histórico de vinculos entre idoso e cuidador
+Histórico dos medicamentos excluidos
+Fluxo de pagamento do serviço
