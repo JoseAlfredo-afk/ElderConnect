@@ -75,11 +75,11 @@
       </div>
     </div>
 
-    <!-- Lista -->
     <div class="d-flex flex-column gap-3">
       <div *ngFor="let c of cuidadoresFiltrados" class="card border-0 shadow-sm p-3 rounded-4">
         <div class="row align-items-center">
-          <div class="col-md-5 d-flex align-items-center">
+
+          <div class="col-md-4 d-flex align-items-center">
             <div
               class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
               style="width: 56px; height: 56px;">
@@ -92,7 +92,15 @@
             </div>
           </div>
 
-          <div class="col-md-4 my-2 my-md-0">
+          <div class="col-md-3 my-2 my-md-0">
+            <div class="text-muted small mb-1 fw-semibold">Disponibilidade</div>
+            <span
+              class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-3 fw-medium">
+              <i class="bi bi-clock me-1"></i> {{ c.disponibilidade }}
+            </span>
+          </div>
+
+          <div class="col-md-3 my-2 my-md-0">
             <div class="d-flex align-items-center gap-1 mb-1">
               <span class="text-warning fs-5">★</span>
               <span class="fw-bold text-dark fs-5">{{ c.avaliacao | number:'1.1-1' }}</span>
@@ -103,11 +111,12 @@
             </div>
           </div>
 
-          <div class="col-md-3 text-md-end">
-            <button (click)="verPerfil(c)" class="btn btn-primary px-4 rounded-3 fw-semibold">
+          <div class="col-md-2 text-md-end mt-2 mt-md-0">
+            <button (click)="verPerfil(c)" class="btn btn-primary px-3 w-100 w-md-auto rounded-3 fw-semibold">
               Ver perfil
             </button>
           </div>
+
         </div>
       </div>
 
