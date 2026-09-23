@@ -19,13 +19,14 @@ public class BasicAuthenticationRestController implements AuthenticationRestCont
         this.authenticationService = authenticationService;
     }
 
+
     @PostMapping
     @Override
     public ResponseEntity<UserModel> authenticate(@RequestBody AuthenticationDto authenticationDto) {
 
         UserModel authenticatedUser = authenticationService.authenticate(authenticationDto.getEmail(), authenticationDto.getPassword());
 
-        if (authenticatedUser == null){
+        if (authenticatedUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
