@@ -6,7 +6,6 @@ class br.fai.lds.elderconnect.controller.UserRestController {
 + ResponseEntity<Void> delete(int)
 + ResponseEntity<UserModel> update(int,UpdateFullnameDto)
 + ResponseEntity<UserModel> create(CreateUserDto)
-+ ResponseEntity<UserModel> signIn(CredencialUserDto)
 + ResponseEntity<UserModel> getEntityByEmail(String)
 + ResponseEntity<Void> updatePassword(UpdatePasswordDto)
 }
@@ -65,15 +64,6 @@ class br.fai.lds.elderconnect.domain.Contract {
 - String description
 - UserModel senior
 - UserModel caregiver
-}
-
-interface br.fai.lds.elderconnect.ports_and_adapters.port.service.user.LoginService {
-~ UserModel login(String,String)
-}
-
-class br.fai.lds.elderconnect.dto.user.CredencialUserDto {
-- String email
-- String password
 }
 
 interface br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.CrudDao {
@@ -142,7 +132,6 @@ interface br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserServi
 class br.fai.lds.elderconnect.ports_and_adapters.adapter.service.user.UserServiceAdapter {
 - UserDao userDao
 + int create(UserModel)
-+ UserModel login(String,String)
 + void delete(int)
 + boolean update(int,UserModel)
 + UserModel findById(int)
@@ -282,7 +271,6 @@ br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.FindService <|-- br
 br.fai.lds.elderconnect.ports_and_adapters.port.service.crud.CrudService <|-- br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService
 br.fai.lds.elderconnect.ports_and_adapters.port.service.user.FindByEmailService <|-- br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService
 br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UpdatePasswordService <|-- br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService
-br.fai.lds.elderconnect.ports_and_adapters.port.service.user.LoginService <|-- br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService
 br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService <|.. br.fai.lds.elderconnect.ports_and_adapters.adapter.service.user.UserServiceAdapter
 br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.CrudDao <|-- br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao
 br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.ReadByEmailDao <|-- br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao

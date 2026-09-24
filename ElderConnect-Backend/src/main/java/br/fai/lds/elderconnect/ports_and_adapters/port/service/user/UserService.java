@@ -8,7 +8,6 @@ public interface UserService extends
         FindByEmailService,
         UpdatePasswordService,
         UpdateEmailService,
-        LoginService,
         FindCaregiverByIdService,
         FindCaregiversService,
         UpdateCaregiverProfileService {

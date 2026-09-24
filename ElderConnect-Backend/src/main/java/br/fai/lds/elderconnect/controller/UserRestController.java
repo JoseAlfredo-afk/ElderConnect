@@ -107,18 +107,6 @@ public class UserRestController {
         return ResponseEntity.created(uri).build();
     }
 
-    @PostMapping("/sign-in")
-    public ResponseEntity<UserResponseDto> signIn(@RequestBody CredencialUserDto credencialUserDto) {
-
-        UserModel user = userService.login(credencialUserDto.getEmail(), credencialUserDto.getPassword());
-
-        if (user == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        return ResponseEntity.ok(UserResponseDto.fromUserModel(user));
-    }
-
     @GetMapping("/email/{email}")
     public ResponseEntity<UserResponseDto> getEntityByEmail(@PathVariable final String email) {
 

@@ -2,6 +2,7 @@ package br.fai.lds.elderconnect.controller;
 
 import br.fai.lds.elderconnect.domain.UserModel;
 import br.fai.lds.elderconnect.dto.user.AuthenticationDto;
+import br.fai.lds.elderconnect.dto.user.UserResponseDto;
 import br.fai.lds.elderconnect.ports_and_adapters.port.rest_controllers.AuthenticationRestController;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.security.AuthenticationService;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class BasicAuthenticationRestController implements AuthenticationRestCont
 
     @PostMapping
     @Override
-    public ResponseEntity<UserModel> authenticate(@RequestBody AuthenticationDto authenticationDto) {
+    public ResponseEntity<UserResponseDto> authenticate(@RequestBody AuthenticationDto authenticationDto) {
 
         UserModel authenticatedUser = authenticationService.authenticate(authenticationDto.getEmail(), authenticationDto.getPassword());
 
@@ -30,6 +31,6 @@ public class BasicAuthenticationRestController implements AuthenticationRestCont
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        return ResponseEntity.ok(authenticatedUser);
+        return ResponseEntity.ok(UserResponseDto.fromUserModel(authenticatedUser));
     }
 }
