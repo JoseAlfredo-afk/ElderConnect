@@ -49,6 +49,7 @@ public class ContractPostgresDaoAdapter implements ContractDao {
             }
 
             connection.commit();
+            connection.setAutoCommit(true);
             resultSet.close();
             preparedStatement.close();
 
