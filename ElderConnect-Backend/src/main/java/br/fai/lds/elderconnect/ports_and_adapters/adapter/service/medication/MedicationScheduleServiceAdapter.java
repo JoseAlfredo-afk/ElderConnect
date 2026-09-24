@@ -31,11 +31,11 @@ public class MedicationScheduleServiceAdapter implements MedicationScheduleServi
             return 0;
         }
 
-        if (medicationSchedule.getDosageInstructions().isEmpty()) {
+        if (medicationSchedule.getDosageInstructions() == null || medicationSchedule.getDosageInstructions().isEmpty()) {
             return 0;
         }
 
-        if (medicationSchedule.getIntakeTime().isEmpty()) {
+        if (medicationSchedule.getIntakeTime() == null || medicationSchedule.getIntakeTime().isEmpty()) {
             return 0;
         }
 
@@ -119,11 +119,11 @@ public class MedicationScheduleServiceAdapter implements MedicationScheduleServi
             return false;
         }
 
-        if (medicationSchedule.getIntakeTime().isEmpty()) {
+        if (medicationSchedule.getIntakeTime() == null || medicationSchedule.getIntakeTime().isEmpty()) {
             return false;
         }
 
-        if (medicationSchedule.getDosageInstructions().isEmpty()) {
+        if (medicationSchedule.getDosageInstructions() == null || medicationSchedule.getDosageInstructions().isEmpty()) {
             return false;
         }
 

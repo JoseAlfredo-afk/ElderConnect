@@ -21,11 +21,11 @@ public class MedicationServiceAdapter implements MedicationService {
             return 0;
         }
 
-        if (medication.getMedicationName().isEmpty()) {
+        if (medication.getMedicationName() == null || medication.getMedicationName().isEmpty()) {
             return 0;
         }
 
-        if (medication.getDose().isEmpty()) {
+        if (medication.getDose() == null || medication.getDose().isEmpty()) {
             return 0;
         }
 
@@ -70,11 +70,11 @@ public class MedicationServiceAdapter implements MedicationService {
             return false;
         }
 
-        if (medication.getMedicationName().isEmpty()) {
+        if (medication.getMedicationName() == null || medication.getMedicationName().isEmpty()) {
             return false;
         }
 
-        if (medication.getDose().isEmpty()) {
+        if (medication.getDose() == null || medication.getDose().isEmpty()) {
             return false;
         }
 
