@@ -14,6 +14,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("api/contracts")
 public class ContractRestController {
