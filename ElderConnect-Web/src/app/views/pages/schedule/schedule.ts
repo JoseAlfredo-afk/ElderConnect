@@ -20,8 +20,7 @@ interface Appointment {
     FormsModule,
     RouterLink
   ],
-  templateUrl: './schedule.html',
-  styleUrl: './schedule.css'
+  templateUrl: './schedule.html'
 })
 export class Agenda implements OnInit {
 
