@@ -16,14 +16,6 @@ export interface CuidadorPerfil {
   telefone: string;
 }
 
-export interface AvaliacaoItem {
-  cuidadorId: number;
-  cuidadorNome: string;
-  estrelas: number;
-  comentario: string;
-  data: string;
-}
-
 @Component({
   selector: 'app-profile-caregiver',
   standalone: true,
@@ -47,9 +39,6 @@ export class ProfileCaregiver implements OnInit {
   exibindoModalVinculo = false;
   idosoSelecionado = 'José da Silva (78 anos)';
   dataInicio = '';
-
-  exibindoModalAvaliacoes = false;
-  listaAvaliacoes: AvaliacaoItem[] = [];
 
   constructor(private router: Router) { }
 
@@ -88,60 +77,6 @@ export class ProfileCaregiver implements OnInit {
         console.error('Erro ao carregar perfil', e);
       }
     }
-
-    this.carregarAvaliacoes();
-  }
-
-  carregarAvaliacoes(): void {
-    const salvas = localStorage.getItem('elderconnect_avaliacoes');
-    let todas: AvaliacaoItem[] = [];
-
-    if (salvas) {
-      try {
-        todas = JSON.parse(salvas);
-      } catch (e) {
-        todas = [];
-      }
-    }
-
-    const filtradas = todas.filter(a => a.cuidadorId === this.cuidador.id);
-
-    if (filtradas.length > 0) {
-      this.listaAvaliacoes = filtradas.reverse();
-    } else {
-      this.listaAvaliacoes = [
-        {
-          cuidadorId: this.cuidador.id,
-          cuidadorNome: this.cuidador.nome,
-          estrelas: 5,
-          comentario: 'Excelente profissional, muito pontual e atenciosa com meu pai.',
-          data: '10/09/2026'
-        },
-        {
-          cuidadorId: this.cuidador.id,
-          cuidadorNome: this.cuidador.nome,
-          estrelas: 5,
-          comentario: 'Muito carinhosa e dedicada. Recomendo fortemente!',
-          data: '02/08/2026'
-        },
-        {
-          cuidadorId: this.cuidador.id,
-          cuidadorNome: this.cuidador.nome,
-          estrelas: 4,
-          comentario: 'Ótima experiência no acompanhamento diário e administração dos medicamentos.',
-          data: '15/07/2026'
-        }
-      ];
-    }
-  }
-
-  abrirModalAvaliacoes(): void {
-    this.carregarAvaliacoes();
-    this.exibindoModalAvaliacoes = true;
-  }
-
-  fecharModalAvaliacoes(): void {
-    this.exibindoModalAvaliacoes = false;
   }
 
   solicitarVinculo(): void {

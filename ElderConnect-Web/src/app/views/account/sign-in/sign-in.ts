@@ -1,42 +1,56 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { Authentication } from '../../../services/security/authentication';
+import { UserCredentialDto } from '../../../models/dto/user-credential-dto';
 
 @Component({
   selector: 'app-sign-in',
   standalone: true,
-  imports: [RouterLink, FormsModule, CommonModule],
+  imports: [FormsModule],
   templateUrl: './sign-in.html',
   styleUrl: './sign-in.css'
 })
 export class SignIn {
-  emailInput: string = '';
-  senhaInput: string = '';
-  mostrarSucesso: boolean = false;
 
-  private authService = inject(Authentication);
+  private authentication = inject(Authentication);
   private router = inject(Router);
 
-  logar(event: Event) {
-    event.preventDefault();
+  emailInput: string = '';
+  senhaInput: string = '';
 
-    if (this.emailInput.trim() !== '' && this.senhaInput.trim() !== '') {
-      // 1. Marca o usuário como autenticado no serviço
-      this.authService.logar();
+  mensagemErro: string = '';
 
-      // 2. Simulação de perfil baseada no e-mail:
-      // Se o e-mail contiver "cuidador", vai para o dashboard de cuidador.
-      // Caso contrário, direciona para o novo Dashboard do Idoso.
-      if (this.emailInput.toLowerCase().includes('cuidador')) {
-        this.router.navigate(['/dashboard/caregiver']);
-      } else {
-        this.router.navigate(['/dashboard/elder']);
+  logar(event?: Event) {
+
+    event?.preventDefault();
+
+    this.mensagemErro = '';
+
+    const credentials: UserCredentialDto = {
+      email: this.emailInput,
+      password: this.senhaInput
+    };
+
+    this.authentication.login(credentials).subscribe({
+
+      next: (user) => {
+
+        this.authentication.logar(user);
+
+        if (user.userType === 'CUIDADOR') {
+          this.router.navigate(['/dashboard/caregiver']);
+        } else if (user.userType === 'IDOSO') {
+          this.router.navigate(['/dashboard/elder']);
+        }
+
+      },
+
+      error: () => {
+        this.mensagemErro = 'E-mail ou senha inválidos.';
       }
 
-    } else {
-      alert('Por favor, preencha o e-mail e a senha de simulação.');
-    }
+    });
   }
 }

@@ -1,0 +1,55 @@
+package br.fai.lds.elderconnect.configuration;
+
+import br.fai.lds.elderconnect.domain.MedicationSchedule;
+import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.contract.ContractPostgresDaoAdapter;
+import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.medication.MedicationPostgresDaoAdapter;
+import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.medication.MedicationSchedulePostgresDaoAdapter;
+import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.message.MessagePostgresDaoAdapter;
+import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user.UserFakeDaoAdapter;
+import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user.UserPostgresDaoAdapter;
+import br.fai.lds.elderconnect.ports_and_adapters.port.dao.contract.ContractDao;
+import br.fai.lds.elderconnect.ports_and_adapters.port.dao.medication.MedicationDao;
+import br.fai.lds.elderconnect.ports_and_adapters.port.dao.medication.MedicationScheduleDao;
+import br.fai.lds.elderconnect.ports_and_adapters.port.dao.message.MessageDao;
+import br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao;
+import org.apache.catalina.User;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.sql.Connection;
+
+@Configuration
+public class AppConfiguration {
+
+
+    public UserDao getUserFakeDao(){
+        return new UserFakeDaoAdapter();
+    }
+
+    @Bean
+    public UserDao getUserPostgresDao(final Connection connection){
+        return new UserPostgresDaoAdapter(connection);
+    }
+
+    @Bean
+    public MedicationDao getMedicationDao(final Connection connection){
+        return new MedicationPostgresDaoAdapter(connection);
+    }
+
+    @Bean
+    public MedicationScheduleDao getMedicationScheduleDao(final Connection connection){
+        return new MedicationSchedulePostgresDaoAdapter(connection);
+    }
+
+    @Bean
+    public ContractDao getContractDao(final Connection connection){
+        return new ContractPostgresDaoAdapter(connection);
+    }
+
+    @Bean
+    public MessageDao getMessageDao(final Connection connection){
+        return new MessagePostgresDaoAdapter(connection);
+    }
+
+
+}

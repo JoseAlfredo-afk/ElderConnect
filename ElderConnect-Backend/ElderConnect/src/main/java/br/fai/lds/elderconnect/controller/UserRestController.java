@@ -1,0 +1,141 @@
+package br.fai.lds.elderconnect.controller;
+
+import br.fai.lds.elderconnect.domain.UserModel;
+import br.fai.lds.elderconnect.dto.user.*;
+import br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+@CrossOrigin(origins = "http://localhost:4200")
+@RestController
+@RequestMapping("/api/user")
+public class UserRestController {
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping
+    public ResponseEntity<List<UserResponseDto>> getEntities(){
+        ArrayList<UserResponseDto> userResponseDtos = new ArrayList<>();
+        List<UserModel> userModels = userService.findAll();
+
+        for (UserModel userModel: userModels){
+            UserResponseDto userResponseDto = UserResponseDto.fromUserModel(userModel);
+            userResponseDtos.add(userResponseDto);
+        }
+
+        return ResponseEntity.ok(userResponseDtos);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDto> getEntityById(@PathVariable final int id){
+        UserModel userModel = userService.findById(id);
+
+        return userModel == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(UserResponseDto.fromUserModel(userModel));
+    }
+
+    @GetMapping("/caregivers/{id}")
+    public ResponseEntity<UserResponseDto> getCaregiverById(@PathVariable final int id){
+        UserModel caregiver = userService.findCaregiverById(id);
+
+        return caregiver == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(UserResponseDto.fromUserModel(caregiver));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable final int id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/profile/{id}")
+    public ResponseEntity<UserModel> updateProfile(@PathVariable final int id, @RequestBody final UpdateProfileDto updateProfileDto){
+        final UserModel userModel = updateProfileDto.toUserModel();
+
+        boolean response = userService.update(id, userModel);
+
+        return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+
+    }
+
+    @PutMapping("/{id}/caregiver-profile")
+    public ResponseEntity<UserModel> updateCaregiverProfile(@PathVariable final int id, @RequestBody final CreateCaregiverProfileDto createCaregiverProfileDto){
+
+        final UserModel userModel = createCaregiverProfileDto.ToUserModel();
+
+        boolean response = userService.updateCaregiverProfile(id, userModel);
+
+        return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/caregivers")
+    public ResponseEntity<List<UserResponseDto>> getCaregivers(){
+        ArrayList<UserResponseDto> userResponseDtos = new ArrayList<>();
+        List<UserModel> caregivers = userService.findCaregivers();
+
+        for (UserModel userModel: caregivers){
+            UserResponseDto userResponseDto = UserResponseDto.fromUserModel(userModel);
+            userResponseDtos.add(userResponseDto);
+        }
+
+        return ResponseEntity.ok(userResponseDtos);
+    }
+
+    @PostMapping
+    public ResponseEntity<UserModel> create(@RequestBody final CreateUserDto createUserDto) {
+
+        UserModel userModel = createUserDto.toUserModel();
+
+        final int id = userService.create(userModel);
+
+        if(id == 0){
+            return ResponseEntity.badRequest().build();
+        }
+
+        final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/").buildAndExpand(id).toUri();
+
+        return ResponseEntity.created(uri).build();
+    }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<UserResponseDto> signIn(@RequestBody CredencialUserDto credencialUserDto){
+
+        UserModel user = userService.login(credencialUserDto.getEmail(),credencialUserDto.getPassword());
+
+        if(user == null){
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(UserResponseDto.fromUserModel(user));
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserResponseDto> getEntityByEmail(@PathVariable final String email){
+        final UserModel entity = userService.findByEmail(email);
+        if(entity == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(UserResponseDto.fromUserModel(entity));
+    }
+
+    @PatchMapping("/update-password")
+    public ResponseEntity<Void> updatePassword(@RequestBody final UpdatePasswordDto updatePasswordDto){
+        final boolean response = userService.updatePassword(updatePasswordDto.getId(), updatePasswordDto.getOldPassword(), updatePasswordDto.getNewPassword());
+
+        return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+    }
+
+    @PatchMapping("/update-email")
+    public ResponseEntity<Void> updateEmail(@RequestBody final UpdateEmailDto updateEmailDto) {
+
+        final boolean response = userService.updateEmail(updateEmailDto.getId(),updateEmailDto.getPassword(), updateEmailDto.getNewEmail());
+
+        return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+    }
+
+
+}

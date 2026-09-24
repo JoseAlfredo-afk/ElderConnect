@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Authentication } from '../../../services/security/authentication';
-
+import { CreateUserDto } from '../../../models/dto/create-user-dto';
 @Component({
   selector: 'app-sign-up',
   standalone: true,
@@ -52,9 +52,47 @@ export class SignUp {
     this.cadastroForm.get(tipo === 'data' ? 'dataNascimento' : tipo)?.setValue(valor, { emitEvent: false });
   }
 
+
+
   submeter() {
+
+
+
     if (this.cadastroForm.valid) {
-      console.log('Dados do cadastro base:', this.cadastroForm.value);
+
+      const birthDate: string = this.cadastroForm.value.dataNascimento;
+      const partesData = birthDate.split('/');
+      const dataNascimento = `${partesData[2]}-${partesData[1]}-${partesData[0]}`;
+
+
+      const user ={
+      fullname: this.cadastroForm.value.nome,
+      birthDate: dataNascimento,
+      
+      
+
+      cpf: this.cadastroForm.value.cpf,
+      email: this.cadastroForm.value.email,
+      phoneNumber: this.cadastroForm.value.telefone,
+      password: this.cadastroForm.value.senha,
+      userType:this.tipoConta.toUpperCase()
+
+      }
+
+      console.log('Enviando cadastro:', user);
+
+      this.authService.signUp(user).subscribe({
+        next: () => {
+          console.log('Cadastro realizado com sucesso!');
+
+          this.authService.mostrarAlertaCadastroGlobal = true;
+          this.router.navigate(['/account/sign-in']);
+        },
+        error: (erro) => {
+          console.error('Erro ao cadastrar usuário:', erro);
+          alert('Erro ao realizar cadastro.');
+        }
+      });
 
       if (this.tipoConta === 'cuidador') {
 
