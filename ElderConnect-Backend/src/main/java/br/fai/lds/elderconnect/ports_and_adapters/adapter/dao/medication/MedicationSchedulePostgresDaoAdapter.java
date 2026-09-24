@@ -47,6 +47,7 @@ public class MedicationSchedulePostgresDaoAdapter implements MedicationScheduleD
             }
 
             connection.commit();
+            connection.setAutoCommit(true);
             resultSet.close();
             preparedStatement.close();
 

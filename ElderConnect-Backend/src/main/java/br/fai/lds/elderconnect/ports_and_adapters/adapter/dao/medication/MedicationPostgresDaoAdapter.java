@@ -42,6 +42,7 @@ public class MedicationPostgresDaoAdapter implements MedicationDao {
                 id = resultSet.getInt(1);
             }
             connection.commit();
+            connection.setAutoCommit(true);
             resultSet.close();
             preparedStatement.close();
 

@@ -44,6 +44,7 @@ public class MessagePostgresDaoAdapter implements MessageDao {
             }
 
             connection.commit();
+            connection.setAutoCommit(true);
             resultSet.close();
             preparedStatement.close();
 
