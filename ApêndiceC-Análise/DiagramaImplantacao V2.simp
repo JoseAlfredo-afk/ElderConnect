@@ -76,6 +76,7 @@
   </counters>
   <alias-groups />
   <management uid="md-5b403e0e968c4d1ea4080aaac486ba6d" name="" task-id-sequence="0">
+    <working-schedule uid="ws-b23bf1ed82d0401494745d6dcee4caa8" hours="8" monday="8" tuesday="8" wednesday="8" thursday="8" friday="8" saturday="0" sunday="0" />
     <persons>
       <person id="">
         <first-name />
@@ -85,6 +86,7 @@
         <phone-number />
         <description />
         <color>#00000000</color>
+        <working-schedule uid="ws-6eaddf768db24adabed7d14af460107c" hours="8" monday="8" tuesday="8" wednesday="8" thursday="8" friday="8" saturday="0" sunday="0" />
       </person>
     </persons>
     <teams />
@@ -153,7 +155,7 @@
           <version />
         </meta>
         <abstract-items>
-          <item id="e4189c54d7ea452689fdc9249724df64" cid="ELEM001" type="device" name="Dispositivo do Usuário" creator="" creation-date="09/17/2026 13:17:52">
+          <item id="e4189c54d7ea452689fdc9249724df64" cid="ELEM001" type="device" name="Dispositivo do Usuário" creator="" creation-date="09/17/2026 13:17:52" visibility="undefined">
             <stereotypes>
               <stereotype name="device" />
             </stereotypes>
@@ -162,7 +164,7 @@
             </stereotype-instances>
             <owned-items />
           </item>
-          <item id="4fc26f3374284cc18a5f12f32eca910b" cid="ELEM005" type="device" name="Servidor de Banco de Dados" creator="" creation-date="09/17/2026 15:46:57">
+          <item id="4fc26f3374284cc18a5f12f32eca910b" cid="ELEM005" type="device" name="Servidor de Banco de Dados" creator="" creation-date="09/17/2026 15:46:57" visibility="undefined">
             <stereotypes>
               <stereotype name="device" />
             </stereotypes>
@@ -180,7 +182,7 @@
             </stereotype-instances>
             <artifact filename="ElderConnect-Web" />
           </item>
-          <item id="3743a0be0bcf4e1f923e75f14c271cc6" cid="ELEM002" type="execution-environment" name="Navegador Web" owner="e4189c54d7ea452689fdc9249724df64" creator="" creation-date="09/17/2026 14:07:21" visibility="undefined">
+          <item id="3743a0be0bcf4e1f923e75f14c271cc6" cid="ELEM002" type="execution-environment" name="Servidor Web" owner="e4189c54d7ea452689fdc9249724df64" creator="" creation-date="09/17/2026 14:07:21" visibility="undefined">
             <stereotypes>
               <stereotype name="executionEnvironment" />
             </stereotypes>
@@ -189,10 +191,7 @@
             </stereotype-instances>
             <owned-items />
           </item>
-          <item id="b51b14148c6143f1b49f5757ca7adadb" cid="CPT006" type="component" name="Service" owner="cc615d74d2454328861b3ba1a2f43d66" creator="" creation-date="09/17/2026 15:23:00">
-            <component />
-          </item>
-          <item id="ee720ca014f84faeb3de794c4f07c8af" cid="CPT004" type="component" name="DAO" owner="2b429856157240889452227ccff83a1f" creator="" creation-date="09/17/2026 14:33:53">
+          <item id="ee720ca014f84faeb3de794c4f07c8af" cid="CPT004" type="component" name="DAO" owner="2b429856157240889452227ccff83a1f" creator="" creation-date="09/17/2026 14:33:53" visibility="undefined">
             <stereotypes>
               <stereotype name="component" />
             </stereotypes>
@@ -201,10 +200,10 @@
             </stereotype-instances>
             <component />
           </item>
-          <item id="436aa14fbffd4dfa84fc2403a6a69f3f" cid="CPT005" type="component" name="Controller" owner="cc615d74d2454328861b3ba1a2f43d66" creator="" creation-date="09/17/2026 15:22:57">
+          <item id="b51b14148c6143f1b49f5757ca7adadb" cid="CPT006" type="component" name="Service" owner="cc615d74d2454328861b3ba1a2f43d66" creator="" creation-date="09/17/2026 15:23:00" visibility="undefined">
             <component />
           </item>
-          <item id="e3b2484f6eaa41c09bbd0e7bfd718220" cid="CPT003" type="component" name="Service" owner="2b429856157240889452227ccff83a1f" creator="" creation-date="09/17/2026 14:27:18">
+          <item id="e3b2484f6eaa41c09bbd0e7bfd718220" cid="CPT003" type="component" name="Service" owner="2b429856157240889452227ccff83a1f" creator="" creation-date="09/17/2026 14:27:18" visibility="undefined">
             <stereotypes>
               <stereotype name="component" />
             </stereotypes>
@@ -213,7 +212,10 @@
             </stereotype-instances>
             <component />
           </item>
-          <item id="2b429856157240889452227ccff83a1f" cid="ELEM003" type="device" name="Servidor de Aplicação" creator="" creation-date="09/17/2026 14:13:39">
+          <item id="436aa14fbffd4dfa84fc2403a6a69f3f" cid="CPT005" type="component" name="Controller" owner="cc615d74d2454328861b3ba1a2f43d66" creator="" creation-date="09/17/2026 15:22:57" visibility="undefined">
+            <component />
+          </item>
+          <item id="2b429856157240889452227ccff83a1f" cid="ELEM003" type="device" name="Servidor de Aplicação" creator="" creation-date="09/17/2026 14:13:39" visibility="undefined">
             <stereotypes>
               <stereotype name="device" />
             </stereotypes>
@@ -222,18 +224,11 @@
             </stereotype-instances>
             <owned-items />
           </item>
-          <item id="a76ed1423c9341bb838a6439a7fa35f2" cid="ELEM008" type="communication-path" name="JCBD Postgres" creator="" creation-date="09/17/2026 15:56:24" from="2b429856157240889452227ccff83a1f" to="4fc26f3374284cc18a5f12f32eca910b" visibility="package">
+          <item id="a76ed1423c9341bb838a6439a7fa35f2" cid="ELEM008" type="communication-path" name="JDBC PostgresSQL: 5432" creator="" creation-date="09/17/2026 15:56:24" from="2b429856157240889452227ccff83a1f" to="4fc26f3374284cc18a5f12f32eca910b" visibility="package">
             <owned-items />
             <relation from="2b429856157240889452227ccff83a1f" to="4fc26f3374284cc18a5f12f32eca910b" derived="false">
-              <start-role id="umlar-85cc4b72-1d77-454c-a08f-1e70253d098a" name="" navigability="" association-type="association" visibility="private" property-ref="a4211b6883a84cb790e8d679b51ab1b1" />
-              <end-role id="umlar-7172bc33-d9a0-4568-8ef3-1efa9dc64984" name="" navigability="" association-type="association" visibility="private" property-ref="566453aace8d42d9adea19214d8aabc7" />
-            </relation>
-          </item>
-          <item id="e6dd93cbd3334a0d8e373980d710d687" cid="ELEM007" type="communication-path" name="HTTPS" creator="" creation-date="09/17/2026 15:55:35" from="e4189c54d7ea452689fdc9249724df64" to="2b429856157240889452227ccff83a1f" visibility="package">
-            <owned-items />
-            <relation from="e4189c54d7ea452689fdc9249724df64" to="2b429856157240889452227ccff83a1f" derived="false">
-              <start-role id="umlar-3fa974b8-f268-4631-a9fb-f35a3805eea5" name="" navigability="" association-type="association" visibility="private" property-ref="5e863ff62e2f4c92a2ef94e769cbb980" />
-              <end-role id="umlar-8de76061-e551-419c-80e9-70489985f00c" name="" navigability="" association-type="association" visibility="private" property-ref="3a997f48e7e6436abaefcf3cc2e35200" />
+              <start-role id="umlar-2fbd56c0-67c5-47b0-96ad-29a8c29eb34f" name="" navigability="" association-type="association" visibility="private" />
+              <end-role id="umlar-df8f9b16-e1f0-4a20-8c37-f1382248bc47" name="" navigability="" association-type="association" visibility="private" />
             </relation>
           </item>
           <item id="385e741a9f3a4efbafaf4a705605590f" cid="CPT002" type="component" name="Controller" owner="2b429856157240889452227ccff83a1f" creator="" creation-date="09/17/2026 14:25:27" visibility="undefined">
@@ -245,7 +240,14 @@
             </stereotype-instances>
             <component />
           </item>
-          <item id="10fb0636f4fc4070840864da9f21e575" cid="AF003" type="artifact" name="Banco de Dados" owner="ec0d5990424e442ebaa22a3f3579150e" creator="" creation-date="09/17/2026 15:50:03">
+          <item id="e6dd93cbd3334a0d8e373980d710d687" cid="ELEM007" type="communication-path" name="HTTPS:8080" creator="" creation-date="09/17/2026 15:55:35" from="e4189c54d7ea452689fdc9249724df64" to="2b429856157240889452227ccff83a1f" visibility="package">
+            <owned-items />
+            <relation from="e4189c54d7ea452689fdc9249724df64" to="2b429856157240889452227ccff83a1f" derived="false">
+              <start-role id="umlar-2c90d52d-0cb1-4f19-bd20-dfd2b396363b" name="" navigability="" association-type="association" visibility="private" />
+              <end-role id="umlar-9c46d75e-f584-4bc4-8d4c-e19655fd40f7" name="" navigability="" association-type="association" visibility="private" />
+            </relation>
+          </item>
+          <item id="10fb0636f4fc4070840864da9f21e575" cid="AF003" type="artifact" name="Banco de Dados" owner="ec0d5990424e442ebaa22a3f3579150e" creator="" creation-date="09/17/2026 15:50:03" visibility="undefined">
             <stereotypes>
               <stereotype name="artifact" />
             </stereotypes>
@@ -254,7 +256,7 @@
             </stereotype-instances>
             <artifact filename="ElderConnect-Banco" />
           </item>
-          <item id="77796b5d4e9243c3bb553162b4087748" cid="CPT007" type="component" name="DAO" owner="cc615d74d2454328861b3ba1a2f43d66" creator="" creation-date="09/17/2026 15:31:07">
+          <item id="77796b5d4e9243c3bb553162b4087748" cid="CPT007" type="component" name="DAO" owner="cc615d74d2454328861b3ba1a2f43d66" creator="" creation-date="09/17/2026 15:31:07" visibility="undefined">
             <stereotypes>
               <stereotype name="component" />
             </stereotypes>
@@ -272,21 +274,21 @@
             </stereotype-instances>
             <artifact filename="ElderConnect-Backend" />
           </item>
-          <item id="ec0d5990424e442ebaa22a3f3579150e" cid="ELEM006" type="execution-environment" name="PostgresSQL" owner="4fc26f3374284cc18a5f12f32eca910b" creator="" creation-date="09/17/2026 15:47:42">
-            <stereotypes>
-              <stereotype name="executionEnvironment" />
-            </stereotypes>
-            <stereotype-instances>
-              <stereotype id="ec0d5990424e442ebaa22a3f3579150e_executionEnvironment_c" type="executionEnvironment" creation-date="09/17/2026 15:47:42" ref="" />
-            </stereotype-instances>
-            <owned-items />
-          </item>
-          <item id="cc615d74d2454328861b3ba1a2f43d66" cid="ELEM004" type="execution-environment" name="JMV / Spring Boot" owner="2b429856157240889452227ccff83a1f" creator="" creation-date="09/17/2026 14:22:01">
+          <item id="cc615d74d2454328861b3ba1a2f43d66" cid="ELEM004" type="execution-environment" name="JMV" owner="2b429856157240889452227ccff83a1f" creator="" creation-date="09/17/2026 14:22:01" visibility="undefined">
             <stereotypes>
               <stereotype name="executionEnvironment" />
             </stereotypes>
             <stereotype-instances>
               <stereotype id="cc615d74d2454328861b3ba1a2f43d66_executionEnvironment_c" type="executionEnvironment" creation-date="09/17/2026 14:22:01" ref="" />
+            </stereotype-instances>
+            <owned-items />
+          </item>
+          <item id="ec0d5990424e442ebaa22a3f3579150e" cid="ELEM006" type="execution-environment" name="PostgresSQL" owner="4fc26f3374284cc18a5f12f32eca910b" creator="" creation-date="09/17/2026 15:47:42" visibility="undefined">
+            <stereotypes>
+              <stereotype name="executionEnvironment" />
+            </stereotypes>
+            <stereotype-instances>
+              <stereotype id="ec0d5990424e442ebaa22a3f3579150e_executionEnvironment_c" type="executionEnvironment" creation-date="09/17/2026 15:47:42" ref="" />
             </stereotype-instances>
             <owned-items />
           </item>
@@ -296,10 +298,10 @@
             <layout ax="-59" ay="31" awidth="353" aheight="322" x="-59" y="31" width="353" height="322" expanded="37,31,353,322" collapsed="0,0,0,0" />
           </item>
           <item id="3743a0be0bcf4e1f923e75f14c271cc6" iid="9437dfbb026f4797b51cfccb327e01b9" container="e4189c54d7ea452689fdc9249724df64" container-iid="feb4fa99cd6c4d9da7dc16aa44a959e2" creation-date="09/17/2026 14:07:21" order-index="1" type="entity">
-            <layout ax="-8" ay="111.01636" awidth="251" aheight="224.19019" x="-26" y="111.01636" width="251" height="224.19019" expanded="88,111.01636,251,224.19019" collapsed="0,0,0,0" />
+            <layout ax="-8" ay="111.01636" awidth="251" aheight="224.19019" x="-26" y="111.01636" width="251" height="224.19019" expanded="2,111.01636,251,224.19019" collapsed="0,0,0,0" />
           </item>
           <item id="fc737cf980a844698a4727c7f22a6bbc" iid="04a6100dfe694d89a62b7d8fff8db859" container="3743a0be0bcf4e1f923e75f14c271cc6" container-iid="9437dfbb026f4797b51cfccb327e01b9" creation-date="09/17/2026 14:07:40" order-index="2" type="entity">
-            <layout ax="26.220276" ay="187.95782" awidth="182.55945" aheight="103.5" x="-1.7797165" y="187.95782" width="147.88112" height="125" expanded="122.220276,187.95782,182.55945,103.5" collapsed="0,0,0,0" />
+            <layout ax="26.220276" ay="187.95782" awidth="182.55945" aheight="103.5" x="-1.7797165" y="187.95782" width="147.88112" height="125" expanded="36.220276,187.95782,182.55945,103.5" collapsed="0,0,0,0" />
             <artifact />
           </item>
           <item id="2b429856157240889452227ccff83a1f" iid="7a3f0f768dcc4046bb6752da256a7a23" creation-date="09/17/2026 14:13:39" order-index="3" type="entity">
@@ -332,7 +334,7 @@
             <relation from="e4189c54d7ea452689fdc9249724df64" from-iid="feb4fa99cd6c4d9da7dc16aa44a959e2" to="2b429856157240889452227ccff83a1f" to-iid="7a3f0f768dcc4046bb6752da256a7a23" />
           </item>
           <item id="a76ed1423c9341bb838a6439a7fa35f2" iid="4e73a24046204838995d9bcb5cfbe473" creation-date="09/17/2026 15:56:24" order-index="12" type="relation">
-            <layout start-role-position="25,15" end-role-position="25,-15" start-multiplicity-position="25,-15" end-multiplicity-position="25,15" line-style="oblique" lock-start-point="true" lock-end-point="true" lock-to-fields="false" auto-path="" x1="864" y1="192" x2="1060" y2="192" start-border-pos="0.375" end-border-pos="0.875" start-local-pos="161" end-local-pos="161" name-position="0,20">
+            <layout start-role-position="25,15" end-role-position="25,-15" start-multiplicity-position="25,-15" end-multiplicity-position="25,15" line-style="oblique" lock-start-point="true" lock-end-point="true" lock-to-fields="false" auto-path="" x1="864" y1="192" x2="1060" y2="192" start-border-pos="0.375" end-border-pos="0.875" start-local-pos="161" end-local-pos="161" name-position="12.5,12.086914">
               <points>
                 <point x="864" y="192" />
                 <point x="1060" y="192" />
