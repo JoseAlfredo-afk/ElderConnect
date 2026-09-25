@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { Authentication } from '../../../services/security/authentication';
 
 export interface CuidadorContratado {
   cuidadorId: number;
@@ -24,7 +25,7 @@ export interface Medicamento {
   templateUrl: './elder.html'
 })
 export class ElderDashboard implements OnInit {
-  nomeIdoso: string = 'José da Silva';
+  nomeIdoso: string = '';
   cuidadorContratado: CuidadorContratado | null = null;
   medicamentos: Medicamento[] = [];
 
@@ -32,9 +33,15 @@ export class ElderDashboard implements OnInit {
   estrelasSelecionadas: number = 5;
   comentarioAvaliacao: string = '';
 
+  constructor(private authentication: Authentication) {}
+
   exibirModalEncerrarVinculo: boolean = false;
 
   ngOnInit(): void {
+    const usuario = this.authentication.getAuthenticatedUser();
+
+    this.nomeIdoso = usuario.fullname;
+
     this.carregarCuidadorVinculado();
     this.carregarMedicamentos();
   }

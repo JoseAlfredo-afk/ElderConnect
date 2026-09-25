@@ -28,7 +28,7 @@
       </div>
 
       <div *ngIf="authService.usuarioLogado()" class="d-flex align-items-center gap-3">
-        <span class="text-dark fw-bold" style="font-size: 1rem;">Olá, Usuário!</span>
+        <span class="text-dark fw-bold" style="font-size: 1rem;">Olá, {{ authService.usuarioAtual()?.fullname }}!</span>
 
         <a routerLink="/dashboard/profile" class="btn btn-outline-primary px-3 py-1.5 rounded-3 fw-bold"
           style="font-size: 0.95rem;">
