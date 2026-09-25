@@ -3,6 +3,7 @@ import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Authentication } from '../../../services/security/authentication';
+import { AuthenticatedUserDto } from '../../../models/dto/authenticated-user-dto';
 
 @Component({
   selector: 'app-sign-in',
@@ -23,13 +24,21 @@ export class SignIn {
     event.preventDefault();
 
     if (this.emailInput.trim() !== '' && this.senhaInput.trim() !== '') {
-      // 1. Marca o usuário como autenticado no serviço
-      this.authService.logar();
+      const eCuidador = this.emailInput.toLowerCase().includes('cuidador');
+      
+      const usuarioSimulado: AuthenticatedUserDto = {
+        id: eCuidador ? 2 : 1,
+        fullname: eCuidador ? 'Maria Silva' : 'José da Silva',
+        email: this.emailInput,
+        userType: eCuidador ? 'CAREGIVER' : 'ELDER',
+        cpf: '',
+        phoneNumber: '',
+        birthDate: ''
+      };
 
-      // 2. Simulação de perfil baseada no e-mail:
-      // Se o e-mail contiver "cuidador", vai para o dashboard de cuidador.
-      // Caso contrário, direciona para o novo Dashboard do Idoso.
-      if (this.emailInput.toLowerCase().includes('cuidador')) {
+      this.authService.logar(usuarioSimulado);
+
+      if (eCuidador) {
         this.router.navigate(['/dashboard/caregiver']);
       } else {
         this.router.navigate(['/dashboard/elder']);
