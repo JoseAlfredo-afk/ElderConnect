@@ -70,4 +70,11 @@ export class Authentication {
     localStorage.removeItem('email');
     localStorage.removeItem('userType');
   }
+
+  cadastrarUsuario(usuario: any) {
+  return this.http.post(
+    'http://localhost:8081/api/user',
+    usuario
+  );
+}
 }
