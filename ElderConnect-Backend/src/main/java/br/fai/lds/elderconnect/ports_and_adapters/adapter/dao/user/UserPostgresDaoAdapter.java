@@ -191,14 +191,15 @@ public class UserPostgresDaoAdapter implements UserDao {
 
     @Override
     public void updateInformation(int id, UserModel entity) {
-        String sql = " UPDATE user_model SET fullname = ?, phone_number = ? ";
+        String sql = " UPDATE user_model SET fullname = ?, email = ?, phone_number = ? ";
         sql += " WHERE id = ? ;";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, entity.getFullname());
-            preparedStatement.setString(2, entity.getPhoneNumber());
-            preparedStatement.setInt(3, entity.getId());
+            preparedStatement.setString(2, entity.getEmail());
+            preparedStatement.setString(3, entity.getPhoneNumber());
+            preparedStatement.setInt(4, entity.getId());
 
             preparedStatement.execute();
             preparedStatement.close();
@@ -317,11 +318,13 @@ public class UserPostgresDaoAdapter implements UserDao {
 
     @Override
     public boolean updatePassword(int id, String password) {
-        String sql = " UPDATE user_model SET password = crypto(?,gen_salt('bf')) ";
-        sql += " WHERE id = ? ;";
+
+        String sql = " UPDATE user_model SET password = ? ";
+        sql += " WHERE id = ?;";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
             preparedStatement.setString(1, password);
             preparedStatement.setInt(2, id);
 
@@ -329,11 +332,11 @@ public class UserPostgresDaoAdapter implements UserDao {
             preparedStatement.close();
 
             return true;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
 
     @Override
     public boolean updateEmail(int id, String email) {

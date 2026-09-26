@@ -4,13 +4,13 @@ import br.fai.lds.elderconnect.domain.UserModel;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 public class UpdateProfileDto {
 
     private int id;
     private String fullname;
+    private String email;
     private String phoneNumber;
 
     public UserModel toUserModel() {
@@ -19,6 +19,7 @@ public class UpdateProfileDto {
 
         userModel.setId(id);
         userModel.setFullname(fullname);
+        userModel.setEmail(email);
         userModel.setPhoneNumber(phoneNumber);
 
         return userModel;

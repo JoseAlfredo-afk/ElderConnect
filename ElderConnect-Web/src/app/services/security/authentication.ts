@@ -13,18 +13,16 @@ export class Authentication {
   constructor(private http: HttpClient) {}
 
   authenticate(email: string, password: string) {
-  return this.http.post<AuthenticatedUserDto>(
-    'http://localhost:8081/authenticate',
-    {
-      email: email,
-      password: password
-    }
-  );
-}
+    return this.http.post<AuthenticatedUserDto>(
+      'http://localhost:8081/authenticate',
+      {
+        email: email,
+        password: password
+      }
+    );
+  }
 
   logar(user: AuthenticatedUserDto): void {
-
-    
 
     this.usuarioLogado.set(true);
 
@@ -54,7 +52,7 @@ export class Authentication {
       throw new Error('Dados do usuário não encontrados.');
     }
 
-    const usuario: AuthenticatedUserDto = {
+    return {
       id: Number(id),
       fullname: fullname,
       cpf: '',
@@ -63,8 +61,6 @@ export class Authentication {
       userType: userType,
       birthDate: ''
     };
-
-    return usuario;
   }
 
   logout(): void {

@@ -5,6 +5,7 @@ import br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -13,6 +14,9 @@ public class UserServiceAdapter implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -89,6 +93,7 @@ public class UserServiceAdapter implements UserService {
         }
 
         dataToUpdate.setFullname(userModel.getFullname());
+        dataToUpdate.setEmail(userModel.getEmail());
         dataToUpdate.setPhoneNumber(userModel.getPhoneNumber());
 
         userDao.updateInformation(id, dataToUpdate);
@@ -139,7 +144,7 @@ public class UserServiceAdapter implements UserService {
             return false;
         }
 
-        if (!userModel.getPassword().equals(oldPassword)) {
+        if (!passwordEncoder.matches(oldPassword, userModel.getPassword())) {
             return false;
         }
 
@@ -147,7 +152,9 @@ public class UserServiceAdapter implements UserService {
             return false;
         }
 
-        return userDao.updatePassword(id, newPassword);
+        String encryptedPassword = passwordEncoder.encode(newPassword);
+
+        return userDao.updatePassword(id, encryptedPassword);
     }
 
     @Override
