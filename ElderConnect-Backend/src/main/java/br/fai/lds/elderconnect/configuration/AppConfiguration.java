@@ -18,6 +18,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Connection;
 import java.util.Arrays;
@@ -65,8 +67,13 @@ public class AppConfiguration {
 
     @Profile("basic")
     @Bean
-    public AuthenticationService basicAuthenticationService(final UserService userService) {
-        return new BasicAuthenticationServiceAdapter(userService);
+    public AuthenticationService basicAuthenticationService(final UserService userService, final PasswordEncoder passwordEncoder) {
+        return new BasicAuthenticationServiceAdapter(userService, passwordEncoder);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }

@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS contract;
 DROP TABLE IF EXISTS medication_schedule;
+DROP TABLE IF EXISTS senior_caregiver;
 DROP TABLE IF EXISTS medication;
 DROP TABLE IF EXISTS message;
 DROP TABLE IF EXISTS user_model;
