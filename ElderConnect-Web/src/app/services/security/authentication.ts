@@ -76,5 +76,20 @@ export class Authentication {
     'http://localhost:8081/api/user',
     usuario
   );
-}
+  }
+
+  buscarUsuarioPorEmail(email: string) {
+  return this.http.get<any>(
+    `http://localhost:8081/api/user/email/${encodeURIComponent(email)}`
+  );
+  }
+
+  atualizarPerfilCuidador(id: number, perfil: any) {
+    return this.http.put(
+      `http://localhost:8081/api/user/${id}/caregiver-profile`,
+      perfil
+    );
+  }
+
+
 }
