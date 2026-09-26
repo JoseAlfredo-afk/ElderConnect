@@ -20,7 +20,7 @@ public class UserPostgresDaoAdapter implements UserDao {
     public int add(UserModel entity) {
 
         String sql = " INSERT INTO user_model(cpf, fullname, email, password, phone_number, user_type,birth_date)";
-        sql += " VALUES (?, ?, ?, ?, ?, ?, ? ); ";
+        sql += " VALUES (?, ?, ?, crypt(?,gen_salt('bf')), ?, ?, ? ); ";
 
         PreparedStatement preparedStatement;
         ResultSet resultSet;
@@ -317,7 +317,7 @@ public class UserPostgresDaoAdapter implements UserDao {
 
     @Override
     public boolean updatePassword(int id, String password) {
-        String sql = " UPDATE user_model SET password = ? ";
+        String sql = " UPDATE user_model SET password = crypto(?,gen_salt('bf')) ";
         sql += " WHERE id = ? ;";
 
         try {
