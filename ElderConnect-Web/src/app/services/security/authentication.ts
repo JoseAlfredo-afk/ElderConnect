@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { AuthenticatedUserDto } from '../../models/dto/authenticated-user-dto';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,22 @@ export class Authentication {
   public usuarioLogado = signal<boolean>(false);
   public mostrarAlertaCadastroGlobal: boolean = false;
 
+  constructor(private http: HttpClient) {}
+
+  authenticate(email: string, password: string) {
+  return this.http.post<AuthenticatedUserDto>(
+    'http://localhost:8081/authenticate',
+    {
+      email: email,
+      password: password
+    }
+  );
+}
+
   logar(user: AuthenticatedUserDto): void {
+
+    
+
     this.usuarioLogado.set(true);
 
     if (user) {

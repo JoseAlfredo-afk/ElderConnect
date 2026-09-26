@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Authentication } from '../../../services/security/authentication';
 import { AuthenticatedUserDto } from '../../../models/dto/authenticated-user-dto';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-sign-in',
@@ -23,29 +24,26 @@ export class SignIn {
   logar(event: Event) {
     event.preventDefault();
 
-    if (this.emailInput.trim() !== '' && this.senhaInput.trim() !== '') {
-      const eCuidador = this.emailInput.toLowerCase().includes('cuidador');
-      
-      const usuarioSimulado: AuthenticatedUserDto = {
-        id: eCuidador ? 2 : 1,
-        fullname: eCuidador ? 'Maria Silva' : 'José da Silva',
-        email: this.emailInput,
-        userType: eCuidador ? 'CAREGIVER' : 'ELDER',
-        cpf: '',
-        phoneNumber: '',
-        birthDate: ''
-      };
+      if (this.emailInput.trim() !== '' && this.senhaInput.trim() !== '') {
 
-      this.authService.logar(usuarioSimulado);
-
-      if (eCuidador) {
-        this.router.navigate(['/dashboard/caregiver']);
-      } else {
+    this.authService.authenticate(
+      this.emailInput,
+      this.senhaInput
+    ).subscribe({
+      next: (user) => {
+        console.log('Usuário autenticado:', user);
+        this.authService.logar(user);
         this.router.navigate(['/dashboard/elder']);
+      },
+      error: (error) => {
+        console.error('Erro no login:', error);
+        alert('E-mail ou senha inválidos.');
       }
+    });
 
-    } else {
-      alert('Por favor, preencha o e-mail e a senha de simulação.');
-    }
+  } else {
+    alert('Por favor, preencha o e-mail e a senha de simulação.');
+  }
+   
   }
 }
