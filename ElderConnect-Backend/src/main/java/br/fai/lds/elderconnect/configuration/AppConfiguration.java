@@ -1,5 +1,6 @@
 package br.fai.lds.elderconnect.configuration;
 
+import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.appointment.AppointmentPostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.contract.ContractPostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.medication.MedicationPostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.medication.MedicationSchedulePostgresDaoAdapter;
@@ -7,6 +8,7 @@ import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.message.MessagePos
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user.UserFakeDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user.UserPostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.security.BasicAuthenticationServiceAdapter;
+import br.fai.lds.elderconnect.ports_and_adapters.port.dao.appointment.AppointmentDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.contract.ContractDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.medication.MedicationDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.medication.MedicationScheduleDao;
@@ -63,6 +65,11 @@ public class AppConfiguration {
     @Bean
     public MessageDao getMessageDao(final Connection connection) {
         return new MessagePostgresDaoAdapter(connection);
+    }
+
+    @Bean
+    public AppointmentDao getAppointmentDao(final Connection connection) {
+        return new AppointmentPostgresDaoAdapter(connection);
     }
 
     @Profile("basic")
