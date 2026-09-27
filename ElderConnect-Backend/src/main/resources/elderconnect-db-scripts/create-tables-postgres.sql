@@ -34,7 +34,8 @@ recipient_id int not null REFERENCES user_model(id) ON DELETE CASCADE
 CREATE TABLE medication(
 id SERIAL PRIMARY KEY,
 medication_name varchar(100) not null,
-dose varchar(50) not null
+dose varchar(50) not null,
+senior_id int not null REFERENCES user_model(id) ON DELETE CASCADE
 );
 
 CREATE TABLE medication_schedule(

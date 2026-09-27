@@ -20,8 +20,8 @@ public class MedicationPostgresDaoAdapter implements MedicationDao {
 
     @Override
     public int add(Medication entity) {
-        String sql = " INSERT INTO medication(medication_name, dose) ";
-        sql += " VALUES (?, ? ); ";
+        String sql = " INSERT INTO medication(medication_name, dose, senior_id) ";
+        sql += " VALUES (?, ? , ? ); ";
 
         PreparedStatement preparedStatement;
         ResultSet resultSet;
@@ -33,6 +33,7 @@ public class MedicationPostgresDaoAdapter implements MedicationDao {
 
             preparedStatement.setString(1, entity.getMedicationName());
             preparedStatement.setString(2, entity.getDose());
+            preparedStatement.setInt(3,entity.getSeniorId());
 
             preparedStatement.execute();
 

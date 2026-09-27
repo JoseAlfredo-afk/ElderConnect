@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 interface Medicamento {
+  id: number;
   nome: string;
   dosagem: string;
   horario: string;
@@ -17,56 +19,314 @@ interface Aviso {
 @Component({
   selector: 'app-medications',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterLink
+  ],
   templateUrl: './medication.html'
 })
-export class Medications{
-  medicamentos: Medicamento[] = [
-    { nome: 'Loratadina', dosagem: '1 compr.', horario: '07:30', instrucoes: 'Sem instruções' },
-    { nome: 'Omeprazol', dosagem: '20mg', horario: '12:00', instrucoes: 'Jejum ou antes do almoço' }
-  ];
+export class Medications implements OnInit {
+
+  private apiUrl = 'http://localhost:8081/api/medications';
+
+  medicamentos: Medicamento[] = [];
 
   avisos: Aviso[] = [
-    { texto: 'Acompanhar nas atividades diárias e medições.' }
+    {
+      texto: 'Acompanhar nas atividades diárias e medições.'
+    }
   ];
 
-  novoMedicamento: Medicamento = { nome: '', dosagem: '', horario: '', instrucoes: '' };
+  novoMedicamento = {
+    nome: '',
+    dosagem: '',
+    horario: '',
+    instrucoes: ''
+  };
+
   novoAvisoTexto: string = '';
 
   exibindoModalExclusao: boolean = false;
-  itemParaExcluir: { tipo: 'medicamento' | 'aviso'; index: number } | null = null;
+
+  itemParaExcluir: {
+    tipo: 'medicamento' | 'aviso';
+    index: number;
+  } | null = null;
+
+
+  constructor(
+    private http: HttpClient
+  ) {}
+
+
+  ngOnInit(): void {
+
+    this.buscarMedicamentos();
+
+  }
+
+
+ buscarMedicamentos(): void {
+
+  const idUsuario = localStorage.getItem('id');
+
+  if (!idUsuario) {
+
+    console.error('Usuário não está logado.');
+
+    alert('Usuário não identificado.');
+
+    return;
+  }
+
+  const seniorId = Number(idUsuario);
+
+  console.log(
+    'Buscando medicamentos do usuário:',
+    seniorId
+  );
+
+  this.http
+    .get<any[]>(
+      `http://localhost:8081/api/schedule-medications/senior/${seniorId}`
+    )
+    .subscribe({
+
+      next: (medicamentos) => {
+
+        console.log(
+          'Medicamentos do usuário recebidos:',
+          medicamentos
+        );
+
+       this.medicamentos = medicamentos.map(
+        (item) => ({
+
+          id: item.medicationId,
+
+          nome: item.medicationName,
+
+          dosagem: item.dose,
+
+          horario: item.intakeTime,
+
+          instrucoes: item.dosageInstructions
+
+        })
+      );
+
+      },
+
+      error: (erro) => {
+
+        console.error(
+          'Erro ao buscar medicamentos:',
+          erro
+        );
+
+        alert(
+          'Não foi possível carregar os medicamentos.'
+        );
+
+      }
+
+    });
+
+}
+
 
   cadastrarMedicamento(): void {
-    if (!this.novoMedicamento.nome || !this.novoMedicamento.horario) return;
-    this.medicamentos.push({ ...this.novoMedicamento });
-    this.novoMedicamento = { nome: '', dosagem: '', horario: '', instrucoes: '' };
-  }
 
-  cadastrarAviso(): void {
-    if (!this.novoAvisoTexto.trim()) return;
-    this.avisos.push({ texto: this.novoAvisoTexto });
-    this.novoAvisoTexto = '';
-  }
+    if (
+      !this.novoMedicamento.nome ||
+      !this.novoMedicamento.dosagem
+    ) {
 
-  solicitarExclusao(tipo: 'medicamento' | 'aviso', index: number): void {
-    this.itemParaExcluir = { tipo, index };
-    this.exibindoModalExclusao = true;
-  }
+      alert(
+        'Preencha o nome e a dosagem do medicamento.'
+      );
 
-  cancelarExclusao(): void {
-    this.exibindoModalExclusao = false;
-    this.itemParaExcluir = null;
-  }
-
-  confirmarExclusao(): void {
-    if (!this.itemParaExcluir) return;
-
-    if (this.itemParaExcluir.tipo === 'medicamento') {
-      this.medicamentos.splice(this.itemParaExcluir.index, 1);
-    } else if (this.itemParaExcluir.tipo === 'aviso') {
-      this.avisos.splice(this.itemParaExcluir.index, 1);
+      return;
     }
 
-    this.cancelarExclusao();
+
+    const idUsuario = localStorage.getItem('id');
+
+    if (!idUsuario) {
+      alert('Usuário não identificado.');
+      return;
+    }
+
+    const medicamento = {
+
+      medicationName:
+        this.novoMedicamento.nome,
+
+      dose:
+        this.novoMedicamento.dosagem,
+
+      seniorId:
+        Number(idUsuario)
+
+    };
+
+    console.log(
+      'Cadastrando medicamento:',
+      medicamento
+    );
+
+
+    this.http
+      .post(
+        this.apiUrl,
+        medicamento
+      )
+      .subscribe({
+
+        next: () => {
+
+          console.log(
+            'Medicamento cadastrado com sucesso.'
+          );
+
+          alert(
+            'Medicamento cadastrado com sucesso!'
+          );
+
+
+          this.novoMedicamento = {
+
+            nome: '',
+            dosagem: '',
+            horario: '',
+            instrucoes: ''
+
+          };
+
+
+          this.buscarMedicamentos();
+
+        },
+
+        error: (erro) => {
+
+          console.error(
+            'Erro ao cadastrar medicamento:',
+            erro
+          );
+
+          alert(
+            'Não foi possível cadastrar o medicamento.'
+          );
+
+        }
+
+      });
+
   }
+
+
+  cadastrarAviso(): void {
+
+    if (!this.novoAvisoTexto.trim()) {
+      return;
+    }
+
+    this.avisos.push({
+      texto: this.novoAvisoTexto
+    });
+
+    this.novoAvisoTexto = '';
+
+  }
+
+
+  solicitarExclusao(
+    tipo: 'medicamento' | 'aviso',
+    index: number
+  ): void {
+
+    this.itemParaExcluir = {
+      tipo,
+      index
+    };
+
+    this.exibindoModalExclusao = true;
+
+  }
+
+
+  cancelarExclusao(): void {
+
+    this.exibindoModalExclusao = false;
+
+    this.itemParaExcluir = null;
+
+  }
+
+
+  confirmarExclusao(): void {
+
+    if (!this.itemParaExcluir) {
+      return;
+    }
+
+
+    if (
+      this.itemParaExcluir.tipo === 'medicamento'
+    ) {
+
+      const medicamento =
+        this.medicamentos[
+          this.itemParaExcluir.index
+        ];
+
+
+      this.http
+        .delete(
+          `${this.apiUrl}/${medicamento.id}`
+        )
+        .subscribe({
+
+          next: () => {
+
+            console.log(
+              'Medicamento excluído com sucesso.'
+            );
+
+            this.buscarMedicamentos();
+
+            this.cancelarExclusao();
+
+          },
+
+          error: (erro) => {
+
+            console.error(
+              'Erro ao excluir medicamento:',
+              erro
+            );
+
+            alert(
+              'Não foi possível excluir o medicamento.'
+            );
+
+          }
+
+        });
+
+    } else {
+
+      this.avisos.splice(
+        this.itemParaExcluir.index,
+        1
+      );
+
+      this.cancelarExclusao();
+
+    }
+
+  }
+
 }

@@ -10,6 +10,7 @@ public class CreateMedicationDto {
 
     private String medicationName;
     private String dose;
+    private int seniorId;
 
     public Medication toMedication() {
 
@@ -17,6 +18,7 @@ public class CreateMedicationDto {
 
         medication.setMedicationName(medicationName);
         medication.setDose(dose);
+        medication.setSeniorId(seniorId);
 
         return medication;
     }

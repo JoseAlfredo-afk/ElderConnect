@@ -67,20 +67,20 @@ VALUES ('999.999.999-99', 'Maria Silva', 'maria.silva@email.com', crypt('TYRFHGS
         '6 anos de experiência no acompanhamento e cuidado integral de idosos, com referências locais.');
 
 
-INSERT INTO medication(medication_name, dose)
-VALUES ('Losartana', '50 mg');
+INSERT INTO medication(medication_name, dose, senior_id)
+VALUES ('Losartana', '50 mg', 1);
 
-INSERT INTO medication(medication_name, dose)
-VALUES ('Dipirona', '1 comprimido');
+INSERT INTO medication(medication_name, dose, senior_id)
+VALUES ('Dipirona', '1 comprimido', 1);
 
-INSERT INTO medication(medication_name, dose)
-VALUES ('Omeprazol', '20 mg');
+INSERT INTO medication(medication_name, dose, senior_id)
+VALUES ('Omeprazol', '20 mg', 1);
 
-INSERT INTO medication(medication_name, dose)
-VALUES ('Loratadina', '1 comprimido');
+INSERT INTO medication(medication_name, dose, senior_id)
+VALUES ('Loratadina', '1 comprimido', 2);
 
-INSERT INTO medication(medication_name, dose)
-VALUES ('Ibuprofeno', '40 mg');
+INSERT INTO medication(medication_name, dose, senior_id)
+VALUES ('Ibuprofeno', '40 mg', 2);
 
 INSERT INTO medication_schedule(dosage_instructions, intake_time, senior_id, medication_id)
 VALUES ('Tomar um comprimido', '6:00', 1, 2);

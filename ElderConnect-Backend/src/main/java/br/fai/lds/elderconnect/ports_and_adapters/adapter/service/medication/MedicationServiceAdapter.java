@@ -14,6 +14,7 @@ public class MedicationServiceAdapter implements MedicationService {
     @Autowired
     private MedicationDao medicationDao;
 
+
     @Override
     public int create(Medication medication) {
 
@@ -26,6 +27,10 @@ public class MedicationServiceAdapter implements MedicationService {
         }
 
         if (medication.getDose() == null || medication.getDose().isEmpty()) {
+            return 0;
+        }
+
+        if (medication.getSeniorId() <= 0) {
             return 0;
         }
 

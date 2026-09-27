@@ -54,7 +54,11 @@ public class MessageRestController {
             return ResponseEntity.badRequest().build();
         }
 
-        final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/").buildAndExpand(id).toUri();
+        final URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(id)
+                .toUri();
 
         return ResponseEntity.created(uri).build();
     }
