@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS appointment;
 DROP TABLE IF EXISTS contract;
 DROP TABLE IF EXISTS medication_schedule;
 DROP TABLE IF EXISTS senior_caregiver;
@@ -59,4 +60,15 @@ rating int CHECK (rating BETWEEN 1 and 5 or rating is null),
 comment text,
 senior_id int not null REFERENCES user_model(id) ON DELETE CASCADE,
 caregiver_id int not null REFERENCES user_model(id) ON DELETE CASCADE
+);
+
+CREATE TABLE appointment(
+id SERIAL PRIMARY KEY,
+date date not null,
+time time not null,
+title varchar (256) not null,
+type varchar(100) not null,
+responsible varchar(30),
+notes text,
+senior_id int not null REFERENCES user_model(id) ON DELETE CASCADE
 );
