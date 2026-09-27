@@ -63,7 +63,7 @@ public class AppointmentPostgresDaoAdapter implements AppointmentDao {
 
     @Override
     public void remove(int id) {
-        String sql = "DELETE FROM appointement WHERE id = ? ; ";
+        String sql = "DELETE FROM appointment WHERE id = ? ; ";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -162,7 +162,7 @@ public class AppointmentPostgresDaoAdapter implements AppointmentDao {
 
     @Override
     public void updateInformation(int id, Appointment appointment) {
-        String sql = "UPDATE appointment SET date = ?, time  = ?, title  = ?, type  = ?, responsible = ?, notes = ?, senior_id  = ?";
+        String sql = "UPDATE appointment SET date = ?, time  = ?, title  = ?, type  = ?, responsible = ?, notes = ?";
         sql += "WHERE id = ?;";
 
         try {
