@@ -47,7 +47,7 @@ public class AppointmentServiceAdapter implements AppointmentService {
 
         LocalTime appointmentTime = LocalTime.parse(appointment.getTime());
 
-        if (appointmentTime.isBefore(LocalTime.now())) {
+        if (appointmentDate.isEqual(appointmentDate) && appointmentTime.isBefore(LocalTime.now())) {
             return 0;
         }
 

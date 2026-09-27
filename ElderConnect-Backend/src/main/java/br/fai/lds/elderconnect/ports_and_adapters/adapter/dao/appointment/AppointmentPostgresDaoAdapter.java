@@ -4,6 +4,7 @@ import br.fai.lds.elderconnect.domain.Appointment;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.appointment.AppointmentDao;
 
 import java.sql.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class AppointmentPostgresDaoAdapter implements AppointmentDao {
             preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
             preparedStatement.setDate(1, Date.valueOf(appointment.getDate()));
-            preparedStatement.setTime(2, Time.valueOf(appointment.getTime()));
+            preparedStatement.setTime(2, Time.valueOf(LocalTime.parse(appointment.getTime())));
             preparedStatement.setString(3, appointment.getTitle());
             preparedStatement.setString(4, appointment.getType());
             preparedStatement.setString(5, appointment.getResponsible());
@@ -168,7 +169,7 @@ public class AppointmentPostgresDaoAdapter implements AppointmentDao {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setDate(1, Date.valueOf(appointment.getDate()));
-            preparedStatement.setTime(2, Time.valueOf(appointment.getTime()));
+            preparedStatement.setTime(2, Time.valueOf(LocalTime.parse(appointment.getTime())));
             preparedStatement.setString(3, appointment.getTitle());
             preparedStatement.setString(4, appointment.getType());
             preparedStatement.setString(5, appointment.getResponsible());
