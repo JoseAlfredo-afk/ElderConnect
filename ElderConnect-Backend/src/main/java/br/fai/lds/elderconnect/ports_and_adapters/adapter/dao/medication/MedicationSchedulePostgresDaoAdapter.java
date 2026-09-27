@@ -236,7 +236,7 @@ public class MedicationSchedulePostgresDaoAdapter implements MedicationScheduleD
     }
 
     @Override
-    public List<MedicationSchedule> readyBySeniorId(int seniorId) {
+    public List<MedicationSchedule> readBySeniorId(int seniorId) {
 
         final List<MedicationSchedule> medicationSchedulesBySeniorId =
                 new ArrayList<>();

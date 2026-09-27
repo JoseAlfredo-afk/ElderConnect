@@ -103,7 +103,7 @@ public class MedicationScheduleServiceAdapter implements MedicationScheduleServi
             return null;
         }
 
-        return medicationScheduleDao.readyBySeniorId(seniorId);
+        return medicationScheduleDao.readBySeniorId(seniorId);
     }
 
     @Override
