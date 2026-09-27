@@ -163,8 +163,8 @@ public class AppointmentPostgresDaoAdapter implements AppointmentDao {
 
     @Override
     public void updateInformation(int id, Appointment appointment) {
-        String sql = "UPDATE appointment SET date = ?, time  = ?, title  = ?, type  = ?, responsible = ?, notes = ?";
-        sql += "WHERE id = ?;";
+        String sql = " UPDATE appointment SET date = ?, time  = ?, title  = ?, type  = ?, responsible = ?, notes = ? ";
+        sql += " WHERE id = ?; ";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
