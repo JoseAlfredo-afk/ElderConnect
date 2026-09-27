@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface ReadBySeniorIdDao<T> {
 
-    List<T> readBySeniorIdDao(int seniorId);
+    List<T> readBySeniorId(int seniorId);
 
 }

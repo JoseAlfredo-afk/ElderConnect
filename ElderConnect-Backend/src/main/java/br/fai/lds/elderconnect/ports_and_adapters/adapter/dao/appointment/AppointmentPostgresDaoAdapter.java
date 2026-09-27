@@ -183,7 +183,7 @@ public class AppointmentPostgresDaoAdapter implements AppointmentDao {
     }
 
     @Override
-    public List<Appointment> readBySeniorIdDao(int seniorId) {
+    public List<Appointment> readBySeniorId(int seniorId) {
         final List<Appointment> appointments = new ArrayList<>();
         final String sql = "SELECT * FROM appointment WHERE senior_id = ?;";
 

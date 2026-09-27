@@ -151,7 +151,7 @@ public class AppointmentServiceAdapter implements AppointmentService {
             return List.of();
         }
 
-        return appointmentDao.readBySeniorIdDao(seniorId);
+        return appointmentDao.readBySeniorId(seniorId);
     }
 
     private UserModel findSeniorById(int id) {
