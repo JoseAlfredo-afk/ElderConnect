@@ -5,6 +5,7 @@ import br.fai.lds.elderconnect.domain.UserModel;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.appointment.AppointmentDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.appointment.AppointmentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,8 +15,10 @@ import java.util.List;
 @Service
 public class AppointmentServiceAdapter implements AppointmentService {
 
+    @Autowired
     private AppointmentDao appointmentDao;
 
+    @Autowired
     private UserDao userDao;
 
     @Override
@@ -47,7 +50,7 @@ public class AppointmentServiceAdapter implements AppointmentService {
 
         LocalTime appointmentTime = LocalTime.parse(appointment.getTime());
 
-        if (appointmentDate.isEqual(appointmentDate) && appointmentTime.isBefore(LocalTime.now())) {
+        if (appointmentDate.isEqual(LocalDate.now()) && appointmentTime.isBefore(LocalTime.now())) {
             return 0;
         }
 
@@ -114,7 +117,7 @@ public class AppointmentServiceAdapter implements AppointmentService {
 
         LocalTime appointmentTime = LocalTime.parse(appointment.getTime());
 
-        if (appointmentTime.isBefore(LocalTime.now())) {
+        if (appointmentDate.isEqual(LocalDate.now()) && appointmentTime.isBefore(LocalTime.now())) {
             return false;
         }
 
