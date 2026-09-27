@@ -1,6 +1,7 @@
 package br.fai.lds.elderconnect.ports_and_adapters.port.dao.contract;
 
 import br.fai.lds.elderconnect.domain.Contract;
+import br.fai.lds.elderconnect.ports_and_adapters.port.dao.common.ReadBySeniorIdDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.crud.CrudDao;
 
 public interface ContractDao extends
@@ -9,6 +10,6 @@ public interface ContractDao extends
         FinishContractDao,
         CancelContractDao,
         ReadByCaregiverIdDao,
-        ReadBySeniorIdDao,
+        ReadBySeniorIdDao<Contract>,
         ActivateContractDao {
 }
