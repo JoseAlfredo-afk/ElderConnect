@@ -30,6 +30,8 @@ export class Medications implements OnInit {
 
   private apiUrl = 'http://localhost:8081/api/medications';
 
+  private scheduleApiUrl = 'http://localhost:8081/api/schedule-medications';
+
   medicamentos: Medicamento[] = [];
 
   avisos: Aviso[] = [
@@ -282,65 +284,69 @@ export class Medications implements OnInit {
 
   confirmarExclusao(): void {
 
-    if (!this.itemParaExcluir) {
+  if (!this.itemParaExcluir) {
+    return;
+  }
+
+  if (this.itemParaExcluir.tipo === 'medicamento') {
+
+    const medicamento =
+      this.medicamentos[this.itemParaExcluir.index];
+
+    if (!medicamento) {
+      console.error('Medicamento não encontrado.');
       return;
     }
 
+    console.log(
+      'Excluindo agendamento do medicamento:',
+      medicamento
+    );
 
-    if (
-      this.itemParaExcluir.tipo === 'medicamento'
-    ) {
+    this.http
+      .delete(
+        `${this.scheduleApiUrl}/${medicamento.id}`
+      )
+      .subscribe({
 
-      const medicamento =
-        this.medicamentos[
-          this.itemParaExcluir.index
-        ];
+        next: () => {
 
+          console.log(
+            'Medicamento excluído com sucesso.'
+          );
 
-      this.http
-        .delete(
-          `${this.apiUrl}/${medicamento.id}`
-        )
-        .subscribe({
+          this.cancelarExclusao();
 
-          next: () => {
+          this.buscarMedicamentos();
 
-            console.log(
-              'Medicamento excluído com sucesso.'
-            );
+        },
 
-            this.buscarMedicamentos();
+        error: (erro) => {
 
-            this.cancelarExclusao();
+          console.error(
+            'Erro ao excluir medicamento:',
+            erro
+          );
 
-          },
+          alert(
+            'Não foi possível excluir o medicamento.'
+          );
 
-          error: (erro) => {
+        }
 
-            console.error(
-              'Erro ao excluir medicamento:',
-              erro
-            );
+      });
 
-            alert(
-              'Não foi possível excluir o medicamento.'
-            );
+  } else {
 
-          }
+    this.avisos.splice(
+      this.itemParaExcluir.index,
+      1
+    );
 
-        });
-
-    } else {
-
-      this.avisos.splice(
-        this.itemParaExcluir.index,
-        1
-      );
-
-      this.cancelarExclusao();
-
-    }
+    this.cancelarExclusao();
 
   }
+
+}
 
 }
