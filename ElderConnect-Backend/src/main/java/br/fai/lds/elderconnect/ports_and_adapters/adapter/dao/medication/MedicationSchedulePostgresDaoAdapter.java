@@ -30,7 +30,10 @@ public class MedicationSchedulePostgresDaoAdapter implements MedicationScheduleD
         try {
             connection.setAutoCommit(false);
 
-            preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement = connection.prepareStatement(
+                    sql,
+                    PreparedStatement.RETURN_GENERATED_KEYS
+            );
 
             preparedStatement.setString(1, entity.getDosageInstructions());
             preparedStatement.setString(2, entity.getIntakeTime());
@@ -48,16 +51,20 @@ public class MedicationSchedulePostgresDaoAdapter implements MedicationScheduleD
 
             connection.commit();
             connection.setAutoCommit(true);
+
             resultSet.close();
             preparedStatement.close();
 
             return id;
+
         } catch (SQLException e) {
+
             try {
                 connection.rollback();
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
+
             throw new RuntimeException(e);
         }
     }
@@ -69,38 +76,55 @@ public class MedicationSchedulePostgresDaoAdapter implements MedicationScheduleD
         sql += " WHERE id = ?; ";
 
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement(sql);
 
             preparedStatement.setInt(1, id);
+
             preparedStatement.execute();
+
             preparedStatement.close();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
     public MedicationSchedule readyById(int id) {
 
-        final String sql = "SELECT * FROM medication_schedule WHERE id = ?; ";
+        final String sql =
+                "SELECT * FROM medication_schedule WHERE id = ?; ";
 
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement(sql);
 
             preparedStatement.setInt(1, id);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet =
+                    preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                final int entityId = resultSet.getInt("id");
-                final String dosageInstructions = resultSet.getString("dosage_instructions");
-                final String intakeTime = resultSet.getString("intake_time");
-                final int seniorId = resultSet.getInt("senior_id");
-                final int medicationId = resultSet.getInt("medication_id");
 
-                final MedicationSchedule medicationSchedule = new MedicationSchedule();
+                final int entityId =
+                        resultSet.getInt("id");
+
+                final String dosageInstructions =
+                        resultSet.getString("dosage_instructions");
+
+                final String intakeTime =
+                        resultSet.getString("intake_time");
+
+                final int seniorId =
+                        resultSet.getInt("senior_id");
+
+                final int medicationId =
+                        resultSet.getInt("medication_id");
+
+                final MedicationSchedule medicationSchedule =
+                        new MedicationSchedule();
+
                 medicationSchedule.setId(entityId);
                 medicationSchedule.setDosageInstructions(dosageInstructions);
                 medicationSchedule.setIntakeTime(intakeTime);
@@ -112,7 +136,9 @@ public class MedicationSchedulePostgresDaoAdapter implements MedicationScheduleD
 
                 return medicationSchedule;
             }
+
             return null;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -121,21 +147,39 @@ public class MedicationSchedulePostgresDaoAdapter implements MedicationScheduleD
     @Override
     public List<MedicationSchedule> readAll() {
 
-        final List<MedicationSchedule> medicationSchedules = new ArrayList<>();
-        final String sql = "SELECT * FROM medication_schedule ";
+        final List<MedicationSchedule> medicationSchedules =
+                new ArrayList<>();
+
+        final String sql =
+                "SELECT * FROM medication_schedule ";
 
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement(sql);
+
+            ResultSet resultSet =
+                    preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                final int entityId = resultSet.getInt("id");
-                final String dosageInstructions = resultSet.getString("dosage_instructions");
-                final String intakeTime = resultSet.getString("intake_time");
-                final int seniorId = resultSet.getInt("senior_id");
-                final int medicationId = resultSet.getInt("medication_id");
 
-                final MedicationSchedule data = new MedicationSchedule();
+                final int entityId =
+                        resultSet.getInt("id");
+
+                final String dosageInstructions =
+                        resultSet.getString("dosage_instructions");
+
+                final String intakeTime =
+                        resultSet.getString("intake_time");
+
+                final int seniorId =
+                        resultSet.getInt("senior_id");
+
+                final int medicationId =
+                        resultSet.getInt("medication_id");
+
+                final MedicationSchedule data =
+                        new MedicationSchedule();
+
                 data.setId(entityId);
                 data.setDosageInstructions(dosageInstructions);
                 data.setIntakeTime(intakeTime);
@@ -149,25 +193,43 @@ public class MedicationSchedulePostgresDaoAdapter implements MedicationScheduleD
             preparedStatement.close();
 
             return medicationSchedules;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
     public void updateInformation(int id, MedicationSchedule entity) {
-        String sql = " UPDATE medication_schedule set dosage_instructions = ?, intake_time = ? ";
+
+        String sql =
+                " UPDATE medication_schedule set dosage_instructions = ?, intake_time = ? ";
+
         sql += " WHERE id = ?;";
 
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, entity.getDosageInstructions());
-            preparedStatement.setString(2, entity.getIntakeTime());
-            preparedStatement.setInt(3, entity.getId());
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement(sql);
+
+            preparedStatement.setString(
+                    1,
+                    entity.getDosageInstructions()
+            );
+
+            preparedStatement.setString(
+                    2,
+                    entity.getIntakeTime()
+            );
+
+            preparedStatement.setInt(
+                    3,
+                    entity.getId()
+            );
 
             preparedStatement.execute();
+
             preparedStatement.close();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -175,31 +237,55 @@ public class MedicationSchedulePostgresDaoAdapter implements MedicationScheduleD
 
     @Override
     public List<MedicationSchedule> readyBySeniorId(int seniorId) {
-        final List<MedicationSchedule> medicationSchedulesBySeniorId = new ArrayList<>();
 
-        final String sql = "SELECT * FROM medication_schedule WHERE senior_id = ? ";
+        final List<MedicationSchedule> medicationSchedulesBySeniorId =
+                new ArrayList<>();
+
+        final String sql =
+                "SELECT ms.*, m.medication_name, m.dose " +
+                        "FROM medication_schedule ms " +
+                        "INNER JOIN medication m ON ms.medication_id = m.id " +
+                        "WHERE ms.senior_id = ? ";
 
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement(sql);
 
             preparedStatement.setInt(1, seniorId);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet =
+                    preparedStatement.executeQuery();
 
             while (resultSet.next()) {
 
-                final int entityId = resultSet.getInt("id");
-                final String dosageInstructions = resultSet.getString("dosage_instructions");
-                final String intakeTime = resultSet.getString("intake_time");
-                final int medicationId = resultSet.getInt("medication_id");
+                final int entityId =
+                        resultSet.getInt("id");
 
-                final MedicationSchedule data = new MedicationSchedule();
+                final String dosageInstructions =
+                        resultSet.getString("dosage_instructions");
+
+                final String intakeTime =
+                        resultSet.getString("intake_time");
+
+                final int medicationId =
+                        resultSet.getInt("medication_id");
+
+                final String medicationName =
+                        resultSet.getString("medication_name");
+
+                final String dose =
+                        resultSet.getString("dose");
+
+                final MedicationSchedule data =
+                        new MedicationSchedule();
 
                 data.setId(entityId);
                 data.setDosageInstructions(dosageInstructions);
                 data.setIntakeTime(intakeTime);
                 data.setSeniorId(seniorId);
                 data.setMedicationId(medicationId);
+                data.setMedicationName(medicationName);
+                data.setDose(dose);
 
                 medicationSchedulesBySeniorId.add(data);
             }
@@ -208,6 +294,7 @@ public class MedicationSchedulePostgresDaoAdapter implements MedicationScheduleD
             preparedStatement.close();
 
             return medicationSchedulesBySeniorId;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

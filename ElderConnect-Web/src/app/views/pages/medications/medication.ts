@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -56,15 +56,20 @@ export class Medications implements OnInit {
 
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
 
   ngOnInit(): void {
-
+    console.log('Tela de medicamentos carregada');
     this.buscarMedicamentos();
-
+    
   }
+
+  atualizarMedicamentos(): void {
+  this.buscarMedicamentos();
+}
 
 
  buscarMedicamentos(): void {
@@ -95,28 +100,37 @@ export class Medications implements OnInit {
 
       next: (medicamentos) => {
 
-        console.log(
-          'Medicamentos do usuário recebidos:',
-          medicamentos
-        );
+  console.log(
+    'Medicamentos do usuário recebidos:',
+    medicamentos
+  );
 
-       this.medicamentos = medicamentos.map(
-        (item) => ({
+  const listaMedicamentos: Medicamento[] = medicamentos.map(
+    (item) => ({
 
-          id: item.medicationId,
+      id: item.id,
 
-          nome: item.medicationName,
+      nome: item.medicationName,
 
-          dosagem: item.dose,
+      dosagem: item.dose,
 
-          horario: item.intakeTime,
+      horario: item.intakeTime,
 
-          instrucoes: item.dosageInstructions
+      instrucoes: item.dosageInstructions
 
-        })
-      );
+    })
+  );
 
-      },
+  this.medicamentos = listaMedicamentos;
+
+  console.log(
+    'Medicamentos exibidos na tela:',
+    this.medicamentos
+  );
+
+  this.changeDetectorRef.detectChanges();
+
+},
 
       error: (erro) => {
 

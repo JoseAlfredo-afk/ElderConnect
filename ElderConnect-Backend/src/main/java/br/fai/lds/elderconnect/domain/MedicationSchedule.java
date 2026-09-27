@@ -12,5 +12,8 @@ public class MedicationSchedule {
     private String intakeTime;
     private int seniorId;
     private int medicationId;
+    private String medicationName;
+    private String dose;
+
 
 }

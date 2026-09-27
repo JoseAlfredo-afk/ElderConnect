@@ -1,150 +1,450 @@
 <div class="d-flex min-vh-100 bg-light">
 
-  <aside class="bg-white border-end d-flex flex-column justify-content-between p-3"
+  <!-- MENU LATERAL -->
+  <aside
+    class="bg-white border-end d-flex flex-column justify-content-between p-3"
     style="width: 240px; min-width: 240px;">
-    <div>
-      <nav class="nav nav-pills flex-column gap-2 pt-2">
-        <a routerLink="/dashboard/elder" class="nav-link text-dark fw-semibold">Home</a>
-        <a routerLink="/dashboard/search-caregiver" class="nav-link text-dark fw-semibold">Buscar cuidador</a>
-        <a routerLink="/dashboard/agenda" class="nav-link text-dark fw-semibold">Agenda</a>
-        <a routerLink="/dashboard/medications" class="nav-link active fw-semibold">Medicamentos</a>
-      </nav>
-    </div>
 
     <div>
-      <a routerLink="/account/sign-in" class="btn btn-link text-danger fw-bold text-decoration-none px-2">Sair</a>
+
+      <nav class="nav nav-pills flex-column gap-2 pt-2">
+
+        <a
+          routerLink="/dashboard/elder"
+          class="nav-link text-dark fw-semibold">
+          Home
+        </a>
+
+        <a
+          routerLink="/dashboard/search-caregiver"
+          class="nav-link text-dark fw-semibold">
+          Buscar cuidador
+        </a>
+
+        <a
+          routerLink="/dashboard/agenda"
+          class="nav-link text-dark fw-semibold">
+          Agenda
+        </a>
+
+        <!-- MEDICAMENTOS -->
+        <a
+          routerLink="/dashboard/medications"
+          class="nav-link active fw-semibold">
+          Medicamentos
+        </a>
+
+      </nav>
+
     </div>
+
+
+    <!-- SAIR -->
+    <div>
+
+      <a
+        routerLink="/account/sign-in"
+        class="btn btn-link text-danger fw-bold text-decoration-none px-2">
+        Sair
+      </a>
+
+    </div>
+
   </aside>
 
+
+
+  <!-- CONTEÚDO PRINCIPAL -->
   <main class="flex-grow-1 p-4 overflow-auto">
 
+    <!-- CABEÇALHO -->
     <header class="mb-4 pb-3 border-bottom">
-      <h1 class="h2 fw-bold text-dark mb-1">Gerenciamento de Medicamentos e Avisos</h1>
-      <p class="text-muted mb-0">Cadastre a rotina de remédios e avisos importantes para o acompanhamento.</p>
+
+      <h1 class="h2 fw-bold text-dark mb-1">
+        Gerenciamento de Medicamentos e Avisos
+      </h1>
+
+      <p class="text-muted mb-0">
+        Cadastre a rotina de remédios e avisos importantes para o acompanhamento.
+      </p>
+
     </header>
+
+
 
     <div class="row g-4">
 
+
+      <!-- ===================================================== -->
+      <!-- COLUNA ESQUERDA -->
+      <!-- ===================================================== -->
+
       <div class="col-lg-6 d-flex flex-column gap-4">
 
+
+        <!-- NOVO MEDICAMENTO -->
         <div class="card border-0 shadow-sm rounded-4">
+
           <div class="card-body p-4">
-            <h5 class="fw-bold text-dark mb-3">Novo Medicamento</h5>
+
+            <h5 class="fw-bold text-dark mb-3">
+              Novo Medicamento
+            </h5>
+
 
             <form (ngSubmit)="cadastrarMedicamento()">
+
+              <!-- NOME -->
               <div class="mb-3">
-                <label class="form-label small fw-semibold text-muted">Nome do Medicamento *</label>
-                <input type="text" class="form-control rounded-3 border-secondary-subtle" placeholder="Ex: Paracetamol"
-                  [(ngModel)]="novoMedicamento.nome" name="nome" required>
+
+                <label
+                  class="form-label small fw-semibold text-muted">
+                  Nome do Medicamento *
+                </label>
+
+                <input
+                  type="text"
+                  class="form-control rounded-3 border-secondary-subtle"
+                  placeholder="Ex: Paracetamol"
+                  [(ngModel)]="novoMedicamento.nome"
+                  name="nome"
+                  required>
+
               </div>
 
+
+              <!-- DOSAGEM / HORÁRIO -->
               <div class="row g-3 mb-3">
+
+                <!-- DOSAGEM -->
                 <div class="col-6">
-                  <label class="form-label small fw-semibold text-muted">Dosagem</label>
-                  <input type="text" class="form-control rounded-3 border-secondary-subtle" placeholder="Ex: 500mg"
-                    [(ngModel)]="novoMedicamento.dosagem" name="dosagem">
+
+                  <label
+                    class="form-label small fw-semibold text-muted">
+                    Dosagem
+                  </label>
+
+                  <input
+                    type="text"
+                    class="form-control rounded-3 border-secondary-subtle"
+                    placeholder="Ex: 500mg"
+                    [(ngModel)]="novoMedicamento.dosagem"
+                    name="dosagem">
+
                 </div>
+
+
+                <!-- HORÁRIO -->
                 <div class="col-6">
-                  <label class="form-label small fw-semibold text-muted">Horário *</label>
-                  <input type="time" class="form-control rounded-3 border-secondary-subtle"
-                    [(ngModel)]="novoMedicamento.horario" name="horario" required>
+
+                  <label
+                    class="form-label small fw-semibold text-muted">
+                    Horário *
+                  </label>
+
+                  <input
+                    type="time"
+                    class="form-control rounded-3 border-secondary-subtle"
+                    [(ngModel)]="novoMedicamento.horario"
+                    name="horario"
+                    required>
+
                 </div>
+
               </div>
 
+
+              <!-- INSTRUÇÕES -->
               <div class="mb-4">
-                <label class="form-label small fw-semibold text-muted">Instruções</label>
-                <textarea class="form-control rounded-3 border-secondary-subtle" rows="2"
-                  placeholder="Ex: Tomar após as refeições" [(ngModel)]="novoMedicamento.instrucoes"
-                  name="instrucoes"></textarea>
+
+                <label
+                  class="form-label small fw-semibold text-muted">
+                  Instruções
+                </label>
+
+                <textarea
+                  class="form-control rounded-3 border-secondary-subtle"
+                  rows="2"
+                  placeholder="Ex: Tomar após as refeições"
+                  [(ngModel)]="novoMedicamento.instrucoes"
+                  name="instrucoes">
+                </textarea>
+
               </div>
 
-              <button type="submit" class="btn btn-primary fw-bold w-100 py-2 rounded-3">Cadastrar Medicamento</button>
+
+              <!-- CADASTRAR -->
+              <button
+                type="submit"
+                class="btn btn-primary fw-bold w-100 py-2 rounded-3">
+
+                Cadastrar Medicamento
+
+              </button>
+
             </form>
+
           </div>
+
         </div>
 
+
+
+        <!-- NOVO AVISO -->
         <div class="card border-0 shadow-sm rounded-4">
+
           <div class="card-body p-4">
-            <h5 class="fw-bold text-dark mb-3">Novo Aviso Importante</h5>
+
+            <h5 class="fw-bold text-dark mb-3">
+              Novo Aviso Importante
+            </h5>
+
 
             <form (ngSubmit)="cadastrarAviso()">
+
               <div class="mb-4">
-                <label class="form-label small fw-semibold text-muted">Tipo de Aviso</label>
-                <input type="text" class="form-control rounded-3 border-secondary-subtle"
-                  placeholder="Ex: Acompanhar medição de pressão" [(ngModel)]="novoAvisoTexto" name="aviso">
+
+                <label
+                  class="form-label small fw-semibold text-muted">
+                  Tipo de Aviso
+                </label>
+
+                <input
+                  type="text"
+                  class="form-control rounded-3 border-secondary-subtle"
+                  placeholder="Ex: Acompanhar medição de pressão"
+                  [(ngModel)]="novoAvisoTexto"
+                  name="aviso">
+
               </div>
 
-              <button type="submit" class="btn btn-primary fw-bold w-100 py-2 rounded-3">Cadastrar Aviso</button>
+
+              <button
+                type="submit"
+                class="btn btn-primary fw-bold w-100 py-2 rounded-3">
+
+                Cadastrar Aviso
+
+              </button>
+
             </form>
+
           </div>
+
         </div>
 
       </div>
 
+
+
+      <!-- ===================================================== -->
+      <!-- COLUNA DIREITA -->
+      <!-- ===================================================== -->
+
       <div class="col-lg-6 d-flex flex-column gap-4">
 
+
+        <!-- MEDICAMENTOS CADASTRADOS -->
         <div class="card border-0 shadow-sm rounded-4">
+
           <div class="card-body p-4">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <h5 class="fw-bold text-dark mb-0">Medicamentos Cadastrados</h5>
-              <span class="badge bg-secondary rounded-circle px-2 py-1">{{ medicamentos.length }}</span>
+
+
+            <!-- TÍTULO -->
+            <div
+              class="d-flex align-items-center justify-content-between mb-3">
+
+              <h5 class="fw-bold text-dark mb-0">
+                Medicamentos Cadastrados
+              </h5>
+
+              <span
+                class="badge bg-secondary rounded-circle px-2 py-1">
+
+                {{ medicamentos.length }}
+
+              </span>
+
             </div>
 
+
+            <!-- LISTA DE MEDICAMENTOS -->
             <div class="d-flex flex-column gap-3">
-              <div *ngFor="let med of medicamentos; let i = index"
+
+
+              <!-- MEDICAMENTO -->
+              <div
+                *ngFor="let med of medicamentos; let i = index"
                 class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3 border border-light-subtle">
+
+
+                <!-- INFORMAÇÕES -->
                 <div>
-                  <div class="d-flex align-items-center gap-2 mb-1">
-                    <strong class="text-dark">{{ med.nome }}</strong>
-                    <span *ngIf="med.dosagem"
-                      class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill font-monospace fw-normal">{{
-                      med.dosagem }}</span>
+
+                  <div
+                    class="d-flex align-items-center gap-2 mb-1">
+
+                    <strong class="text-dark">
+
+                      {{ med.nome }}
+
+                    </strong>
+
+
+                    <!-- DOSAGEM -->
+                    <span
+                      *ngIf="med.dosagem"
+                      class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill font-monospace fw-normal">
+
+                      {{ med.dosagem }}
+
+                    </span>
+
                   </div>
-                  <small class="text-muted d-block">{{ med.instrucoes || 'Sem instruções' }}</small>
+
+
+                  <!-- INSTRUÇÕES -->
+                  <small class="text-muted d-block">
+
+                    {{ med.instrucoes || 'Sem instruções' }}
+
+                  </small>
+
                 </div>
 
-                <div class="d-flex align-items-center gap-2">
-                  <span class="badge bg-primary px-3 py-2 fs-6 rounded-3 font-monospace">{{ med.horario }}</span>
-                  <button type="button" class="btn btn-outline-danger btn-sm border-0 rounded-3 px-2 py-1"
+
+
+                <!-- HORÁRIO / EXCLUIR -->
+                <div
+                  class="d-flex align-items-center gap-2">
+
+
+                  <!-- HORÁRIO -->
+                  <span
+                    class="badge bg-primary px-3 py-2 fs-6 rounded-3 font-monospace">
+
+                    {{ med.horario }}
+
+                  </span>
+
+
+                  <!-- EXCLUIR -->
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger btn-sm border-0 rounded-3 px-2 py-1"
                     (click)="solicitarExclusao('medicamento', i)">
+
                     <i class="bi bi-x-lg"></i>
+
                   </button>
+
                 </div>
+
               </div>
 
-              <div *ngIf="medicamentos.length === 0" class="text-center py-4 text-muted small">
+
+
+              <!-- NENHUM MEDICAMENTO -->
+              <div
+                *ngIf="medicamentos.length === 0"
+                class="text-center py-4 text-muted small">
+
                 Nenhum medicamento cadastrado.
+
               </div>
+
             </div>
+
           </div>
+
         </div>
 
+
+
+        <!-- ================================================= -->
+        <!-- AVISOS -->
+        <!-- ================================================= -->
+
         <div class="card border-0 shadow-sm rounded-4">
+
           <div class="card-body p-4">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <h5 class="fw-bold text-dark mb-0">Avisos do Idoso</h5>
-              <span class="badge bg-secondary rounded-circle px-2 py-1">{{ avisos.length }}</span>
+
+
+            <!-- TÍTULO -->
+            <div
+              class="d-flex align-items-center justify-content-between mb-3">
+
+              <h5 class="fw-bold text-dark mb-0">
+                Avisos do Idoso
+              </h5>
+
+              <span
+                class="badge bg-secondary rounded-circle px-2 py-1">
+
+                {{ avisos.length }}
+
+              </span>
+
             </div>
 
+
+            <!-- LISTA DE AVISOS -->
             <div class="d-flex flex-column gap-2">
-              <div *ngFor="let aviso of avisos; let i = index"
+
+
+              <!-- AVISO -->
+              <div
+                *ngFor="let aviso of avisos; let i = index"
                 class="d-flex align-items-center justify-content-between p-3 rounded-3"
                 style="background-color: #fff8e6; border: 1px solid #ffeeba;">
-                <div class="d-flex align-items-center gap-2">
-                  <span class="badge bg-warning text-dark fw-bold">Aviso</span>
-                  <span class="small text-dark">{{ aviso.texto }}</span>
+
+
+                <div
+                  class="d-flex align-items-center gap-2">
+
+                  <span
+                    class="badge bg-warning text-dark fw-bold">
+
+                    Aviso
+
+                  </span>
+
+                  <span class="small text-dark">
+
+                    {{ aviso.texto }}
+
+                  </span>
+
                 </div>
-                <button type="button" class="btn btn-outline-danger btn-sm border-0 rounded-3 px-2 py-1"
+
+
+                <!-- EXCLUIR AVISO -->
+                <button
+                  type="button"
+                  class="btn btn-outline-danger btn-sm border-0 rounded-3 px-2 py-1"
                   (click)="solicitarExclusao('aviso', i)">
+
                   <i class="bi bi-x-lg"></i>
+
                 </button>
+
               </div>
 
-              <div *ngIf="avisos.length === 0" class="text-center py-4 text-muted small">
+
+
+              <!-- NENHUM AVISO -->
+              <div
+                *ngIf="avisos.length === 0"
+                class="text-center py-4 text-muted small">
+
                 Nenhum aviso cadastrado.
+
               </div>
+
             </div>
+
           </div>
+
         </div>
 
       </div>
@@ -152,34 +452,95 @@
     </div>
 
   </main>
+
 </div>
 
-<div *ngIf="exibindoModalExclusao" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);"
-  (click)="cancelarExclusao()">
-  <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;" (click)="$event.stopPropagation()">
-    <div class="modal-content border-0 shadow-lg rounded-4 p-4 text-center">
 
+
+<!-- ========================================================= -->
+<!-- MODAL DE EXCLUSÃO -->
+<!-- ========================================================= -->
+
+<div
+  *ngIf="exibindoModalExclusao"
+  class="modal fade show d-block"
+  style="background-color: rgba(0,0,0,0.5);"
+  (click)="cancelarExclusao()">
+
+
+  <div
+    class="modal-dialog modal-dialog-centered"
+    style="max-width: 400px;"
+    (click)="$event.stopPropagation()">
+
+
+    <div
+      class="modal-content border-0 shadow-lg rounded-4 p-4 text-center">
+
+
+      <!-- ÍCONE -->
       <div
         class="bg-danger-subtle text-danger rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
         style="width: 72px; height: 72px;">
-        <i class="bi bi-exclamation-triangle-fill fs-1 text-danger"></i>
+
+        <i
+          class="bi bi-exclamation-triangle-fill fs-1 text-danger">
+        </i>
+
       </div>
 
-      <h4 class="fw-bold text-dark mb-2">Deseja realmente excluir este {{ itemParaExcluir?.tipo === 'medicamento' ?
-        'medicamento' : 'aviso' }}?</h4>
-      <p class="text-muted small mb-4">Esta ação não pode ser desfeita.</p>
 
-      <div class="d-flex gap-2 justify-content-center">
-        <button type="button" class="btn btn-light fw-bold px-4 py-2 rounded-3 border text-secondary flex-grow-1"
+      <!-- MENSAGEM -->
+      <h4 class="fw-bold text-dark mb-2">
+
+        Deseja realmente excluir este
+
+        {{
+          itemParaExcluir?.tipo === 'medicamento'
+            ? 'medicamento'
+            : 'aviso'
+        }}?
+
+      </h4>
+
+
+      <p class="text-muted small mb-4">
+
+        Esta ação não pode ser desfeita.
+
+      </p>
+
+
+      <!-- BOTÕES -->
+      <div
+        class="d-flex gap-2 justify-content-center">
+
+
+        <!-- NÃO -->
+        <button
+          type="button"
+          class="btn btn-light fw-bold px-4 py-2 rounded-3 border text-secondary flex-grow-1"
           (click)="cancelarExclusao()">
+
           Não
+
         </button>
-        <button type="button" class="btn btn-danger fw-bold px-4 py-2 rounded-3 flex-grow-1"
+
+
+        <!-- SIM -->
+        <button
+          type="button"
+          class="btn btn-danger fw-bold px-4 py-2 rounded-3 flex-grow-1"
           (click)="confirmarExclusao()">
+
           Sim, excluir
+
         </button>
+
       </div>
 
     </div>
+
   </div>
+
 </div>
