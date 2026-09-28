@@ -10,7 +10,17 @@ export class Authentication {
   public usuarioLogado = signal<boolean>(false);
   public mostrarAlertaCadastroGlobal: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+
+    const id = localStorage.getItem('id');
+    const fullname = localStorage.getItem('fullname');
+    const email = localStorage.getItem('email');
+    const userType = localStorage.getItem('userType');
+
+    if (id && fullname && email && userType) {
+      this.usuarioLogado.set(true);
+    }
+  }
 
   authenticate(email: string, password: string) {
     return this.http.post<AuthenticatedUserDto>(
