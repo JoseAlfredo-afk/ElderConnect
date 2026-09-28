@@ -73,13 +73,13 @@ export class SearchCaregiver implements OnInit {
       next: dados => {
 
         this.cuidadores = dados.map(cuidador => this.converterCuidador(cuidador));
-      
+
         this.cuidadoresFiltrados = [...this.cuidadores];
 
       },
 
       error: erro => {
-        console.error('Erro ao carregar cuidadores: ',erro);
+        console.error('Erro ao carregar cuidadores: ', erro);
 
         this.cuidadores = [];
 
@@ -87,7 +87,7 @@ export class SearchCaregiver implements OnInit {
 
       }
     }
-  );
+    );
   }
 
   private converterCuidador(cuidador: CaregiverResponse): Cuidador {
@@ -112,7 +112,8 @@ export class SearchCaregiver implements OnInit {
 
   aplicarFiltros(): void {
     this.cuidadoresFiltrados = this.cuidadores.filter(cuidador => {
-      const atendeCidade = this.cidadeSelecionada === 'Todas' || this.cidadeCorresponde(cuidador.cidade);
+      const atendeCidade = this.cidadeSelecionada === 'Todas' ||
+        cuidador.cidade.trim().toLowerCase() === this.cidadeSelecionada.trim().toLowerCase();
 
       let atendeValor = true;
       if (this.valorMaximoSelecionado !== 'Todos') {
@@ -141,11 +142,9 @@ export class SearchCaregiver implements OnInit {
     this.cuidadoresFiltrados = [...this.cuidadores];
   }
 
-  private cidadeCorresponde(cidadeCuidador: string): boolean {
-    const cidadeSelecionada = this.cidadeSelecionada.split(' - ')[0].trim().toLowerCase();
-    const cidadeAtual = cidadeCuidador.trim().toLowerCase();
-
-    return cidadeAtual === cidadeSelecionada || cidadeAtual.startsWith(cidadeSelecionada);
+  get cidadesDisponiveis(): string[] {
+    const cidades = this.cuidadores.map(cuidador => cuidador.cidade);
+    return Array.from(new Set(cidades.filter(Boolean)));
   }
 
   verPerfil(cuidador: Cuidador): void {

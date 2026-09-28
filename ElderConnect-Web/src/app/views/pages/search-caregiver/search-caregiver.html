@@ -26,10 +26,11 @@
           <label class="form-label fw-semibold text-dark mb-1">Cidade</label>
           <select class="form-select rounded-3 border-secondary-subtle" [(ngModel)]="cidadeSelecionada">
             <option value="Todas">Todas</option>
-            <option value="Goiânia - GO">Goiânia - GO</option>
-            <option value="Pouso Alegre - MG">Pouso Alegre - MG</option>
-            <option value="Itajubá - MG">Itajubá - MG</option>
-            <option value="Santa Rita do Sapucaí - MG">Santa Rita do Sapucaí - MG</option>
+            <option *ngFor="let cidade of cidadesDisponiveis" [value]="cidade">
+
+              {{ cidade }}
+
+            </option>
           </select>
         </div>
 
