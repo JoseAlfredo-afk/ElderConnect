@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -22,10 +22,12 @@ export class SignIn {
 
   private authService = inject(Authentication);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   exibirToast(mensagem: string): void {
     this.mensagemErroToast = mensagem;
     this.exibirToastErro = true;
+    this.cdr.detectChanges();
 
     if (this.toastTimer) {
       clearTimeout(this.toastTimer);
@@ -33,11 +35,12 @@ export class SignIn {
 
     this.toastTimer = setTimeout(() => {
       this.fecharToast();
-    }, 4000);
+    }, 3000);
   }
 
   fecharToast(): void {
     this.exibirToastErro = false;
+    this.cdr.detectChanges();
   }
 
   logar(event: Event) {
