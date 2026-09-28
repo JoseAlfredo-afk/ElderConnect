@@ -10,6 +10,8 @@ public class ContractResponseDto {
 
     private int id;
     private String contractNumber;
+    private int seniorId;
+    private int caregiverId;
     private String seniorName;
     private String caregiverName;
     private String startDate;
@@ -27,6 +29,8 @@ public class ContractResponseDto {
 
         contractResponseDto.setId(contract.getId());
         contractResponseDto.setContractNumber(contract.getContractNumber());
+        contractResponseDto.setSeniorId(contract.getSeniorId());
+        contractResponseDto.setCaregiverId(contract.getCaregiverId());
         contractResponseDto.setSeniorName(seniorName);
         contractResponseDto.setCaregiverName(caregiverName);
         contractResponseDto.setStartDate(contract.getStartDate());
