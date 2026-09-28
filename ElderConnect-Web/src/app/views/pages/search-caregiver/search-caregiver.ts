@@ -2,6 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+
+interface CaregiverResponse {
+  id: number;
+  fullname: string;
+  cpf: string;
+  email: string;
+  phoneNumber: string;
+  userType: string;
+  birthDate: string;
+  availabilitySchedule: string;
+  streetAddress: string;
+  specialization: string;
+  city: string;
+  neighborhood: string;
+  experience: string;
+  hourlyRate: number;
+  experienceYears?: number;
+  availabilityPeriod: string;
+}
 
 export interface Cuidador {
   id: number;
@@ -13,6 +33,7 @@ export interface Cuidador {
   avaliacao: number;
   totalAvaliacoes: number;
   disponibilidade: string;
+  periodoDisponibilidade: string;
   especialidade: string;
   sobre: string;
   telefone: string;
@@ -24,65 +45,10 @@ export interface Cuidador {
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './search-caregiver.html'
 })
+
 export class SearchCaregiver implements OnInit {
-  cuidadores: Cuidador[] = [
-    {
-      id: 1,
-      nome: 'Ana Paula Souza',
-      cidade: 'Goiânia - GO',
-      experienciaAnos: 5,
-      experienciaTexto: '5 anos de experiência',
-      precoHora: 25.00,
-      avaliacao: 3.5,
-      totalAvaliacoes: 24,
-      disponibilidade: 'Manhã',
-      especialidade: 'Cuidados com Mobilidade & Enfermagem Básica',
-      sobre: 'Enfermeira de formação com foco em reabilitação de idosos, administração correta de medicamentos e suporte diário.',
-      telefone: '(62) 98877-1122'
-    },
-    {
-      id: 2,
-      nome: 'Carlos Eduardo Lima',
-      cidade: 'Pouso Alegre - MG',
-      experienciaAnos: 3,
-      experienciaTexto: '3 anos de experiência',
-      precoHora: 25.00,
-      avaliacao: 3.8,
-      totalAvaliacoes: 18,
-      disponibilidade: 'Tarde',
-      especialidade: 'Acompanhamento Geriátrico & Companhia',
-      sobre: 'Profissional dedicado ao bem-estar e entretenimento de idosos, com ampla facilidade para caminhadas e conversas.',
-      telefone: '(35) 99112-3344'
-    },
-    {
-      id: 3,
-      nome: 'Mariana Ribeiro',
-      cidade: 'Itajubá - MG',
-      experienciaAnos: 4,
-      experienciaTexto: '4 anos de experiência',
-      precoHora: 25.00,
-      avaliacao: 4.8,
-      totalAvaliacoes: 42,
-      disponibilidade: 'Integral',
-      especialidade: 'Cuidadora Especializada em Alzheimer & Parkinson',
-      sobre: 'Especialista em cuidados a pacientes com doenças neurodegenerativas, oferecendo um ambiente seguro, empático e estruturado.',
-      telefone: '(35) 98833-5566'
-    },
-    {
-      id: 4,
-      nome: 'Maria Silva',
-      cidade: 'Santa Rita do Sapucaí - MG',
-      experienciaAnos: 6,
-      experienciaTexto: '6 anos de experiência',
-      precoHora: 45.00,
-      avaliacao: 4.9,
-      totalAvaliacoes: 48,
-      disponibilidade: 'Integral',
-      especialidade: 'Cuidados Gerais & Acompanhamento',
-      sobre: 'Profissional com mais de 5 anos de experiência no acompanhamento e cuidado integral de idosos, com referências locais.',
-      telefone: '(35) 99988-7766'
-    }
-  ];
+
+  cuidadores: Cuidador[] = [];
 
   cuidadoresFiltrados: Cuidador[] = [];
 
@@ -91,15 +57,62 @@ export class SearchCaregiver implements OnInit {
   disponibilidadeSelecionada: string = 'Qualquer horário';
   experienciaMinimaSelecionada: string = 'Todas';
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+  ) { }
 
   ngOnInit(): void {
-    this.cuidadoresFiltrados = [...this.cuidadores];
+    this.carregarCuidadores();
   }
+
+  carregarCuidadores(): void {
+
+    this.http.get<CaregiverResponse[]>('http://localhost:8081/api/user/caregivers').subscribe({
+
+      next: dados => {
+
+        this.cuidadores = dados.map(cuidador => this.converterCuidador(cuidador));
+      
+        this.cuidadoresFiltrados = [...this.cuidadores];
+
+      },
+
+      error: erro => {
+        console.error('Erro ao carregar cuidadores: ',erro);
+
+        this.cuidadores = [];
+
+        this.cuidadoresFiltrados = [];
+
+      }
+    }
+  );
+  }
+
+  private converterCuidador(cuidador: CaregiverResponse): Cuidador {
+
+    return {
+      id: cuidador.id,
+      nome: cuidador.fullname,
+      cidade: cuidador.city,
+      experienciaAnos: cuidador.experienceYears ?? 0,
+      experienciaTexto: cuidador.experience,
+      disponibilidade: cuidador.availabilitySchedule,
+      periodoDisponibilidade: cuidador.availabilityPeriod,
+      especialidade: cuidador.specialization,
+      sobre: cuidador.experience,
+      telefone: cuidador.phoneNumber,
+      precoHora: cuidador.hourlyRate,
+      avaliacao: 0,
+      totalAvaliacoes: 0,
+    }
+  }
+
 
   aplicarFiltros(): void {
     this.cuidadoresFiltrados = this.cuidadores.filter(cuidador => {
-      const atendeCidade = this.cidadeSelecionada === 'Todas' || cuidador.cidade === this.cidadeSelecionada;
+      const atendeCidade = this.cidadeSelecionada === 'Todas' || this.cidadeCorresponde(cuidador.cidade);
 
       let atendeValor = true;
       if (this.valorMaximoSelecionado !== 'Todos') {
@@ -108,7 +121,7 @@ export class SearchCaregiver implements OnInit {
       }
 
       const atendeDisponibilidade = this.disponibilidadeSelecionada === 'Qualquer horário' ||
-        cuidador.disponibilidade === this.disponibilidadeSelecionada;
+        cuidador.periodoDisponibilidade === this.disponibilidadeSelecionada;
 
       let atendeExperiencia = true;
       if (this.experienciaMinimaSelecionada !== 'Todas') {
@@ -126,6 +139,13 @@ export class SearchCaregiver implements OnInit {
     this.disponibilidadeSelecionada = 'Qualquer horário';
     this.experienciaMinimaSelecionada = 'Todas';
     this.cuidadoresFiltrados = [...this.cuidadores];
+  }
+
+  private cidadeCorresponde(cidadeCuidador: string): boolean {
+    const cidadeSelecionada = this.cidadeSelecionada.split(' - ')[0].trim().toLowerCase();
+    const cidadeAtual = cidadeCuidador.trim().toLowerCase();
+
+    return cidadeAtual === cidadeSelecionada || cidadeAtual.startsWith(cidadeSelecionada);
   }
 
   verPerfil(cuidador: Cuidador): void {
