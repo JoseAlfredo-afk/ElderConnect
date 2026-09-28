@@ -41,4 +41,10 @@ export class App {
       }
     });
   }
+
+  podeBuscarCuidadores(): boolean {
+    const usuario = this.authService.usuarioAtual();
+    if (!usuario) return true;
+    return usuario.userType !== 'CAREGIVER';
+  }
 }
