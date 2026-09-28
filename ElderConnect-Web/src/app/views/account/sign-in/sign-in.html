@@ -1,3 +1,17 @@
+<div *ngIf="exibirToastErro" class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1080;">
+  <div class="toast show align-items-center text-white bg-danger border-0 shadow-lg rounded-3" role="alert"
+    aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body d-flex align-items-center gap-2 py-3 px-3 fw-medium">
+        <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+        <span>{{ mensagemErroToast }}</span>
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" (click)="fecharToast()"
+        aria-label="Fechar"></button>
+    </div>
+  </div>
+</div>
+
 <div class="d-flex align-items-center justify-content-center py-5" style="min-height: 90vh; background-color: #ffffff;">
 
   <div class="card border border-secondary-subtle p-5 shadow-sm text-center"
@@ -30,7 +44,8 @@
     </form>
 
     <div class="d-flex flex-column gap-2 mt-2" style="font-size: 0.85rem;">
-      <a routerLink="/account/forgot-password" class="text-decoration-none fw-semibold text-secondary">Esqueci minha senha</a>
+      <a routerLink="/account/forgot-password" class="text-decoration-none fw-semibold text-secondary">Esqueci minha
+        senha</a>
       <div class="d-flex justify-content-center gap-2">
         <span class="text-dark fw-bold">Não tem conta?</span>
         <a routerLink="/account/sign-up" class="text-decoration-none fw-bold" style="color: #0052cc;">Criar conta</a>

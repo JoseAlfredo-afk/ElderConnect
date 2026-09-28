@@ -3,8 +3,6 @@ import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Authentication } from '../../../services/security/authentication';
-import { AuthenticatedUserDto } from '../../../models/dto/authenticated-user-dto';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-sign-in',
@@ -18,32 +16,52 @@ export class SignIn {
   senhaInput: string = '';
   mostrarSucesso: boolean = false;
 
+  exibirToastErro: boolean = false;
+  mensagemErroToast: string = '';
+  private toastTimer: any;
+
   private authService = inject(Authentication);
   private router = inject(Router);
+
+  exibirToast(mensagem: string): void {
+    this.mensagemErroToast = mensagem;
+    this.exibirToastErro = true;
+
+    if (this.toastTimer) {
+      clearTimeout(this.toastTimer);
+    }
+
+    this.toastTimer = setTimeout(() => {
+      this.fecharToast();
+    }, 4000);
+  }
+
+  fecharToast(): void {
+    this.exibirToastErro = false;
+  }
 
   logar(event: Event) {
     event.preventDefault();
 
-      if (this.emailInput.trim() !== '' && this.senhaInput.trim() !== '') {
+    if (this.emailInput.trim() !== '' && this.senhaInput.trim() !== '') {
 
-    this.authService.authenticate(
-      this.emailInput,
-      this.senhaInput
-    ).subscribe({
-      next: (user) => {
-        console.log('Usuário autenticado:', user);
-        this.authService.logar(user);
-        this.router.navigate(['/dashboard/elder']);
-      },
-      error: (error) => {
-        console.error('Erro no login:', error);
-        alert('E-mail ou senha inválidos.');
-      }
-    });
+      this.authService.authenticate(
+        this.emailInput,
+        this.senhaInput
+      ).subscribe({
+        next: (user) => {
+          console.log('Usuário autenticado:', user);
+          this.authService.logar(user);
+          this.router.navigate(['/dashboard/elder']);
+        },
+        error: (error) => {
+          console.error('Erro no login:', error);
+          this.exibirToast('E-mail ou senha inválidos.');
+        }
+      });
 
-  } else {
-    alert('Por favor, preencha o e-mail e a senha de simulação.');
-  }
-   
+    } else {
+      this.exibirToast('Por favor, preencha o e-mail e a senha.');
+    }
   }
 }
