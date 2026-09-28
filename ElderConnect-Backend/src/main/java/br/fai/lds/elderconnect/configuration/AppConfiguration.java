@@ -5,7 +5,6 @@ import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.contract.ContractP
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.medication.MedicationPostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.medication.MedicationSchedulePostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.message.MessagePostgresDaoAdapter;
-import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user.UserFakeDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user.UserPostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.security.BasicAuthenticationServiceAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.appointment.AppointmentDao;
@@ -36,10 +35,6 @@ public class AppConfiguration {
         System.out.println("--------------------");
         System.out.println("active profile: " + Arrays.toString(environment.getActiveProfiles()));
         System.out.println("--------------------");
-    }
-
-    public UserDao getUserFakeDao() {
-        return new UserFakeDaoAdapter();
     }
 
     @Bean
