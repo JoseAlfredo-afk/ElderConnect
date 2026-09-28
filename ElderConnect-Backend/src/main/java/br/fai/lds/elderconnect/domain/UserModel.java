@@ -23,6 +23,9 @@ public class UserModel {
     private String city;
     private String neighborhood;
     private String experience;
+    private Float hourlyRate;
+    private Integer experienceYears;
+    private String availabilityPeriod;
 
     public enum UserType {
         IDOSO, CUIDADOR
