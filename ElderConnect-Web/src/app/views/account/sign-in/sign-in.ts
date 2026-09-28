@@ -14,19 +14,20 @@ import { Authentication } from '../../../services/security/authentication';
 export class SignIn {
   emailInput: string = '';
   senhaInput: string = '';
-  mostrarSucesso: boolean = false;
 
-  exibirToastErro: boolean = false;
-  mensagemErroToast: string = '';
+  exibirToast: boolean = false;
+  mensagemToast: string = '';
+  tipoToast: 'sucesso' | 'erro' = 'erro';
   private toastTimer: any;
 
   private authService = inject(Authentication);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
-  exibirToast(mensagem: string): void {
-    this.mensagemErroToast = mensagem;
-    this.exibirToastErro = true;
+  mostrarNotificacao(mensagem: string, tipo: 'sucesso' | 'erro'): void {
+    this.mensagemToast = mensagem;
+    this.tipoToast = tipo;
+    this.exibirToast = true;
     this.cdr.detectChanges();
 
     if (this.toastTimer) {
@@ -39,7 +40,7 @@ export class SignIn {
   }
 
   fecharToast(): void {
-    this.exibirToastErro = false;
+    this.exibirToast = false;
     this.cdr.detectChanges();
   }
 
@@ -55,16 +56,21 @@ export class SignIn {
         next: (user) => {
           console.log('Usuário autenticado:', user);
           this.authService.logar(user);
-          this.router.navigate(['/dashboard/elder']);
+
+          this.mostrarNotificacao('Logado com sucesso!', 'sucesso');
+
+          setTimeout(() => {
+            this.router.navigate(['/dashboard/elder']);
+          }, 1000);
         },
         error: (error) => {
           console.error('Erro no login:', error);
-          this.exibirToast('E-mail ou senha inválidos.');
+          this.mostrarNotificacao('E-mail ou senha inválidos.', 'erro');
         }
       });
 
     } else {
-      this.exibirToast('Por favor, preencha o e-mail e a senha.');
+      this.mostrarNotificacao('Por favor, preencha o e-mail e a senha.', 'erro');
     }
   }
 }
