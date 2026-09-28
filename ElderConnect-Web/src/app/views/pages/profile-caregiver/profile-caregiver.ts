@@ -12,6 +12,8 @@ export interface CuidadorPerfil {
   totalAvaliacoes: number;
   sobre: string;
   experienciaTexto: string;
+  disponibilidade: string;
+  periodoDisponibilidade: string;
   precoHora: number;
   telefone: string;
 }
@@ -41,6 +43,8 @@ export class ProfileCaregiver implements OnInit {
     totalAvaliacoes: 48,
     sobre: 'Profissional com mais de 5 anos de experiência no acompanhamento e cuidado integral de idosos.',
     experienciaTexto: '5 anos de experiência',
+    disponibilidade: 'Segunda, Quarta e Sextas - Tempo integral',
+    periodoDisponibilidade: 'Integral',
     precoHora: 45.00,
     telefone: '(35) 99988-7766'
   };
@@ -74,6 +78,8 @@ export class ProfileCaregiver implements OnInit {
           totalAvaliacoes: dados.totalAvaliacoes,
           sobre: dados.sobre,
           experienciaTexto: dados.experienciaTexto || 'Experiência comprovada',
+          disponibilidade: dados.disponibilidade || 'Disponibilidade não informada',
+          periodoDisponibilidade: dados.periodoDisponibilidade || 'Integral',
           precoHora: dados.precoHora,
           telefone: dados.telefone
         };
