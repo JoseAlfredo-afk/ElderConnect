@@ -21,7 +21,10 @@ specialization varchar(100),
 city varchar(100),
 neighborhood varchar(100),
 experience text,
-UNIQUE(email,cpf)
+hourly_rate decimal(10,2),
+experience_years int,
+availability_period varchar(50),
+UNIQUE(email, cpf)
 );
 
 CREATE TABLE message(

@@ -15,7 +15,10 @@ create table if not exists usuario(
     especializacao varchar(100),
     cidade varchar(100),
     bairro varchar(100),
-    experiencia text
+    experiencia text,
+    valor_hora decimal(10,2),
+    anos_experiencia int,
+    periodo_disponibilidade varchar(50)
 	);
 
 commit;

@@ -13,58 +13,58 @@ VALUES ('101.101.101-10', 'José da Silva', 'josesilva@email.com', crypt('876543
         '1948-03-15');
 
 INSERT INTO user_model(cpf, fullname, email, password, phone_number, user_type, birth_date, availability_schedule,
-                       street_address, specialization, city, neighborhood, experience)
+                       street_address, specialization, city, neighborhood, experience, hourly_rate, experience_years, availability_period)
 VALUES ('333.333.333-33', 'Juliana Mota', 'juliana@email.com', crypt('juju2108', gen_salt('bf')), '(35) 99193-9393',
         'CUIDADOR', '2001-12-01',
         'Segunda a sexta - 08:00 às 18:00', 'Rua das Flores, 120', 'Cuidados gerais com idosos',
-        'Santa Rita do Sapucaí', 'Centro', '5 anos de experiência com cuidados domiciliar');
+        'Santa Rita do Sapucaí', 'Centro', '5 anos de experiência com cuidados domiciliar', 45.00, 5, 'Integral');
 
 INSERT INTO user_model(cpf, fullname, email, password, phone_number, user_type, birth_date, availability_schedule,
-                       street_address, specialization, city, neighborhood, experience)
+                       street_address, specialization, city, neighborhood, experience, hourly_rate, experience_years, availability_period)
 VALUES ('444.444.444-44', 'Paulo Santos', 'paulo@email.com', crypt('03456777', gen_salt('bf')), '(35) 94444-5555',
         'CUIDADOR', '1998-05-25',
         'Todos os dias - 18:00 às 06:00', 'Avenida Sapucaí, 450', 'Cuidados noturnos', 'Santa Rita do Sapucaí',
-        'Boa Vista', '3 anos trabalhando como cuidador noturno');
+        'Boa Vista', '3 anos trabalhando como cuidador noturno', 30.00, 3, 'Noite');
 
 INSERT INTO user_model(cpf, fullname, email, password, phone_number, user_type, birth_date, availability_schedule,
-                       street_address, specialization, city, neighborhood, experience)
+                       street_address, specialization, city, neighborhood, experience, hourly_rate, experience_years, availability_period)
 VALUES ('555.555.555-55', 'Larissa Silva', 'larissa@email.com', crypt('52345564', gen_salt('bf')), '(35) 99595-9595',
         'CUIDADOR', '2005-08-28',
         'Segunda, quarta e sexta - 07:00 às 17:00', 'Rua José Pinto, 81',
         'Acompanhamento e administração de medicamentos', 'Pouso Alegre', 'São Carlos',
-        '8 anos de experiência no acompanhamento de idosos');
+        '8 anos de experiência no acompanhamento de idosos', 40.00, 8, 'Integral');
 
 INSERT INTO user_model(cpf, fullname, email, password, phone_number, user_type, birth_date, availability_schedule,
-                       street_address, specialization, city, neighborhood, experience)
+                       street_address, specialization, city, neighborhood, experience, hourly_rate, experience_years, availability_period)
 VALUES ('666.666.666-66', 'Ana Paula Souza', 'ana.paula@email.com', crypt('12345678', gen_salt('bf')), '(35) 98877-1122',
         'CUIDADOR', '1990-05-15',
         'Todos os dias - 07:00 às 11:00', 'Rua Augusto Gondim, 222',
         'Cuidados com Mobilidade & Enfermagem Básica', 'Goiânia', 'Centro',
-        '5 anos de experiência. Enfermeira de formação com foco em reabilitação de idosos, administração correta de medicamentos e suporte diário.');
+        '5 anos de experiência. Enfermeira de formação com foco em reabilitação de idosos, administração correta de medicamentos e suporte diário.', 25.00, 5, 'Manhã');
 
 INSERT INTO user_model(cpf, fullname, email, password, phone_number, user_type, birth_date, availability_schedule,
-                       street_address, specialization, city, neighborhood, experience)
+                       street_address, specialization, city, neighborhood, experience, hourly_rate, experience_years, availability_period)
 VALUES ('777.777.777-77', 'Carlos Eduardo Lima', 'carlos.lima45@email.com', crypt('CELCELCEL', gen_salt('bf')), '(35) 99112-3434',
         'CUIDADOR', '1992-08-12',
         'Sexta,Sabádo e Domingo - 16:00 às 20:00', 'Rua Adolfo Olinto, 45',
         'Acompanhamento Geriátrico e Companhia', 'Pouso Alegre', 'Centro',
-        '3 anos de experiência. Profissional dedicado ao bem-estar e entretenimento de idosos, com facilidade para caminhadas e conversas.');
+        '3 anos de experiência. Profissional dedicado ao bem-estar e entretenimento de idosos, com facilidade para caminhadas e conversas.', 25.00, 3, 'Tarde');
 
 INSERT INTO user_model(cpf, fullname, email, password, phone_number, user_type, birth_date, availability_schedule,
-                       street_address, specialization, city, neighborhood, experience)
+                       street_address, specialization, city, neighborhood, experience, hourly_rate, experience_years, availability_period)
 VALUES ('888.888.888-88', 'Mariana Ribeiro', 'mariana.ribeiro@email.com', crypt('24753681', gen_salt('bf')), '(35) 98833-5566',
         'CUIDADOR', '1991-03-20',
         'Todos os dias - Tempo integral', 'Rua Nova, 91',
         'Cuidadora Especializada em Alzheimer & Parkinson', 'Itajubá', 'Boa Vista',
-        '4 anos de experiência. Especialista em cuidados a pacientes com doenças neurodegenerativas.');
+        '4 anos de experiência. Especialista em cuidados a pacientes com doenças neurodegenerativas.', 25.00, 4, 'Integral');
 
 INSERT INTO user_model(cpf, fullname, email, password, phone_number, user_type, birth_date, availability_schedule,
-                       street_address, specialization, city, neighborhood, experience)
+                       street_address, specialization, city, neighborhood, experience, hourly_rate, experience_years, availability_period)
 VALUES ('999.999.999-99', 'Maria Silva', 'maria.silva@email.com', crypt('TYRFHGSE', gen_salt('bf')), '(35) 99988-0505',
         'CUIDADOR', '1989-09-10',
         'Segunda, Quarta e Sextas - Tempo integral', 'Rua Adelino Carneiro Pinto, 68',
         'Cuidados Gerais & Acompanhamento', 'Santa Rita do Sapucaí', 'Centro',
-        '6 anos de experiência no acompanhamento e cuidado integral de idosos, com referências locais.');
+        '6 anos de experiência no acompanhamento e cuidado integral de idosos, com referências locais.', 45.00, 6, 'Integral');
 
 
 INSERT INTO medication(medication_name, dose, senior_id)
