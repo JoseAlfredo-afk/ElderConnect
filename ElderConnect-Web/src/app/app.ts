@@ -44,7 +44,9 @@ export class App {
 
   podeBuscarCuidadores(): boolean {
     const usuario = this.authService.usuarioAtual();
-    if (!usuario) return true;
-    return usuario.userType !== 'CAREGIVER';
+    if (!usuario || !usuario.userType) return true;
+
+    const userTypeUpper = usuario.userType.toUpperCase();
+    return userTypeUpper !== 'CUIDADOR' && userTypeUpper !== 'CAREGIVER';
   }
 }
