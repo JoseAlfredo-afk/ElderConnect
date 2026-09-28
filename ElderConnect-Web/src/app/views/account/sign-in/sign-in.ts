@@ -60,7 +60,13 @@ export class SignIn {
           this.mostrarNotificacao('Logado com sucesso!', 'sucesso');
 
           setTimeout(() => {
-            this.router.navigate(['/dashboard/elder']);
+            const userType = user?.userType?.toUpperCase();
+
+            if (userType === 'CUIDADOR' || userType === 'CAREGIVER') {
+              this.router.navigate(['/dashboard/caregiver']);
+            } else {
+              this.router.navigate(['/dashboard/elder']);
+            }
           }, 1000);
         },
         error: (error) => {
