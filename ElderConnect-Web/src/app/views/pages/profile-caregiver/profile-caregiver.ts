@@ -30,6 +30,7 @@ export interface AvaliacaoItem {
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './profile-caregiver.html'
 })
+
 export class ProfileCaregiver implements OnInit {
   cuidador: CuidadorPerfil = {
     id: 1,

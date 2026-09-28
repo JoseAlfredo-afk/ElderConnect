@@ -161,8 +161,8 @@ export class Profile implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.novaSenha.length < 6) {
-      alert('A nova senha deve ter no mínimo 6 caracteres!');
+    if (this.novaSenha.length < 8) {
+      alert('A nova senha deve ter no mínimo 8 caracteres!');
       return;
     }
 
