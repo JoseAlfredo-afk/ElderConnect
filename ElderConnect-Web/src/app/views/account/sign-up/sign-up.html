@@ -41,7 +41,7 @@
 
       </div>
 
-      <div class="row g-4 text-start mx-auto mb-4" style="max-width: 740px;">
+      <div class="row g-4 text-start mx-auto mb-3" style="max-width: 740px;">
 
         <div class="col-12 col-md-6 d-flex flex-column gap-3">
 
@@ -122,6 +122,20 @@
 
       </div>
 
+      <div class="d-flex justify-content-center mb-4 mx-auto" style="max-width: 740px;">
+        <div class="form-check text-start">
+          <input class="form-check-input border-secondary shadow-sm" type="checkbox" id="aceitaTermos"
+            formControlName="aceitaTermos"
+            [ngClass]="{'is-invalid': cadastroForm.get('aceitaTermos')?.touched && cadastroForm.get('aceitaTermos')?.invalid}">
+          <label class="form-check-label fw-semibold text-dark" for="aceitaTermos" style="font-size: 0.85rem;">
+            Li e concordo com os
+            <a href="#" (click)="abrirModalTermos($event)" class="text-primary fw-bold text-decoration-underline">
+              Termos de Uso e Política de Privacidade
+            </a>.
+          </label>
+        </div>
+      </div>
+
       <div class="d-flex justify-content-center mb-3">
         <button type="submit" class="btn btn-primary btn-lg fw-bold px-5 rounded-pill py-2" style="min-width: 260px;">
           Cadastrar
@@ -141,4 +155,55 @@
 
   </div>
 
+</div>
+
+<div *ngIf="exibirModalTermos" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);"
+  (click)="fecharModalTermos()">
+  <div class="modal-dialog modal-dialog-centered modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content border-0 shadow-lg rounded-4 p-4 text-start">
+
+      <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+        <h4 class="fw-bold text-dark m-0">Termos de Uso e Política de Privacidade</h4>
+        <button type="button" class="btn-close" (click)="fecharModalTermos()"></button>
+      </div>
+
+      <div class="modal-body text-secondary"
+        style="max-height: 380px; overflow-y: auto; font-size: 0.9rem; line-height: 1.6;">
+        <p class="fw-bold text-dark">Ao utilizar a plataforma ElderConnect, você concorda com os termos referentes ao
+          tratamento e à proteção dos seus dados pessoais descritos abaixo:</p>
+
+        <h6 class="fw-bold text-dark mt-3">1. Coleta de Dados</h6>
+        <p>Coletamos informações estritamente necessárias para a prestação de nossos serviços, tais como nome completo,
+          e-mail, CPF, telefone, data de nascimento e, no caso de cuidadores, informações profissionais e
+          disponibilidades de horário.</p>
+
+        <h6 class="fw-bold text-dark mt-3">2. Uso e Finalidade</h6>
+        <p>Seus dados serão utilizados exclusivamente para viabilizar a conexão entre idosos/famílias e cuidadores,
+          gestão de agendamentos e autenticação na plataforma.</p>
+
+        <h6 class="fw-bold text-dark mt-3">3. Sigilo e Confidencialidade</h6>
+        <p>O ElderConnect compromete-se a manter total sigilo sobre os dados cadastrados. Suas informações pessoais não
+          serão vendidas, alugadas, repassadas ou compartilhadas com terceiros não autorizados ou para fins
+          publicitários.</p>
+
+        <h6 class="fw-bold text-dark mt-3">4. Segurança</h6>
+        <p>Adotamos medidas técnicas e organizacionais adequadas para proteger seus dados pessoais contra acessos não
+          autorizados, perdas ou alterações imprevistas.</p>
+
+        <h6 class="fw-bold text-dark mt-3">5. Direitos do Usuário</h6>
+        <p>Você possui o direito de acessar, corrigir, atualizar ou solicitar a exclusão de seus dados pessoais a
+          qualquer momento através das configurações do seu perfil na plataforma.</p>
+      </div>
+
+      <div class="d-flex justify-content-end gap-2 mt-4 pt-2 border-top">
+        <button type="button" class="btn btn-light fw-bold px-4 rounded-3 border" (click)="fecharModalTermos()">
+          Fechar
+        </button>
+        <button type="button" class="btn btn-primary fw-bold px-4 rounded-3" (click)="aceitarTermosEFechar()">
+          Li e Concordo
+        </button>
+      </div>
+
+    </div>
+  </div>
 </div>

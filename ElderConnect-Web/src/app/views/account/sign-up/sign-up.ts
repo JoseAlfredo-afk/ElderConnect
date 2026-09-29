@@ -23,6 +23,7 @@ import { Authentication } from '../../../services/security/authentication';
 export class SignUp {
 
   tipoConta: 'idoso' | 'cuidador' = 'idoso';
+  exibirModalTermos: boolean = false;
 
   private fb = inject(FormBuilder);
   private router = inject(Router);
@@ -35,11 +36,26 @@ export class SignUp {
     cpf: ['', [Validators.required]],
     telefone: ['', [Validators.required]],
     senha: ['', [Validators.required, Validators.minLength(8)]],
-    confirmaSenha: ['', [Validators.required]]
+    confirmaSenha: ['', [Validators.required]],
+    aceitaTermos: [false, [Validators.requiredTrue]]
   });
 
   alterarTipoConta(tipo: 'idoso' | 'cuidador') {
     this.tipoConta = tipo;
+  }
+
+  abrirModalTermos(event: Event) {
+    event.preventDefault();
+    this.exibirModalTermos = true;
+  }
+
+  fecharModalTermos() {
+    this.exibirModalTermos = false;
+  }
+
+  aceitarTermosEFechar() {
+    this.cadastroForm.get('aceitaTermos')?.setValue(true);
+    this.fecharModalTermos();
   }
 
   aplicarMascara(event: Event, tipo: 'data' | 'cpf' | 'telefone') {
@@ -67,6 +83,9 @@ export class SignUp {
   submeter() {
     if (!this.cadastroForm.valid) {
       this.cadastroForm.markAllAsTouched();
+      if (this.cadastroForm.get('aceitaTermos')?.invalid) {
+        alert('Você precisa aceitar os Termos de Uso e Privacidade para continuar.');
+      }
       return;
     }
 
@@ -95,7 +114,7 @@ export class SignUp {
     };
 
     this.authService.cadastrarUsuario(usuario).subscribe({
-      next: (resposta) => {
+      next: () => {
         this.authService.mostrarAlertaCadastroGlobal = true;
         alert('Cadastro realizado com sucesso!');
         this.router.navigate(['/account/sign-in']);
