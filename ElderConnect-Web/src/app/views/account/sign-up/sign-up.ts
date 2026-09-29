@@ -1,11 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   Validators,
   ReactiveFormsModule
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Authentication } from '../../../services/security/authentication';
 
@@ -20,13 +20,14 @@ import { Authentication } from '../../../services/security/authentication';
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.css'
 })
-export class SignUp {
+export class SignUp implements OnInit {
 
   tipoConta: 'idoso' | 'cuidador' = 'idoso';
   exibirModalTermos: boolean = false;
 
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   protected authService = inject(Authentication);
 
   cadastroForm: FormGroup = this.fb.group({
@@ -39,6 +40,14 @@ export class SignUp {
     confirmaSenha: ['', [Validators.required]],
     aceitaTermos: [false, [Validators.requiredTrue]]
   });
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['type'] === 'cuidador') {
+        this.tipoConta = 'cuidador';
+      }
+    });
+  }
 
   alterarTipoConta(tipo: 'idoso' | 'cuidador') {
     this.tipoConta = tipo;

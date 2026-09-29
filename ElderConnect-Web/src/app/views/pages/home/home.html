@@ -10,7 +10,8 @@
           <a routerLink="/dashboard/search-caregiver" class="btn btn-primary btn-lg px-4 fw-bold rounded-3">
             Encontrar Cuidador
           </a>
-          <a routerLink="/account/sign-up" class="btn btn-success btn-lg px-4 fw-bold rounded-3">
+          <a routerLink="/account/sign-up" [queryParams]="{ type: 'cuidador' }"
+            class="btn btn-success btn-lg px-4 fw-bold rounded-3">
             Sou Cuidador
           </a>
         </div>
