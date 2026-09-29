@@ -6,10 +6,76 @@
         <h1 class="h2 fw-bold text-dark mb-1">Olá, {{ nomeCuidador }}</h1>
         <p class="text-muted mb-0">Acompanhe as solicitações e informações dos idosos sob seus cuidados.</p>
       </div>
-      <div *ngIf="idosoVinculado">
-        <span class="badge bg-success px-3 py-2 fs-6">Atendimento Ativo</span>
-      </div>
     </header>
+
+    <div class="card border-0 shadow-sm mb-4 w-100" *ngIf="solicitacoesPendentes.length > 0">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <h2 class="h5 fw-bold text-dark mb-1">
+              Solicitações de vínculo
+            </h2>
+            <p class="text-muted small mb-0">
+              Analise as solicitações recebidas.
+            </p>
+          </div>
+          <span class="badge bg-warning text-dark">
+            {{ solicitacoesPendentes.length }}
+          </span>
+        </div>
+        <div *ngFor="let contrato of solicitacoesPendentes" class="border rounded-3 p-3 mb-3">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h3 class="h6 fw-bold text-dark mb-1">
+                {{ contrato.seniorName }}
+              </h3>
+              <small class="text-muted">
+                Contrato {{ contrato.contractNumber }}
+              </small>
+            </div>
+            <span class="badge bg-warning text-dark">
+              Pendente
+            </span>
+          </div>
+          <hr>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <p class="mb-1 small">
+                <strong>Data de início:</strong>
+                {{ contrato.startDate }}
+              </p>
+              <p class="mb-1 small">
+                <strong>Horário:</strong>
+                {{ contrato.workingHours }}
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p class="mb-1 small">
+                <strong>Valor:</strong>
+                R$ {{ contrato.contractValue | number:'1.2-2' }}
+              </p>
+            </div>
+          </div>
+          <div class="bg-light rounded p-3 mt-3">
+            <strong class="small">
+              Descrição:
+            </strong>
+            <p class="mb-0 text-secondary small">
+              {{ contrato.description }}
+            </p>
+          </div>
+          <div class="d-flex justify-content-end gap-2 mt-3">
+            <button type="button" class="btn btn-outline-danger" (click)="recusarContrato(contrato.id)">
+              Recusar
+            </button>
+            <button type="button" class="btn btn-success" (click)="aceitarContrato(contrato.id)">
+              Aceitar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <div class="card border-0 shadow-sm mb-4" *ngIf="idosoVinculado; else semVinculo">
       <div class="card-body p-4">
@@ -27,8 +93,20 @@
           </div>
           <div>
             <h3 class="h5 fw-bold text-dark mb-1">{{ idosoVinculado.nome }}</h3>
-            <p class="text-muted mb-1 small">{{ idosoVinculado.idade }} • {{ idosoVinculado.cidade }}</p>
-            <p class="mb-0 small"><strong>Contato Responsável:</strong> {{ idosoVinculado.responsavel }}</p>
+            <p class="mb-1 small">
+              {{ idosoVinculado.idade }} de idade
+            </p>
+            <p class="mb-1 small">
+              <strong>Telefone:</strong>
+              {{ idosoVinculado.telefone }}
+            </p>
+            <p class="mb-1 small">
+              <strong>Horário:</strong>
+              {{ idosoVinculado.horario }}
+            </p>
+            <p class="mb-1 small">
+              <strong>Valor:</strong>R$ {{ idosoVinculado.valorContrato | number:'1.2-2' }}
+            </p>
           </div>
         </div>
 

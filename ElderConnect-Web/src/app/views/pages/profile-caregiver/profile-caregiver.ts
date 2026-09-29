@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Authentication } from '../../../services/security/authentication';
 
 export interface CuidadorPerfil {
   id: number;
@@ -29,11 +30,16 @@ export interface AvaliacaoItem {
 
 interface ContractResponse {
   id: number;
+  contractNumber: string
   seniorId: number;
   seniorName: string;
   caregiverId: number;
   caregiverName: string;
+  startDate: string;
+  contractValue: number;
   status: string;
+  workingHours: string;
+  description: string;
   endDate: string | null;
   rating: number;
   comment: string | null;
@@ -45,32 +51,37 @@ interface ContractResponse {
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './profile-caregiver.html'
 })
+
 export class ProfileCaregiver implements OnInit {
   cuidador: CuidadorPerfil = {
-    id: 1,
-    nome: 'Maria Silva',
-    especialidade: 'Cuidados Gerais & Acompanhamento',
-    cidade: 'Santa Rita do Sapucaí - MG',
-    avaliacao: 4.9,
-    totalAvaliacoes: 48,
-    sobre: 'Profissional com mais de 5 anos de experiência no acompanhamento e cuidado integral de idosos.',
-    experienciaTexto: '5 anos de experiência',
-    disponibilidade: 'Segunda, Quarta e Sextas - Tempo integral',
-    periodoDisponibilidade: 'Integral',
-    precoHora: 45.00,
-    telefone: '(35) 99988-7766'
+    id: 0,
+    nome: '',
+    especialidade: '',
+    cidade: '',
+    avaliacao: 0,
+    totalAvaliacoes: 0,
+    sobre: '',
+    experienciaTexto: '',
+    disponibilidade: '',
+    periodoDisponibilidade: '',
+    precoHora: 0,
+    telefone: ''
   };
 
   exibindoModalVinculo = false;
-  idosoSelecionado = 'José da Silva (78 anos)';
+  idosoSelecionado = '';
   dataInicio = '';
+  valorContrato = 0;
+  horarioContrato = '';
+  descricaoContrato = '';
 
   exibindoModalAvaliacoes = false;
   listaAvaliacoes: AvaliacaoItem[] = [];
 
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private authentication: Authentication
   ) { }
 
   ngOnInit(): void {
@@ -80,6 +91,11 @@ export class ProfileCaregiver implements OnInit {
     const day = String(today.getDate()).padStart(2, '0');
 
     this.dataInicio = `${year}-${month}-${day}`;
+
+    const usuario = this.authentication.usuarioAtual();
+
+    if (usuario) { this.idosoSelecionado = usuario.fullname; }
+
     this.carregarPerfilCuidador();
     this.carregarAvaliacoes();
   }
@@ -89,6 +105,9 @@ export class ProfileCaregiver implements OnInit {
 
     if (!perfilAtivo) {
       console.warn('Nenhum cuidador foi selecionado.');
+
+      this.router.navigate(['/dashboard/search-caregiver']);
+
       return;
     }
 
@@ -111,7 +130,11 @@ export class ProfileCaregiver implements OnInit {
       };
     } catch (erro) {
       console.error('Erro ao carregar perfil', erro);
+
+      this.router.navigate(['/dashboard/search-caregiver']);
     }
+
+
   }
 
   carregarAvaliacoes(): void {
@@ -163,6 +186,12 @@ export class ProfileCaregiver implements OnInit {
   }
 
   solicitarVinculo(): void {
+    this.horarioContrato = this.cuidador.disponibilidade;
+
+    this.descricaoContrato = 'Escreva aqui'
+
+    this.valorContrato = 0;
+
     this.exibindoModalVinculo = true;
   }
 
@@ -171,22 +200,85 @@ export class ProfileCaregiver implements OnInit {
   }
 
   confirmarVinculo(): void {
-    const dadosVinculo = {
-      cuidadorId: this.cuidador.id,
-      cuidadorNome: this.cuidador.nome,
-      especialidade: this.cuidador.especialidade,
-      telefone: this.cuidador.telefone,
-      nome: 'José da Silva',
-      idade: '78 anos',
-      cidade: this.cuidador.cidade,
-      responsavel: 'Ana Silva (Filha) - (35) 99887-1122',
-      observacoes: 'Acompanhamento regular solicitado via plataforma.',
-      dataInicio: this.dataInicio
+
+    const usuario = this.authentication.getAuthenticatedUser();
+
+    if (!usuario) {
+      return;
+    }
+
+    if (usuario.userType.toUpperCase() !== 'IDOSO') {
+      alert('Apenas idosos podem solicitar um vinculo.');
+
+      return;
+    }
+
+    if (!this.cuidador.id || this.cuidador.id <= 0) {
+
+      alert('Cuidador inválido');
+
+
+      return;
+    }
+
+    if (this.valorContrato === null || this.valorContrato <= 0) {
+      alert('Informe um valor válido para o contrato');
+      return;
+    }
+
+    if (!this.horarioContrato || !this.horarioContrato.trim()) {
+      alert('Informe os horários do contrato.');
+
+      return;
+    }
+
+    if (!this.descricaoContrato || !this.descricaoContrato.trim()) {
+      alert('Informe uma descrição para o contrato.');
+
+      return;
+    }
+
+    const contrato = {
+
+      startDate: this.dataInicio,
+      contractValue: this.valorContrato,
+      workingHours: this.horarioContrato.trim(),
+      description: this.descricaoContrato.trim(),
+      seniorId: usuario.id,
+      caregiverId: this.cuidador.id
     };
 
-    localStorage.setItem('elderconnect_vinculo', JSON.stringify(dadosVinculo));
-    this.exibindoModalVinculo = false;
-    this.router.navigate(['/dashboard/elder']);
+    this.http.post('http://localhost:8081/api/contracts', contrato).subscribe({
+      next: () => {
+
+        alert('Solicitação enviada ao cuidador!');
+
+        this.exibindoModalVinculo = false;
+
+        this.router.navigate(['/dashboard/elder']);
+      },
+
+
+      error: erro => {
+
+        console.error('Erro ao criar contrato:', erro);
+
+        alert('Não foi possível enviar a solicitação de vínculo.');
+      }
+    })
+  }
+
+  private obterDataAtual(): string {
+
+    const hoje = new Date();
+
+    const ano = hoje.getFullYear();
+
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+
+    const dia = String(hoje.getDate()).padStart(2, '0');
+
+    return (`${ano}-${mes}-${dia}`);
   }
 
   private atualizarMediaAvaliacao(contratos: ContractResponse[]): void {

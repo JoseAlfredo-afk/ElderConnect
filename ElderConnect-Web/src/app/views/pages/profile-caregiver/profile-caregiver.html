@@ -189,6 +189,32 @@
             name="dataInicio" required>
         </div>
 
+        <div>
+          <label class="form-label fw-semibold">
+            Valor do contrato
+          </label>
+
+          <input type="number" min="0.01" step="0.01" class="form-control" [(ngModel)]="valorContrato"
+            name="valorContrato" required>
+        </div>
+
+        <div>
+          <label class="form-label fw-semibold">
+            Horários combinados
+          </label>
+
+          <input type="text" class="form-control" [(ngModel)]="horarioContrato" name="horarioContrato" required>
+        </div>
+
+        <div>
+          <label class="form-label fw-semibold">
+            Descrição
+          </label>
+
+          <textarea class="form-control" rows="3" [(ngModel)]="descricaoContrato" name="descricaoContrato"
+            required></textarea>
+        </div>
+
         <div class="alert alert-info border-0 shadow-sm rounded-3 d-flex align-items-center gap-2 py-2 px-3 my-1"
           style="background-color: #e6f4ff; color: #0052cc;">
           <i class="bi bi-info-circle fs-5 flex-shrink-0"></i>
