@@ -60,96 +60,97 @@ export class Medications implements OnInit {
   constructor(
     private http: HttpClient,
     private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  ) { }
 
 
   ngOnInit(): void {
     console.log('Tela de medicamentos carregada');
     this.buscarMedicamentos();
-    
+    this.carregarAvisos();
+
   }
 
   atualizarMedicamentos(): void {
-  this.buscarMedicamentos();
-}
-
-
- buscarMedicamentos(): void {
-
-  const idUsuario = localStorage.getItem('id');
-
-  if (!idUsuario) {
-
-    console.error('Usuário não está logado.');
-
-    alert('Usuário não identificado.');
-
-    return;
+    this.buscarMedicamentos();
   }
 
-  const seniorId = Number(idUsuario);
 
-  console.log(
-    'Buscando medicamentos do usuário:',
-    seniorId
-  );
+  buscarMedicamentos(): void {
 
-  this.http
-    .get<any[]>(
-      `http://localhost:8081/api/schedule-medications/senior/${seniorId}`
-    )
-    .subscribe({
+    const idUsuario = localStorage.getItem('id');
 
-      next: (medicamentos) => {
+    if (!idUsuario) {
 
-  console.log(
-    'Medicamentos do usuário recebidos:',
-    medicamentos
-  );
+      console.error('Usuário não está logado.');
 
-  const listaMedicamentos: Medicamento[] = medicamentos.map(
-    (item) => ({
+      alert('Usuário não identificado.');
 
-      id: item.id,
+      return;
+    }
 
-      nome: item.medicationName,
+    const seniorId = Number(idUsuario);
 
-      dosagem: item.dose,
+    console.log(
+      'Buscando medicamentos do usuário:',
+      seniorId
+    );
 
-      horario: item.intakeTime,
+    this.http
+      .get<any[]>(
+        `http://localhost:8081/api/schedule-medications/senior/${seniorId}`
+      )
+      .subscribe({
 
-      instrucoes: item.dosageInstructions
+        next: (medicamentos) => {
 
-    })
-  );
+          console.log(
+            'Medicamentos do usuário recebidos:',
+            medicamentos
+          );
 
-  this.medicamentos = listaMedicamentos;
+          const listaMedicamentos: Medicamento[] = medicamentos.map(
+            (item) => ({
 
-  console.log(
-    'Medicamentos exibidos na tela:',
-    this.medicamentos
-  );
+              id: item.id,
 
-  this.changeDetectorRef.detectChanges();
+              nome: item.medicationName,
 
-},
+              dosagem: item.dose,
 
-      error: (erro) => {
+              horario: item.intakeTime,
 
-        console.error(
-          'Erro ao buscar medicamentos:',
-          erro
-        );
+              instrucoes: item.dosageInstructions
 
-        alert(
-          'Não foi possível carregar os medicamentos.'
-        );
+            })
+          );
 
-      }
+          this.medicamentos = listaMedicamentos;
 
-    });
+          console.log(
+            'Medicamentos exibidos na tela:',
+            this.medicamentos
+          );
 
-}
+          this.changeDetectorRef.detectChanges();
+
+        },
+
+        error: (erro) => {
+
+          console.error(
+            'Erro ao buscar medicamentos:',
+            erro
+          );
+
+          alert(
+            'Não foi possível carregar os medicamentos.'
+          );
+
+        }
+
+      });
+
+  }
 
 
   cadastrarMedicamento(): void {
@@ -249,11 +250,54 @@ export class Medications implements OnInit {
       return;
     }
 
-    this.avisos.push({
-      texto: this.novoAvisoTexto
-    });
+    this.avisos.push({ texto: this.novoAvisoTexto.trim() });
+
+    this.salvarAvisos();
 
     this.novoAvisoTexto = '';
+
+  }
+
+  private salvarAvisos(): void {
+
+    const idUsuario = localStorage.getItem('id');
+
+    if (!idUsuario) {
+      return;
+    }
+
+    localStorage.setItem(
+      `elderconnect_avisos_${idUsuario}`,
+      JSON.stringify(this.avisos)
+    );
+
+  }
+
+  private carregarAvisos(): void {
+
+    const usuarioid = localStorage.getItem('id');
+
+    if (!usuarioid) {
+      return;
+    }
+
+    const avisosSalvos = localStorage.getItem(`elderconnect_avisos_${usuarioid}`);
+
+    if (!avisosSalvos) {
+      this.avisos = [];
+      return;
+    }
+
+    try {
+
+      this.avisos =
+        JSON.parse(avisosSalvos);
+
+    } catch {
+
+      this.avisos = [];
+
+    }
 
   }
 
@@ -284,69 +328,70 @@ export class Medications implements OnInit {
 
   confirmarExclusao(): void {
 
-  if (!this.itemParaExcluir) {
-    return;
-  }
-
-  if (this.itemParaExcluir.tipo === 'medicamento') {
-
-    const medicamento =
-      this.medicamentos[this.itemParaExcluir.index];
-
-    if (!medicamento) {
-      console.error('Medicamento não encontrado.');
+    if (!this.itemParaExcluir) {
       return;
     }
 
-    console.log(
-      'Excluindo agendamento do medicamento:',
-      medicamento
-    );
+    if (this.itemParaExcluir.tipo === 'medicamento') {
 
-    this.http
-      .delete(
-        `${this.scheduleApiUrl}/${medicamento.id}`
-      )
-      .subscribe({
+      const medicamento =
+        this.medicamentos[this.itemParaExcluir.index];
 
-        next: () => {
+      if (!medicamento) {
+        console.error('Medicamento não encontrado.');
+        return;
+      }
 
-          console.log(
-            'Medicamento excluído com sucesso.'
-          );
+      console.log(
+        'Excluindo agendamento do medicamento:',
+        medicamento
+      );
 
-          this.cancelarExclusao();
+      this.http
+        .delete(
+          `${this.scheduleApiUrl}/${medicamento.id}`
+        )
+        .subscribe({
 
-          this.buscarMedicamentos();
+          next: () => {
 
-        },
+            console.log(
+              'Medicamento excluído com sucesso.'
+            );
 
-        error: (erro) => {
+            this.cancelarExclusao();
 
-          console.error(
-            'Erro ao excluir medicamento:',
-            erro
-          );
+            this.buscarMedicamentos();
 
-          alert(
-            'Não foi possível excluir o medicamento.'
-          );
+          },
 
-        }
+          error: (erro) => {
 
-      });
+            console.error(
+              'Erro ao excluir medicamento:',
+              erro
+            );
 
-  } else {
+            alert(
+              'Não foi possível excluir o medicamento.'
+            );
 
-    this.avisos.splice(
-      this.itemParaExcluir.index,
-      1
-    );
+          }
 
-    this.cancelarExclusao();
+        });
 
+    } else {
+
+      this.avisos.splice(
+        this.itemParaExcluir.index,
+        1
+      );
+
+      this.salvarAvisos();
+
+      this.cancelarExclusao();
+
+    }
   }
-
-}
 
 }

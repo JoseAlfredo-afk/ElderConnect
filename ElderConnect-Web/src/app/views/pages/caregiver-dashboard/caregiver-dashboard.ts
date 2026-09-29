@@ -134,11 +134,15 @@ export class CaregiverDashboard implements OnInit {
           this.carregarIdosoVinculado(this.contratoAtivo);
 
           this.carregarMedicamentos(this.contratoAtivo.seniorId);
+
+          this.carregarAvisos(this.contratoAtivo.seniorId);
         } else {
 
           this.idosoVinculado = null;
 
           this.medicamentos = [];
+
+          this.avisos = [];
         }
       },
 
@@ -322,6 +326,28 @@ export class CaregiverDashboard implements OnInit {
 
         }
       });
+  }
+
+  private carregarAvisos(seniorId: number): void {
+
+    const avisosSalvos = localStorage.getItem(`elderconnect_avisos_${seniorId}`);
+
+    if (!avisosSalvos) {
+      this.avisos = [];
+      return;
+    }
+
+    try {
+      const avisos = JSON.parse(avisosSalvos);
+
+      this.avisos = avisos.map((aviso: any) => ({
+        tipo: aviso.tipo || 'Aviso',
+        mensagem: aviso.mensagem || aviso.texto || ''
+      }));
+    } catch {
+      this.avisos = [];
+    }
+
   }
 
   private calcularIdade(birthDate: string): string {
