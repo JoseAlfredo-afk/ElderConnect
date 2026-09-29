@@ -23,6 +23,15 @@ interface CaregiverResponse {
   availabilityPeriod: string;
 }
 
+interface ContractResponse {
+  id: number;
+  caregiverId: number;
+  caregiverName: string;
+  status: string;
+  rating: number;
+  comment: string | null;
+}
+
 export interface Cuidador {
   id: number;
   nome: string;
@@ -76,6 +85,8 @@ export class SearchCaregiver implements OnInit {
 
         this.cuidadoresFiltrados = [...this.cuidadores];
 
+        this.cuidadores.forEach(cuidador => { this.carregarAvaliacaoCuidador(cuidador); });
+
       },
 
       error: erro => {
@@ -106,9 +117,37 @@ export class SearchCaregiver implements OnInit {
       precoHora: cuidador.hourlyRate,
       avaliacao: 0,
       totalAvaliacoes: 0,
-    }
+    };
   }
 
+  private carregarAvaliacaoCuidador(cuidador: Cuidador): void {
+
+    this.http.get<ContractResponse[]>(`http://localhost:8081/api/contracts/caregiver-contracts/${cuidador.id}`).subscribe({
+
+      next: contratos => {
+
+        const contratosAvaliados = contratos.filter(contrato => contrato.status === 'COMPLETO' && contrato.rating > 0);
+
+        cuidador.totalAvaliacoes = contratosAvaliados.length;
+
+        if (contratosAvaliados.length === 0) {
+          cuidador.avaliacao = 0;
+          return;
+        }
+
+        const somaDasNotas = contratosAvaliados.reduce((total, contrato) => total + contrato.rating, 0);
+
+        cuidador.avaliacao = somaDasNotas / contratosAvaliados.length;
+      },
+
+      error: erro => {
+        console.error(
+          `Erro ao carregar avaliações do cuidador ${cuidador.id}:`, erro);
+        cuidador.avaliacao = 0;
+        cuidador.totalAvaliacoes = 0;
+      }
+    });
+  }
 
   aplicarFiltros(): void {
     this.cuidadoresFiltrados = this.cuidadores.filter(cuidador => {

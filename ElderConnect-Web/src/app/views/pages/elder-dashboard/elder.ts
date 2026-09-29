@@ -10,7 +10,6 @@ import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { Authentication } from '../../../services/security/authentication';
-import { raceWith } from 'rxjs';
 
 
 export interface CuidadorContratado {
@@ -483,9 +482,25 @@ export class ElderDashboard implements OnInit {
 
     const contratoId = this.cuidadorContratado.contratoId;
 
-    const hoje = new Date().toISOString().split('T')[0];
+    const hoje = new Date();
 
-    this.http.patch(`http://localhost:8081/api/contracts/${contratoId}/finish`, { endDate: hoje }).subscribe({
+    const ano =
+      hoje.getFullYear();
+
+    const mes =
+      String(
+        hoje.getMonth() + 1
+      ).padStart(2, '0');
+
+    const dia =
+      String(
+        hoje.getDate()
+      ).padStart(2, '0');
+
+    const endDate =
+      `${ano}-${mes}-${dia}`;
+
+    this.http.patch(`http://localhost:8081/api/contracts/${contratoId}/finish`, { endDate: endDate }).subscribe({
 
       next: () => {
         console.log('Contrato finalizado com sucesso.');
