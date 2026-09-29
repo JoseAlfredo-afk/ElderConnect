@@ -10,9 +10,12 @@ import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { Authentication } from '../../../services/security/authentication';
+import { raceWith } from 'rxjs';
 
 
 export interface CuidadorContratado {
+
+  contratoId: number;
 
   cuidadorId: number;
 
@@ -126,7 +129,7 @@ export class ElderDashboard implements OnInit {
     private changeDetectorRef:
       ChangeDetectorRef
 
-  ) {}
+  ) { }
 
 
   ngOnInit(): void {
@@ -387,6 +390,9 @@ export class ElderDashboard implements OnInit {
 
           this.cuidadorContratado = {
 
+            contratoId:
+              contratoAtivo.id,
+
 
             cuidadorId:
               contratoAtivo.caregiverId,
@@ -471,13 +477,31 @@ export class ElderDashboard implements OnInit {
 
   confirmarEncerramentoVinculo(): void {
 
+    if (!this.cuidadorContratado) {
+      return;
+    }
 
-    this.cuidadorContratado =
-      null;
+    const contratoId = this.cuidadorContratado.contratoId;
 
+    const hoje = new Date().toISOString().split('T')[0];
 
-    this.fecharModalEncerrarVinculo();
+    this.http.patch(`http://localhost:8081/api/contracts/${contratoId}/finish`, { endDate: hoje }).subscribe({
 
+      next: () => {
+        console.log('Contrato finalizado com sucesso.');
+
+        this.fecharModalEncerrarVinculo();
+
+        this.abrirModalAvaliacao();
+      },
+
+      error: erro => {
+
+        console.error('Erro ao finalizae contrato', erro);
+
+        alert('Não foi possível encerrar o vínculo.');
+      }
+    });
   }
 
 
@@ -536,28 +560,40 @@ export class ElderDashboard implements OnInit {
 
   salvarAvaliacao(): void {
 
-
-    if (
-      !this.cuidadorContratado
-    ) {
-
+    if (!this.cuidadorContratado) {
       return;
-
     }
 
+    const contratoId = this.cuidadorContratado.contratoId;
 
-    console.log(
+    const avaliacao = {
 
-      'Avaliação:',
+      rating: this.estrelasSelecionadas,
 
-      this.estrelasSelecionadas,
+      comment: this.comentarioAvaliacao.trim()
+    };
 
-      this.comentarioAvaliacao
+    this.http.patch(`http://localhost:8081/api/contracts/${contratoId}/rating`, avaliacao).subscribe(
+      {
+        next: () => {
+          console.log('Avaliação salva com sucesso.');
 
-    );
+          this.fecharModalAvaliacao();
 
+          const usuario = this.authentication.getAuthenticatedUser();
 
-    this.fecharModalAvaliacao();
+          this.carregarCuidadorVinculado(usuario.id);
+        },
+
+        error: erro => {
+
+          console.error('Erro ao salvar avaliação:', erro);
+
+          alert('Não foi possível salvar a avaliação.');
+
+        }
+
+      });
 
   }
 
