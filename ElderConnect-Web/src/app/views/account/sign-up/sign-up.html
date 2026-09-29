@@ -157,6 +157,18 @@
 
 </div>
 
+<div *ngIf="exibirToast"
+  class="alert d-flex align-items-center justify-content-between gap-3 border-0 shadow position-fixed end-0 py-2 px-4 rounded-3 fw-bold me-4 animate__animated animate__fadeIn"
+  [ngClass]="tipoToast === 'sucesso' ? 'alert-success text-success' : 'alert-danger text-danger'"
+  [style.background-color]="tipoToast === 'sucesso' ? '#d1e7dd' : '#f8d7da'"
+  style="z-index: 1060; top: 90px; min-width: 280px; font-size: 0.9rem;">
+  <div class="d-flex align-items-center gap-2">
+    <i [ngClass]="tipoToast === 'sucesso' ? 'bi bi-check-circle-fill' : 'bi bi-exclamation-triangle-fill'"></i>
+    <span>{{ mensagemToast }}</span>
+  </div>
+  <button type="button" class="btn-close ms-2" (click)="fecharToast()" style="font-size: 0.75rem;"></button>
+</div>
+
 <div *ngIf="exibirModalTermos" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);"
   (click)="fecharModalTermos()">
   <div class="modal-dialog modal-dialog-centered modal-lg" (click)="$event.stopPropagation()">

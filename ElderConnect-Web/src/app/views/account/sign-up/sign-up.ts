@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -25,9 +25,15 @@ export class SignUp implements OnInit {
   tipoConta: 'idoso' | 'cuidador' = 'idoso';
   exibirModalTermos: boolean = false;
 
+  exibirToast: boolean = false;
+  mensagemToast: string = '';
+  tipoToast: 'sucesso' | 'erro' = 'erro';
+  private toastTimer: any;
+
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private cdr = inject(ChangeDetectorRef);
   protected authService = inject(Authentication);
 
   cadastroForm: FormGroup = this.fb.group({
@@ -47,6 +53,26 @@ export class SignUp implements OnInit {
         this.tipoConta = 'cuidador';
       }
     });
+  }
+
+  mostrarNotificacao(mensagem: string, tipo: 'sucesso' | 'erro'): void {
+    this.mensagemToast = mensagem;
+    this.tipoToast = tipo;
+    this.exibirToast = true;
+    this.cdr.detectChanges();
+
+    if (this.toastTimer) {
+      clearTimeout(this.toastTimer);
+    }
+
+    this.toastTimer = setTimeout(() => {
+      this.fecharToast();
+    }, 3000);
+  }
+
+  fecharToast(): void {
+    this.exibirToast = false;
+    this.cdr.detectChanges();
   }
 
   alterarTipoConta(tipo: 'idoso' | 'cuidador') {
@@ -92,8 +118,11 @@ export class SignUp implements OnInit {
   submeter() {
     if (!this.cadastroForm.valid) {
       this.cadastroForm.markAllAsTouched();
+
       if (this.cadastroForm.get('aceitaTermos')?.invalid) {
-        alert('Você precisa aceitar os Termos de Uso e Privacidade para continuar.');
+        this.mostrarNotificacao('Você precisa aceitar os Termos de Uso e Privacidade para continuar.', 'erro');
+      } else {
+        this.mostrarNotificacao('Por favor, preencha todos os campos obrigatórios.', 'erro');
       }
       return;
     }
@@ -101,7 +130,7 @@ export class SignUp implements OnInit {
     const dados = this.cadastroForm.value;
 
     if (dados.senha !== dados.confirmaSenha) {
-      alert('A senha e a confirmação de senha não coincidem.');
+      this.mostrarNotificacao('A senha e a confirmação de senha não coincidem.', 'erro');
       return;
     }
 
@@ -125,12 +154,11 @@ export class SignUp implements OnInit {
     this.authService.cadastrarUsuario(usuario).subscribe({
       next: () => {
         this.authService.mostrarAlertaCadastroGlobal = true;
-        alert('Cadastro realizado com sucesso!');
         this.router.navigate(['/account/sign-in']);
       },
       error: (erro) => {
         console.error('Erro ao cadastrar usuário:', erro);
-        alert('Não foi possível realizar o cadastro.');
+        this.mostrarNotificacao('Não foi possível realizar o cadastro. Verifique os dados.', 'erro');
       }
     });
   }
