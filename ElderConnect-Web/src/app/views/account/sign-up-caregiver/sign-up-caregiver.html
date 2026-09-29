@@ -34,8 +34,17 @@
                         <label class="form-label fw-bold text-dark mb-1">
                             Experiência profissional
                         </label>
+                        <textarea class="form-control shadow-sm border-secondary py-2" rows="3"
+                            placeholder="Ex: 5 anos cuidando de idosos. Experiência com mobilidade reduzida..."
+                            formControlName="experiencia"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="form-label fw-bold text-dark mb-1">
+                            CRM / COREN <span class="text-muted fw-normal fs-7">(opcional)</span>
+                        </label>
                         <input type="text" class="form-control shadow-sm border-secondary py-2"
-                            placeholder="Ex: 5 anos cuidando de idosos" formControlName="experiencia">
+                            placeholder="Ex: COREN-SP 123456" formControlName="crm">
                     </div>
 
                     <div class="row g-2">
@@ -124,32 +133,50 @@
 
                 </div>
 
-                <div formArrayName="horarios" class="d-flex flex-column gap-2">
-                    <div *ngFor="let item of horarios.controls; let i = index" [formGroupName]="i"
-                        class="row g-3 align-items-end mb-2">
+                <div class="d-flex flex-column gap-2 mb-3">
+                    <div class="row g-3 align-items-end">
 
                         <div class="col-4 col-sm-3">
-                            <label *ngIf="i === 0" class="form-label fw-bold text-secondary mb-1"
+                            <label class="form-label fw-bold text-secondary mb-1"
                                 style="font-size: 0.85rem;">Das</label>
                             <input type="time" class="form-control text-center shadow-sm border-secondary py-1.5"
-                                formControlName="horarioInicio">
+                                [(ngModel)]="novoHorarioInicio" [ngModelOptions]="{standalone: true}">
                         </div>
 
                         <div class="col-4 col-sm-3">
-                            <label *ngIf="i === 0" class="form-label fw-bold text-secondary mb-1"
+                            <label class="form-label fw-bold text-secondary mb-1"
                                 style="font-size: 0.85rem;">Até</label>
                             <input type="time" class="form-control text-center shadow-sm border-secondary py-1.5"
-                                formControlName="horarioFim">
+                                [(ngModel)]="novoHorarioFim" [ngModelOptions]="{standalone: true}">
                         </div>
 
-                        <div class="col-4 col-sm-6 d-flex gap-2 align-items-center">
-                            <button *ngIf="i === horarios.length - 1" type="button"
-                                class="btn btn-success fw-bold px-3 py-1.5 rounded-3 border-0"
+                        <div class="col-4 col-sm-6 d-flex align-items-center">
+                            <button type="button" class="btn btn-success fw-bold px-3 py-1.5 rounded-3 border-0"
                                 (click)="adicionarHorario()">
                                 + Adicionar horário
                             </button>
-                            <button *ngIf="horarios.length > 1" type="button"
-                                class="btn btn-outline-danger btn-sm p-1 px-2 rounded-3" (click)="removerHorario(i)">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div formArrayName="horarios" class="d-flex flex-column gap-2">
+                    <div *ngFor="let item of horarios.controls; let i = index" [formGroupName]="i"
+                        class="row g-3 align-items-center mb-1">
+
+                        <div class="col-4 col-sm-3">
+                            <input type="time" class="form-control text-center shadow-sm border-secondary py-1.5"
+                                formControlName="horarioInicio" readonly>
+                        </div>
+
+                        <div class="col-4 col-sm-3">
+                            <input type="time" class="form-control text-center shadow-sm border-secondary py-1.5"
+                                formControlName="horarioFim" readonly>
+                        </div>
+
+                        <div class="col-4 col-sm-6 d-flex align-items-center">
+                            <button type="button" class="btn btn-outline-danger btn-sm p-1 px-2 rounded-3"
+                                (click)="removerHorario(i)">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </div>
@@ -161,8 +188,31 @@
                     <label class="form-label fw-bold text-dark mb-1">
                         Formação / Curso
                     </label>
-                    <input type="text" class="form-control shadow-sm border-secondary py-2"
-                        placeholder="Ex: Técnico em Enfermagem, Cuidador de idosos..." formControlName="formacao">
+
+                    <div class="d-flex gap-2 align-items-center mb-2">
+                        <input type="text" class="form-control shadow-sm border-secondary py-2"
+                            [(ngModel)]="novaFormacao" [ngModelOptions]="{standalone: true}"
+                            placeholder="Ex: Técnico em Enfermagem, Cuidador de idosos..."
+                            (keyup.enter)="adicionarFormacao()">
+
+                        <button type="button" class="btn btn-success fw-bold text-nowrap px-3 py-2 rounded-3 border-0"
+                            (click)="adicionarFormacao()">
+                            + Adicionar formação
+                        </button>
+                    </div>
+
+                    <div formArrayName="formacoes" class="d-flex flex-column gap-2">
+                        <div *ngFor="let item of formacoes.controls; let i = index"
+                            class="d-flex gap-2 align-items-center">
+                            <input type="text" class="form-control shadow-sm border-secondary py-2"
+                                [formControlName]="i" readonly>
+
+                            <button type="button" class="btn btn-outline-danger btn-sm p-2 rounded-3"
+                                (click)="removerFormacao(i)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
             </div>
