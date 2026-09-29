@@ -11,6 +11,22 @@ import { HttpClient } from '@angular/common/http';
 
 import { Authentication } from '../../../services/security/authentication';
 
+interface ContractResponse {
+  id: number;
+  contractNumber: string
+  seniorId: number;
+  seniorName: string;
+  caregiverId: number;
+  caregiverName: string;
+  startDate: string;
+  contractValue: number;
+  status: string;
+  workingHours: string;
+  description: string;
+  endDate: string | null;
+  rating: number;
+  comment: string | null;
+}
 
 export interface CuidadorContratado {
 
@@ -116,6 +132,11 @@ export class ElderDashboard implements OnInit {
   exibirModalEncerrarVinculo:
     boolean = false;
 
+  contratoParaAvaliar: ContractResponse | null = null;
+  contratoRecusado: ContractResponse | null = null;
+  contratoEmAvaliacao: ContractResponse | null = null;
+  contratoPendente: ContractResponse | null = null;
+
 
   constructor(
 
@@ -177,18 +198,10 @@ export class ElderDashboard implements OnInit {
       usuario.id
     );
 
-
-    /*
-     * GARANTE A ATUALIZAÇÃO DA TELA
-     */
     this.changeDetectorRef.detectChanges();
 
   }
 
-
-  // ==========================================
-  // CARREGAR MEDICAMENTOS DO BANCO
-  // ==========================================
 
   carregarMedicamentos(
     seniorId: number
@@ -258,9 +271,6 @@ export class ElderDashboard implements OnInit {
                     });
 
 
-                    /*
-                     * ATUALIZA A TELA
-                     */
                     this.changeDetectorRef
                       .detectChanges();
 
@@ -290,11 +300,6 @@ export class ElderDashboard implements OnInit {
 
             });
 
-
-          /*
-           * ATUALIZA A TELA APÓS
-           * RECEBER OS AGENDAMENTOS
-           */
           this.changeDetectorRef
             .detectChanges();
 
@@ -325,128 +330,61 @@ export class ElderDashboard implements OnInit {
 
   }
 
-
-  // ==========================================
-  // CARREGAR CUIDADOR CONTRATADO
-  // ==========================================
-
   carregarCuidadorVinculado(
     seniorId: number
   ): void {
 
+    console.log('Buscando cuidador contratado:', seniorId);
 
-    console.log(
-      'Buscando cuidador contratado:',
-      seniorId
-    );
-
-
-    this.http
-
-      .get<any[]>(
-
-        `http://localhost:8081/api/contracts/senior-contracts/${seniorId}`
-
-      )
-
-      .subscribe({
-
+    this.http.get<any[]>(`http://localhost:8081/api/contracts/senior-contracts/${seniorId}`).subscribe(
+      {
         next: (contratos) => {
 
-
-          console.log(
-            'Contratos recebidos:',
-            contratos
-          );
-
+          console.log('Contratos recebidos:', contratos);
 
           const contratoAtivo =
 
-            contratos.find(
-
-              contrato =>
-                contrato.status ===
-                'ATIVO'
-
-            );
+            contratos.find(contrato => contrato.status === 'ATIVO');
 
 
-          if (!contratoAtivo) {
-
-
-            this.cuidadorContratado =
-              null;
-
-
-            this.changeDetectorRef
-              .detectChanges();
-
-
-            return;
-
+          if (contratoAtivo) {
+            this.cuidadorContratado = {
+              contratoId: contratoAtivo.id,
+              cuidadorId: contratoAtivo.caregiverId,
+              cuidadorNome: contratoAtivo.caregiverName
+            };
+          } else {
+            this.cuidadorContratado = null;
           }
 
+          this.contratoPendente = contratos.find(contrato => contrato.status === 'PENDENTE') || null;
 
-          this.cuidadorContratado = {
+          const completosSemAvaliacao = contratos.filter(contrato => contrato.status === 'COMPLETO' && contrato.rating <= 0);
 
-            contratoId:
-              contratoAtivo.id,
+          this.contratoParaAvaliar = completosSemAvaliacao[0] || null;
 
+          const cancelados = contratos.filter(contrato => contrato.status === 'CANCELADO');
 
-            cuidadorId:
-              contratoAtivo.caregiverId,
+          this.contratoRecusado = cancelados[0] || null;
 
-
-            cuidadorNome:
-              contratoAtivo.caregiverName
-
-          };
-
-
-          /*
-           * ATUALIZA A TELA
-           */
-          this.changeDetectorRef
-            .detectChanges();
-
-
-          console.log(
-            'Cuidador exibido:',
-            this.cuidadorContratado
-          );
+          this.changeDetectorRef.detectChanges();
 
         },
-
-
         error: (erro) => {
-
-
-          console.error(
-
-            'Erro ao buscar cuidador contratado:',
-
-            erro
-
-          );
-
-
-          this.cuidadorContratado =
-            null;
-
-
-          this.changeDetectorRef
-            .detectChanges();
-
+          console.error('Erro ao buscar cuidador contratado:', erro);
+          this.cuidadorContratado = null;
+          this.changeDetectorRef.detectChanges();
         }
-
       });
-
   }
 
-
-  // ==========================================
-  // MODAL ENCERRAR VÍNCULO
-  // ==========================================
+  abrirAvaliacaoContrato(contrato: ContractResponse): void {
+    this.contratoEmAvaliacao = contrato;
+    this.estrelasSelecionadas = 5;
+    this.comentarioAvaliacao = '';
+    this.exibirModalAvaliacao = true;
+    this.changeDetectorRef.detectChanges();
+  }
 
   abrirModalEncerrarVinculo(): void {
 
@@ -519,11 +457,6 @@ export class ElderDashboard implements OnInit {
     });
   }
 
-
-  // ==========================================
-  // AVALIAÇÃO
-  // ==========================================
-
   abrirModalAvaliacao(): void {
 
 
@@ -546,15 +479,9 @@ export class ElderDashboard implements OnInit {
 
 
   fecharModalAvaliacao(): void {
-
-
-    this.exibirModalAvaliacao =
-      false;
-
-
-    this.changeDetectorRef
-      .detectChanges();
-
+    this.exibirModalAvaliacao = false;
+    this.contratoEmAvaliacao = null;
+    this.changeDetectorRef.detectChanges();
   }
 
 
@@ -575,11 +502,11 @@ export class ElderDashboard implements OnInit {
 
   salvarAvaliacao(): void {
 
-    if (!this.cuidadorContratado) {
+    if (!this.contratoEmAvaliacao) {
       return;
     }
 
-    const contratoId = this.cuidadorContratado.contratoId;
+    const contratoId = this.contratoEmAvaliacao.id;
 
     const avaliacao = {
 
@@ -594,6 +521,8 @@ export class ElderDashboard implements OnInit {
           console.log('Avaliação salva com sucesso.');
 
           this.fecharModalAvaliacao();
+
+          this.contratoEmAvaliacao = null;
 
           const usuario = this.authentication.getAuthenticatedUser();
 
@@ -611,5 +540,7 @@ export class ElderDashboard implements OnInit {
       });
 
   }
+
+
 
 }
