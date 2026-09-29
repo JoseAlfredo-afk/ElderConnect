@@ -11,8 +11,26 @@ import { HttpClient } from '@angular/common/http';
 
 import { Authentication } from '../../../services/security/authentication';
 
+interface ContractResponse {
+  id: number;
+  contractNumber: string
+  seniorId: number;
+  seniorName: string;
+  caregiverId: number;
+  caregiverName: string;
+  startDate: string;
+  contractValue: number;
+  status: string;
+  workingHours: string;
+  description: string;
+  endDate: string | null;
+  rating: number;
+  comment: string | null;
+}
 
 export interface CuidadorContratado {
+
+  contratoId: number;
 
   cuidadorId: number;
 
@@ -114,6 +132,11 @@ export class ElderDashboard implements OnInit {
   exibirModalEncerrarVinculo:
     boolean = false;
 
+  contratoParaAvaliar: ContractResponse | null = null;
+  contratoRecusado: ContractResponse | null = null;
+  contratoEmAvaliacao: ContractResponse | null = null;
+  contratoPendente: ContractResponse | null = null;
+
 
   constructor(
 
@@ -126,7 +149,7 @@ export class ElderDashboard implements OnInit {
     private changeDetectorRef:
       ChangeDetectorRef
 
-  ) {}
+  ) { }
 
 
   ngOnInit(): void {
@@ -175,18 +198,10 @@ export class ElderDashboard implements OnInit {
       usuario.id
     );
 
-
-    /*
-     * GARANTE A ATUALIZAÇÃO DA TELA
-     */
     this.changeDetectorRef.detectChanges();
 
   }
 
-
-  // ==========================================
-  // CARREGAR MEDICAMENTOS DO BANCO
-  // ==========================================
 
   carregarMedicamentos(
     seniorId: number
@@ -256,9 +271,6 @@ export class ElderDashboard implements OnInit {
                     });
 
 
-                    /*
-                     * ATUALIZA A TELA
-                     */
                     this.changeDetectorRef
                       .detectChanges();
 
@@ -288,11 +300,6 @@ export class ElderDashboard implements OnInit {
 
             });
 
-
-          /*
-           * ATUALIZA A TELA APÓS
-           * RECEBER OS AGENDAMENTOS
-           */
           this.changeDetectorRef
             .detectChanges();
 
@@ -323,125 +330,76 @@ export class ElderDashboard implements OnInit {
 
   }
 
-
-  // ==========================================
-  // CARREGAR CUIDADOR CONTRATADO
-  // ==========================================
-
   carregarCuidadorVinculado(
     seniorId: number
   ): void {
 
+    console.log('Buscando cuidador contratado:', seniorId);
 
-    console.log(
-      'Buscando cuidador contratado:',
-      seniorId
-    );
-
-
-    this.http
-
-      .get<any[]>(
-
-        `http://localhost:8081/api/contracts/senior-contracts/${seniorId}`
-
-      )
-
-      .subscribe({
-
+    this.http.get<any[]>(`http://localhost:8081/api/contracts/senior-contracts/${seniorId}`).subscribe(
+      {
         next: (contratos) => {
 
-
-          console.log(
-            'Contratos recebidos:',
-            contratos
-          );
-
+          console.log('Contratos recebidos:', contratos);
 
           const contratoAtivo =
 
-            contratos.find(
-
-              contrato =>
-                contrato.status ===
-                'ATIVO'
-
-            );
+            contratos.find(contrato => contrato.status === 'ATIVO');
 
 
-          if (!contratoAtivo) {
-
-
-            this.cuidadorContratado =
-              null;
-
-
-            this.changeDetectorRef
-              .detectChanges();
-
-
-            return;
-
+          if (contratoAtivo) {
+            this.cuidadorContratado = {
+              contratoId: contratoAtivo.id,
+              cuidadorId: contratoAtivo.caregiverId,
+              cuidadorNome: contratoAtivo.caregiverName
+            };
+          } else {
+            this.cuidadorContratado = null;
           }
 
+          this.contratoPendente = contratos.find(contrato => contrato.status === 'PENDENTE') || null;
 
-          this.cuidadorContratado = {
+          const completosSemAvaliacao = contratos.filter(contrato => contrato.status === 'COMPLETO' && contrato.rating <= 0).sort((a, b) => b.id - a.id);
 
+          this.contratoParaAvaliar = completosSemAvaliacao[0] || null;
 
-            cuidadorId:
-              contratoAtivo.caregiverId,
-
-
-            cuidadorNome:
-              contratoAtivo.caregiverName
-
-          };
+          const cancelados = contratos.filter(contrato => contrato.status === 'CANCELADO').sort((a, b) => b.id - a.id);
 
 
-          /*
-           * ATUALIZA A TELA
-           */
-          this.changeDetectorRef
-            .detectChanges();
+          const ultimoContratoCancelado = cancelados[0];
 
+          if (ultimoContratoCancelado) {
 
-          console.log(
-            'Cuidador exibido:',
-            this.cuidadorContratado
-          );
+            const visualizado = localStorage.getItem(`contrato_recusado_${ultimoContratoCancelado.id}`);
+
+            if (!visualizado) {
+
+              this.contratoRecusado = ultimoContratoCancelado;
+            } else {
+              this.contratoRecusado = null;
+            }
+          } else {
+            this.contratoRecusado = null;
+          }
+
+          this.changeDetectorRef.detectChanges();
 
         },
-
-
         error: (erro) => {
-
-
-          console.error(
-
-            'Erro ao buscar cuidador contratado:',
-
-            erro
-
-          );
-
-
-          this.cuidadorContratado =
-            null;
-
-
-          this.changeDetectorRef
-            .detectChanges();
-
+          console.error('Erro ao buscar cuidador contratado:', erro);
+          this.cuidadorContratado = null;
+          this.changeDetectorRef.detectChanges();
         }
-
       });
-
   }
 
-
-  // ==========================================
-  // MODAL ENCERRAR VÍNCULO
-  // ==========================================
+  abrirAvaliacaoContrato(contrato: ContractResponse): void {
+    this.contratoEmAvaliacao = contrato;
+    this.estrelasSelecionadas = 5;
+    this.comentarioAvaliacao = '';
+    this.exibirModalAvaliacao = true;
+    this.changeDetectorRef.detectChanges();
+  }
 
   abrirModalEncerrarVinculo(): void {
 
@@ -471,19 +429,49 @@ export class ElderDashboard implements OnInit {
 
   confirmarEncerramentoVinculo(): void {
 
+    if (!this.cuidadorContratado) {
+      return;
+    }
 
-    this.cuidadorContratado =
-      null;
+    const contratoId = this.cuidadorContratado.contratoId;
 
+    const hoje = new Date();
 
-    this.fecharModalEncerrarVinculo();
+    const ano =
+      hoje.getFullYear();
 
+    const mes =
+      String(
+        hoje.getMonth() + 1
+      ).padStart(2, '0');
+
+    const dia =
+      String(
+        hoje.getDate()
+      ).padStart(2, '0');
+
+    const endDate =
+      `${ano}-${mes}-${dia}`;
+
+    this.http.patch(`http://localhost:8081/api/contracts/${contratoId}/finish`, { endDate: endDate }).subscribe({
+
+      next: () => {
+        console.log('Contrato finalizado com sucesso.');
+
+        this.fecharModalEncerrarVinculo();
+
+        const usuario = this.authentication.getAuthenticatedUser();
+        this.carregarCuidadorVinculado(usuario.id);
+      },
+
+      error: erro => {
+
+        console.error('Erro ao finalizae contrato', erro);
+
+        alert('Não foi possível encerrar o vínculo.');
+      }
+    });
   }
-
-
-  // ==========================================
-  // AVALIAÇÃO
-  // ==========================================
 
   abrirModalAvaliacao(): void {
 
@@ -507,15 +495,9 @@ export class ElderDashboard implements OnInit {
 
 
   fecharModalAvaliacao(): void {
-
-
-    this.exibirModalAvaliacao =
-      false;
-
-
-    this.changeDetectorRef
-      .detectChanges();
-
+    this.exibirModalAvaliacao = false;
+    this.contratoEmAvaliacao = null;
+    this.changeDetectorRef.detectChanges();
   }
 
 
@@ -536,29 +518,51 @@ export class ElderDashboard implements OnInit {
 
   salvarAvaliacao(): void {
 
-
-    if (
-      !this.cuidadorContratado
-    ) {
-
+    if (!this.contratoEmAvaliacao) {
       return;
-
     }
 
+    const contratoId = this.contratoEmAvaliacao.id;
 
-    console.log(
+    const avaliacao = {
 
-      'Avaliação:',
+      rating: this.estrelasSelecionadas,
 
-      this.estrelasSelecionadas,
+      comment: this.comentarioAvaliacao.trim()
+    };
 
-      this.comentarioAvaliacao
+    this.http.patch(`http://localhost:8081/api/contracts/${contratoId}/rating`, avaliacao).subscribe(
+      {
+        next: () => {
+          console.log('Avaliação salva com sucesso.');
 
-    );
+          this.fecharModalAvaliacao();
 
+          this.contratoEmAvaliacao = null;
 
-    this.fecharModalAvaliacao();
+          const usuario = this.authentication.getAuthenticatedUser();
 
+          this.carregarCuidadorVinculado(usuario.id);
+        },
+
+        error: erro => {
+
+          console.error('Erro ao salvar avaliação:', erro);
+
+          alert('Não foi possível salvar a avaliação.');
+
+        }
+
+      });
+
+  }
+
+  fecharAvisoContratoRecusado(): void {
+    if (!this.contratoRecusado) {
+      return;
+    }
+    localStorage.setItem(`contrato_recusado_${this.contratoRecusado.id}`, 'visualizado');
+    this.contratoRecusado = null;
   }
 
 }

@@ -40,6 +40,74 @@
       </div>
     </header>
 
+    <div *ngIf="contratoPendente" class="alert alert-warning">
+      <strong>
+        Solicitação aguardando resposta
+      </strong>
+      <div class="small mt-1">
+        Sua solicitação de vínculo com
+        <strong>
+          {{ contratoPendente.caregiverName }}
+        </strong>
+        ainda está aguardando resposta do cuidador.
+      </div>
+    </div>
+
+    <div *ngIf="contratoParaAvaliar" class="alert alert-info d-flex justify-content-between align-items-center">
+      <div>
+        <strong>
+          Vínculo encerrado
+        </strong>
+        <div class="small mt-1">
+          O vínculo com
+          <strong>
+            {{ contratoParaAvaliar.caregiverName }}
+          </strong>
+          foi encerrado.
+          Você pode avaliar o atendimento recebido.
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary btn-sm" (click)="abrirAvaliacaoContrato(contratoParaAvaliar)">
+        Avaliar cuidador
+      </button>
+    </div>
+
+    <div *ngIf="
+    contratoRecusado &&
+    !contratoPendente &&
+    !cuidadorContratado
+  " class="alert alert-warning d-flex justify-content-between align-items-center">
+
+      <div>
+
+        <strong>
+          Solicitação recusada
+        </strong>
+
+        <div class="small mt-1">
+
+          A solicitação de vínculo com
+
+          <strong>
+            {{ contratoRecusado.caregiverName }}
+          </strong>
+
+          não foi aceita.
+
+          Você pode buscar outro cuidador.
+
+        </div>
+
+      </div>
+
+      <div class="d-flex align-items-center gap-3">
+        <a routerLink="/dashboard/search-caregiver" class="btn btn-outline-warning btn-sm">
+          Buscar outro cuidador
+        </a>
+        <button type="button" class="btn-close" (click)="fecharAvisoContratoRecusado()"></button>
+      </div>
+    </div>
+
     <div class="row g-3 mb-4">
       <div class="col-md-4">
         <div class="card border-0 shadow-sm text-center p-3">
@@ -98,7 +166,6 @@
                     </div>
                     <div>
                       <h5 class="fw-bold text-dark mb-0">{{ cuidadorContratado.cuidadorNome }}</h5>
-                      <small class="text-muted">{{ cuidadorContratado.especialidade }}</small>
                     </div>
                   </div>
 
@@ -107,16 +174,9 @@
                   </a>
                 </div>
 
-                <p class="mb-3 text-secondary small">
-                  <strong>Contato:</strong> {{ cuidadorContratado.telefone }}
-                </p>
-
                 <div class="d-flex flex-column gap-2">
                   <button (click)="abrirModalEncerrarVinculo()" class="btn btn-outline-danger btn-sm w-100">
                     Encerrar Vínculo
-                  </button>
-                  <button (click)="abrirModalAvaliacao()" class="btn btn-primary btn-sm w-100 fw-semibold">
-                    Avaliar Cuidador
                   </button>
                 </div>
               </div>
@@ -174,7 +234,7 @@
     <div class="modal-content border-0 shadow rounded-4">
 
       <div class="modal-header border-bottom-0 pb-0">
-        <h5 class="modal-title fw-bold text-dark">Avaliar {{ cuidadorContratado?.cuidadorNome }}</h5>
+        <h5 class="modal-title fw-bold text-dark">Avaliar {{ contratoEmAvaliacao?.caregiverName }}</h5>
         <button type="button" class="btn-close" (click)="fecharModalAvaliacao()"></button>
       </div>
 

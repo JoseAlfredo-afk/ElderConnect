@@ -14,6 +14,9 @@ public class CreateCaregiverProfileDto {
     private String city;
     private String neighborhood;
     private String experience;
+    private Float hourlyRate;
+    private Integer experienceYears;
+    private String availabilityPeriod;
 
     public UserModel ToUserModel() {
 
@@ -25,6 +28,9 @@ public class CreateCaregiverProfileDto {
         userModel.setCity(city);
         userModel.setExperience(experience);
         userModel.setSpecialization(specialization);
+        userModel.setHourlyRate(hourlyRate);
+        userModel.setExperienceYears(experienceYears);
+        userModel.setAvailabilityPeriod(availabilityPeriod);
 
         return userModel;
     }

@@ -107,6 +107,9 @@ public class UserPostgresDaoAdapter implements UserDao {
                 final String city = resultSet.getString("city");
                 final String neighborhood = resultSet.getString("neighborhood");
                 final String experience = resultSet.getString("experience");
+                final Float hourlyRate = resultSet.getFloat("hourly_rate");
+                final int experienceYears = resultSet.getInt("experience_years");
+                final String availabilityPeriod = resultSet.getString("availability_period");
 
                 final UserModel userModel = new UserModel();
                 userModel.setId(entityId);
@@ -123,6 +126,9 @@ public class UserPostgresDaoAdapter implements UserDao {
                 userModel.setCity(city);
                 userModel.setNeighborhood(neighborhood);
                 userModel.setExperience(experience);
+                userModel.setHourlyRate(hourlyRate);
+                userModel.setExperienceYears(experienceYears);
+                userModel.setAvailabilityPeriod(availabilityPeriod);
 
                 preparedStatement.close();
                 resultSet.close();
@@ -160,6 +166,9 @@ public class UserPostgresDaoAdapter implements UserDao {
                 final String city = resultSet.getString("city");
                 final String neighborhood = resultSet.getString("neighborhood");
                 final String experience = resultSet.getString("experience");
+                final Float hourlyRate = resultSet.getFloat("hourly_rate");
+                final int experienceYears = resultSet.getInt("experience_years");
+                final String availabilityPeriod = resultSet.getString("availability_period");
 
                 final UserModel data = new UserModel();
                 data.setId(entityId);
@@ -176,6 +185,9 @@ public class UserPostgresDaoAdapter implements UserDao {
                 data.setCity(city);
                 data.setNeighborhood(neighborhood);
                 data.setExperience(experience);
+                data.setHourlyRate(hourlyRate);
+                data.setExperienceYears(experienceYears);
+                data.setAvailabilityPeriod(availabilityPeriod);
 
                 userModels.add(data);
             }
@@ -191,15 +203,14 @@ public class UserPostgresDaoAdapter implements UserDao {
 
     @Override
     public void updateInformation(int id, UserModel entity) {
-        String sql = " UPDATE user_model SET fullname = ?, email = ?, phone_number = ? ";
+        String sql = " UPDATE user_model SET fullname = ?, phone_number = ? ";
         sql += " WHERE id = ? ;";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, entity.getFullname());
-            preparedStatement.setString(2, entity.getEmail());
-            preparedStatement.setString(3, entity.getPhoneNumber());
-            preparedStatement.setInt(4, entity.getId());
+            preparedStatement.setString(2, entity.getPhoneNumber());
+            preparedStatement.setInt(3, entity.getId());
 
             preparedStatement.execute();
             preparedStatement.close();
@@ -233,7 +244,9 @@ public class UserPostgresDaoAdapter implements UserDao {
                 final String city = resultSet.getString("city");
                 final String neighborhood = resultSet.getString("neighborhood");
                 final String experience = resultSet.getString("experience");
-
+                final Float hourlyRate = resultSet.getFloat("hourly_rate");
+                final int experienceYears = resultSet.getInt("experience_years");
+                final String availabilityPeriod = resultSet.getString("availability_period");
 
                 final UserModel userModel = new UserModel();
                 userModel.setId(entityId);
@@ -250,6 +263,9 @@ public class UserPostgresDaoAdapter implements UserDao {
                 userModel.setCity(city);
                 userModel.setNeighborhood(neighborhood);
                 userModel.setExperience(experience);
+                userModel.setHourlyRate(hourlyRate);
+                userModel.setExperienceYears(experienceYears);
+                userModel.setAvailabilityPeriod(availabilityPeriod);
 
                 preparedStatement.close();
                 resultSet.close();
@@ -287,6 +303,9 @@ public class UserPostgresDaoAdapter implements UserDao {
                 final String city = resultSet.getString("city");
                 final String neighborhood = resultSet.getString("neighborhood");
                 final String experience = resultSet.getString("experience");
+                final Float hourlyRate = resultSet.getFloat("hourly_rate");
+                final int experienceYears = resultSet.getInt("experience_years");
+                final String availabilityPeriod = resultSet.getString("availability_period");
 
 
                 final UserModel userModel = new UserModel();
@@ -304,6 +323,9 @@ public class UserPostgresDaoAdapter implements UserDao {
                 userModel.setCity(city);
                 userModel.setNeighborhood(neighborhood);
                 userModel.setExperience(experience);
+                userModel.setHourlyRate(hourlyRate);
+                userModel.setExperienceYears(experienceYears);
+                userModel.setAvailabilityPeriod(availabilityPeriod);
 
                 preparedStatement.close();
                 resultSet.close();
@@ -383,6 +405,9 @@ public class UserPostgresDaoAdapter implements UserDao {
                 final String city = resultSet.getString("city");
                 final String neighborhood = resultSet.getString("neighborhood");
                 final String experience = resultSet.getString("experience");
+                final Float hourlyRate = resultSet.getFloat("hourly_rate");
+                final int experienceYears = resultSet.getInt("experience_years");
+                final String availabilityPeriod = resultSet.getString("availability_period");
 
 
                 final UserModel data = new UserModel();
@@ -400,6 +425,9 @@ public class UserPostgresDaoAdapter implements UserDao {
                 data.setCity(city);
                 data.setNeighborhood(neighborhood);
                 data.setExperience(experience);
+                data.setHourlyRate(hourlyRate);
+                data.setExperienceYears(experienceYears);
+                data.setAvailabilityPeriod(availabilityPeriod);
 
                 caregivers.add(data);
             }
@@ -416,7 +444,7 @@ public class UserPostgresDaoAdapter implements UserDao {
     @Override
     public boolean updateCaregiverProfile(int id, UserModel caregiver) {
 
-        String sql = " UPDATE user_model SET availability_schedule = ?, street_address = ?, specialization = ?, city = ?, neighborhood = ?, experience = ? ";
+        String sql = " UPDATE user_model SET availability_schedule = ?, street_address = ?, specialization = ?, city = ?, neighborhood = ?, experience = ?, hourly_rate = ?, experience_years = ?, availability_period = ? ";
         sql += " WHERE id = ? ;";
 
         try {
@@ -429,7 +457,10 @@ public class UserPostgresDaoAdapter implements UserDao {
             preparedStatement.setString(4, caregiver.getCity());
             preparedStatement.setString(5, caregiver.getNeighborhood());
             preparedStatement.setString(6, caregiver.getExperience());
-            preparedStatement.setInt(7, id);
+            preparedStatement.setFloat(7, caregiver.getHourlyRate());
+            preparedStatement.setInt(8, caregiver.getExperienceYears());
+            preparedStatement.setString(9, caregiver.getAvailabilityPeriod());
+            preparedStatement.setInt(10, id);
 
             preparedStatement.execute();
             preparedStatement.close();

@@ -61,7 +61,7 @@
                             <label class="form-label fw-bold text-dark mb-1">
                                 Valor por hora (R$)
                             </label>
-                            <input type="number" class="form-control shadow-sm border-secondary py-2"
+                            <input type="text" inputmode="decimal" class="form-control shadow-sm border-secondary py-2"
                                 placeholder="Ex: 25,00" formControlName="valorHora">
                         </div>
 
@@ -95,6 +95,18 @@
                 style="max-width: 650px; background-color: #f8faff !important;">
 
                 <div class="d-flex flex-wrap justify-content-between gap-2 mb-3 px-2">
+                    <div class="w-100 mb-2">
+                        <label class="form-label fw-bold text-dark mb-1">
+                            Período de disponibilidade
+                        </label>
+                        <select class="form-select shadow-sm border-secondary py-2"
+                            formControlName="disponibilidadePeriodo">
+                            <option value="Manhã">Manhã</option>
+                            <option value="Tarde">Tarde</option>
+                            <option value="Noite">Noite</option>
+                            <option value="Integral">Integral</option>
+                        </select>
+                    </div>
 
                     <div class="form-check">
                         <input class="form-check-input border-dark" type="checkbox" id="seg" formControlName="segunda">

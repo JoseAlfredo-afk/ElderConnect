@@ -23,6 +23,9 @@ public class UserResponseDto {
     private String city;
     private String neighborhood;
     private String experience;
+    private Float hourlyRate;
+    private Integer experienceYears;
+    private String availabilityPeriod;
 
     public static UserResponseDto fromUserModel(UserModel userModel) {
 
@@ -43,6 +46,9 @@ public class UserResponseDto {
             userResponseDto.setCity(userModel.getCity());
             userResponseDto.setNeighborhood(userModel.getNeighborhood());
             userResponseDto.setExperience(userModel.getExperience());
+            userResponseDto.setHourlyRate(userModel.getHourlyRate());
+            userResponseDto.setExperienceYears(userModel.getExperienceYears());
+            userResponseDto.setAvailabilityPeriod(userModel.getAvailabilityPeriod());
         }
 
         return userResponseDto;

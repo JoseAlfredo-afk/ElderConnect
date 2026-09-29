@@ -13,25 +13,25 @@ values
 -- Usuários cuidadores
 insert into usuario
 (cpf, nome, email, senha, telefone, tipo, disponibilidade_horario,
- logradouro, especializacao, cidade, bairro, experiencia)
+ logradouro, especializacao, cidade, bairro, experiencia, valor_hora, anos_experiencia, periodo_disponibilidade)
 values
 ('333.333.333-33', 'Juliana Mota', 'juliana@email.com',
  'juju2108', '(35) 99193-9393', 'C',
  'Segunda a sexta - 08:00 às 18:00', 'Rua das Flores, 120',
  'Cuidados gerais com idosos', 'Santa Rita do Sapucaí', 'Centro',
- '5 anos de experiência com cuidados domiciliares'),
+ '5 anos de experiência com cuidados domiciliares', 45.00, 5, 'Integral'),
 
 ('444.444.444-44', 'Paulo Santos', 'paulo@email.com',
  '03456777', '(35) 94444-5555', 'C',
  'Todos os dias - 18:00 às 06:00', 'Avenida Sapucaí, 450',
  'Cuidados noturnos', 'Santa Rita do Sapucaí', 'Boa Vista',
- '3 anos trabalhando como cuidador noturno'),
+ '3 anos trabalhando como cuidador noturno', 30.00, 3, 'Noite'),
 
 ('555.555.555-55', 'Larissa Silva', 'larissa@email.com',
  '52345564', '(35) 99595-9595', 'C',
  'Segunda, quarta e sexta - 07:00 às 17:00', 'Rua José Pinto, 81',
  'Administração de medicamentos', 'Pouso Alegre', 'São Carlos',
- '8 anos de experiência no acompanhamento de idosos');
+ '8 anos de experiência no acompanhamento de idosos', 40.00, 8, 'Integral');
 
 -- Medicamentos
 insert into medicamento (nome, dose)

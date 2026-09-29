@@ -35,7 +35,8 @@ export class SignUpCaregiver {
   caregiverForm: FormGroup = this.fb.group({
     experiencia: ['', [Validators.required]],
     crm: [''],
-    valorHora: ['', [Validators.required]],
+    valorHora: ['', [Validators.required, Validators.min(1.00)]],
+    disponibilidadePeriodo: ['Integral', [Validators.required]],
     cidade: ['', [Validators.required]],
     rua: ['', [Validators.required]],
     bairro: ['', [Validators.required]],
@@ -117,6 +118,12 @@ export class SignUpCaregiver {
     }
 
     const dadosPerfil = this.caregiverForm.value;
+    const valorHora = this.converterValorHora(dadosPerfil.valorHora);
+
+    if (valorHora <= 0) {
+      alert('Informe um valor por hora válido.');
+      return;
+    }
 
     const usuario = {
       fullname: this.dadosCadastro.nome,
@@ -140,6 +147,7 @@ export class SignUpCaregiver {
             }
 
             const disponibilidade = this.montarDisponibilidade(dadosPerfil);
+            const anosExperiencia = this.extrairAnosExperiencia(dadosPerfil.experiencia);
 
             const especializacoes = dadosPerfil.formacoes
               .filter((f: string) => f.trim() !== '')
@@ -153,7 +161,9 @@ export class SignUpCaregiver {
               city: dadosPerfil.cidade,
               neighborhood: dadosPerfil.bairro,
               experience: dadosPerfil.experiencia,
-              hourlyRate: Number(dadosPerfil.valorHora)
+              hourlyRate: valorHora,
+              experienceYears: anosExperiencia,
+              availabilityPeriod: dadosPerfil.disponibilidadePeriodo
             };
 
             this.authService.atualizarPerfilCuidador(id, perfil).subscribe({
@@ -175,6 +185,11 @@ export class SignUpCaregiver {
       },
       error: (erro) => {
         console.error('Erro ao criar cuidador:', erro);
+        if (erro?.status === 400) {
+          alert('Não foi possível criar o cuidador. Verifique se o e-mail ou CPF já estão cadastrados.');
+          return;
+        }
+
         alert('Não foi possível criar o cuidador.');
       }
     });
@@ -196,6 +211,34 @@ export class SignUpCaregiver {
     ).join(', ');
 
     return `${dias.join(', ')} - ${listaHorarios}`;
+  }
+
+  private converterValorHora(valor?: unknown): number {
+    if (typeof valor === 'number') {
+      return Number.isFinite(valor) ? valor : 0;
+    }
+
+    const texto = String(valor ?? '').trim().replace(/[^\d,.-]/g, '');
+    const valorNormalizado = texto.includes(',')
+      ? texto.replace(/\./g, '').replace(',', '.')
+      : texto;
+    const valorConvertido = Number(valorNormalizado);
+
+    return Number.isFinite(valorConvertido) ? valorConvertido : 0;
+  }
+
+  private extrairAnosExperiencia(experiencia?: unknown): number {
+    if (experiencia === null || experiencia === undefined) {
+      return 0;
+    }
+
+    const resultado = String(experiencia).match(/\d+/);
+
+    if (!resultado) {
+      return 0;
+    }
+
+    return Number(resultado[0]);
   }
 
   private converterData(data: string): string {

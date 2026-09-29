@@ -165,10 +165,6 @@ public class ContractServiceAdapter implements ContractService {
             return false;
         }
 
-        if (comment == null || comment.isEmpty()) {
-            return false;
-        }
-
         if (contract.getStatus() != Contract.ContractStatus.COMPLETO) {
             return false;
         }

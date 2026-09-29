@@ -26,10 +26,11 @@
           <label class="form-label fw-semibold text-dark mb-1">Cidade</label>
           <select class="form-select rounded-3 border-secondary-subtle" [(ngModel)]="cidadeSelecionada">
             <option value="Todas">Todas</option>
-            <option value="Goiânia - GO">Goiânia - GO</option>
-            <option value="Pouso Alegre - MG">Pouso Alegre - MG</option>
-            <option value="Itajubá - MG">Itajubá - MG</option>
-            <option value="Santa Rita do Sapucaí - MG">Santa Rita do Sapucaí - MG</option>
+            <option *ngFor="let cidade of cidadesDisponiveis" [value]="cidade">
+
+              {{ cidade }}
+
+            </option>
           </select>
         </div>
 
@@ -88,7 +89,7 @@
             <div>
               <h2 class="h5 fw-bold text-dark mb-0">{{ c.nome }}</h2>
               <p class="text-muted small mb-0">{{ c.cidade }}</p>
-              <small class="text-secondary">{{ c.experienciaTexto }}</small>
+              <small class="text-secondary">{{ c.experienciaAnos}} anos de experiencia </small>
             </div>
           </div>
 
@@ -96,7 +97,7 @@
             <div class="text-muted small mb-1 fw-semibold">Disponibilidade</div>
             <span
               class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-3 fw-medium">
-              <i class="bi bi-clock me-1"></i> {{ c.disponibilidade }}
+              <i class="bi bi-clock me-1"></i> {{ c.periodoDisponibilidade }}
             </span>
           </div>
 

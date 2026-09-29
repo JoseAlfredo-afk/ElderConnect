@@ -315,6 +315,18 @@ public class UserServiceAdapter implements UserService {
             return false;
         }
 
+        if (caregiverProfile.getHourlyRate() == null || caregiverProfile.getHourlyRate() <= 0) {
+            return false;
+        }
+
+        if (caregiverProfile.getExperienceYears() == null || caregiverProfile.getExperienceYears() < 0) {
+            return false;
+        }
+
+        if (caregiverProfile.getAvailabilityPeriod() == null || caregiverProfile.getAvailabilityPeriod().isEmpty()) {
+            return false;
+        }
+
         if (caregiverProfile.getStreetAddress() == null || caregiverProfile.getStreetAddress().isEmpty()) {
             return false;
         }
