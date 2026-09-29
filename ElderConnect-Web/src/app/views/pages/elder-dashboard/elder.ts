@@ -359,11 +359,12 @@ export class ElderDashboard implements OnInit {
 
           this.contratoPendente = contratos.find(contrato => contrato.status === 'PENDENTE') || null;
 
-          const completosSemAvaliacao = contratos.filter(contrato => contrato.status === 'COMPLETO' && contrato.rating <= 0);
+          const completosSemAvaliacao = contratos.filter(contrato => contrato.status === 'COMPLETO' && contrato.rating <= 0).sort((a, b) => b.id - a.id);
 
           this.contratoParaAvaliar = completosSemAvaliacao[0] || null;
 
-          const cancelados = contratos.filter(contrato => contrato.status === 'CANCELADO');
+          const cancelados = contratos.filter(contrato => contrato.status === 'CANCELADO').sort((a, b) => b.id - a.id);
+
 
           const ultimoContratoCancelado = cancelados[0];
 
@@ -459,7 +460,8 @@ export class ElderDashboard implements OnInit {
 
         this.fecharModalEncerrarVinculo();
 
-        this.abrirModalAvaliacao();
+        const usuario = this.authentication.getAuthenticatedUser();
+        this.carregarCuidadorVinculado(usuario.id);
       },
 
       error: erro => {
