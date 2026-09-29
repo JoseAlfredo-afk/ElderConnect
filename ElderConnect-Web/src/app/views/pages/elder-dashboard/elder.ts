@@ -365,7 +365,21 @@ export class ElderDashboard implements OnInit {
 
           const cancelados = contratos.filter(contrato => contrato.status === 'CANCELADO');
 
-          this.contratoRecusado = cancelados[0] || null;
+          const ultimoContratoCancelado = cancelados[0];
+
+          if (ultimoContratoCancelado) {
+
+            const visualizado = localStorage.getItem(`contrato_recusado_${ultimoContratoCancelado.id}`);
+
+            if (!visualizado) {
+
+              this.contratoRecusado = ultimoContratoCancelado;
+            } else {
+              this.contratoRecusado = null;
+            }
+          } else {
+            this.contratoRecusado = null;
+          }
 
           this.changeDetectorRef.detectChanges();
 
@@ -541,6 +555,12 @@ export class ElderDashboard implements OnInit {
 
   }
 
-
+  fecharAvisoContratoRecusado(): void {
+    if (!this.contratoRecusado) {
+      return;
+    }
+    localStorage.setItem(`contrato_recusado_${this.contratoRecusado.id}`, 'visualizado');
+    this.contratoRecusado = null;
+  }
 
 }

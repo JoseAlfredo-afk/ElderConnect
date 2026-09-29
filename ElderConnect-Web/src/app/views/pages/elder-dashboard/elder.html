@@ -59,6 +59,42 @@
       </button>
     </div>
 
+    <div *ngIf="
+    contratoRecusado &&
+    !contratoPendente &&
+    !cuidadorContratado
+  " class="alert alert-warning d-flex justify-content-between align-items-center">
+
+      <div>
+
+        <strong>
+          Solicitação recusada
+        </strong>
+
+        <div class="small mt-1">
+
+          A solicitação de vínculo com
+
+          <strong>
+            {{ contratoRecusado.caregiverName }}
+          </strong>
+
+          não foi aceita.
+
+          Você pode buscar outro cuidador.
+
+        </div>
+
+      </div>
+
+      <div class="d-flex align-items-center gap-3">
+        <a routerLink="/dashboard/search-caregiver" class="btn btn-outline-warning btn-sm">
+          Buscar outro cuidador
+        </a>
+        <button type="button" class="btn-close" (click)="fecharAvisoContratoRecusado()"></button>
+      </div>
+    </div>
+
     <div class="row g-3 mb-4">
       <div class="col-md-4">
         <div class="card border-0 shadow-sm text-center p-3">
