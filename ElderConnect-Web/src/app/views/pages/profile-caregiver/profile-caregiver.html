@@ -170,9 +170,8 @@
       <form (ngSubmit)="confirmarVinculo()" class="d-flex flex-column gap-3">
         <div>
           <label class="form-label small fw-semibold text-muted mb-1">Idoso</label>
-          <select class="form-select rounded-3 border-secondary-subtle" [(ngModel)]="idosoSelecionado" name="idoso">
-            <option value="José da Silva (78 anos)">José da Silva (78 anos)</option>
-          </select>
+          <input type="text" class="form-control rounded-3 border-secondary-subtle bg-light"
+            [value]="idosoSelecionado || 'Usuário logado'" readonly>
         </div>
 
         <div>
@@ -212,7 +211,7 @@
           </label>
 
           <textarea class="form-control" rows="3" [(ngModel)]="descricaoContrato" name="descricaoContrato"
-            required></textarea>
+            placeholder="Descreva o tipo de cuidado ou rotina combinada." required></textarea>
         </div>
 
         <div class="alert alert-info border-0 shadow-sm rounded-3 d-flex align-items-center gap-2 py-2 px-3 my-1"
