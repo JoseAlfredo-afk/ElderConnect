@@ -188,7 +188,7 @@ export class ProfileCaregiver implements OnInit {
   solicitarVinculo(): void {
     this.horarioContrato = this.cuidador.disponibilidade;
 
-    this.descricaoContrato = 'Escreva aqui'
+    this.descricaoContrato = '';
 
     this.valorContrato = 0;
 
@@ -201,9 +201,11 @@ export class ProfileCaregiver implements OnInit {
 
   confirmarVinculo(): void {
 
-    const usuario = this.authentication.getAuthenticatedUser();
+    const usuario = this.authentication.usuarioAtual();
 
     if (!usuario) {
+      alert('Faça login para solicitar um vínculo.');
+      this.router.navigate(['/account/sign-in']);
       return;
     }
 
