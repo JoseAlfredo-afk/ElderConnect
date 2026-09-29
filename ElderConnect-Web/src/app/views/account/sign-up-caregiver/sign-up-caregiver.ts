@@ -4,7 +4,8 @@ import {
   FormGroup,
   FormArray,
   Validators,
-  ReactiveFormsModule
+  ReactiveFormsModule,
+  FormsModule
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -15,6 +16,7 @@ import { Authentication } from '../../../services/security/authentication';
   standalone: true,
   imports: [
     ReactiveFormsModule,
+    FormsModule,
     CommonModule,
     RouterLink
   ],
@@ -26,8 +28,13 @@ export class SignUpCaregiver {
   private router = inject(Router);
   protected authService = inject(Authentication);
 
+  novoHorarioInicio: string = '08:00';
+  novoHorarioFim: string = '18:00';
+  novaFormacao: string = '';
+
   caregiverForm: FormGroup = this.fb.group({
     experiencia: ['', [Validators.required]],
+    crm: [''],
     valorHora: ['', [Validators.required, Validators.min(1.00)]],
     disponibilidadePeriodo: ['Integral', [Validators.required]],
     cidade: ['', [Validators.required]],
@@ -40,10 +47,8 @@ export class SignUpCaregiver {
     sexta: [true],
     sabado: [true],
     domingo: [true],
-    horarios: this.fb.array([
-      this.criarGrupoHorario('08:00', '18:00')
-    ]),
-    formacao: ['', [Validators.required]]
+    horarios: this.fb.array([]),
+    formacoes: this.fb.array([])
   });
 
   private dadosCadastro: any;
@@ -56,21 +61,33 @@ export class SignUpCaregiver {
     return this.caregiverForm.get('horarios') as FormArray;
   }
 
-  criarGrupoHorario(inicio = '08:00', fim = '18:00'): FormGroup {
-    return this.fb.group({
-      horarioInicio: [inicio, [Validators.required]],
-      horarioFim: [fim, [Validators.required]]
-    });
+  get formacoes(): FormArray {
+    return this.caregiverForm.get('formacoes') as FormArray;
   }
 
   adicionarHorario(): void {
-    this.horarios.push(this.criarGrupoHorario());
+    if (this.novoHorarioInicio && this.novoHorarioFim) {
+      const novoGrupo = this.fb.group({
+        horarioInicio: [this.novoHorarioInicio, [Validators.required]],
+        horarioFim: [this.novoHorarioFim, [Validators.required]]
+      });
+      this.horarios.push(novoGrupo);
+    }
   }
 
   removerHorario(index: number): void {
-    if (this.horarios.length > 1) {
-      this.horarios.removeAt(index);
+    this.horarios.removeAt(index);
+  }
+
+  adicionarFormacao(): void {
+    if (this.novaFormacao.trim()) {
+      this.formacoes.push(this.fb.control(this.novaFormacao.trim(), [Validators.required]));
+      this.novaFormacao = '';
     }
+  }
+
+  removerFormacao(index: number): void {
+    this.formacoes.removeAt(index);
   }
 
   salvarPerfil(event?: Event) {
@@ -81,6 +98,16 @@ export class SignUpCaregiver {
     if (!this.dadosCadastro) {
       alert('Os dados do cadastro não foram encontrados. Faça o cadastro novamente.');
       this.router.navigate(['/account/sign-up']);
+      return;
+    }
+
+    if (this.horarios.length === 0) {
+      alert('Adicione pelo menos um horário de atendimento.');
+      return;
+    }
+
+    if (this.formacoes.length === 0) {
+      alert('Adicione pelo menos uma formação ou curso.');
       return;
     }
 
@@ -122,10 +149,15 @@ export class SignUpCaregiver {
             const disponibilidade = this.montarDisponibilidade(dadosPerfil);
             const anosExperiencia = this.extrairAnosExperiencia(dadosPerfil.experiencia);
 
+            const especializacoes = dadosPerfil.formacoes
+              .filter((f: string) => f.trim() !== '')
+              .join(', ');
+
             const perfil = {
               availabilitySchedule: disponibilidade,
               streetAddress: dadosPerfil.rua,
-              specialization: dadosPerfil.formacao,
+              specialization: especializacoes,
+              crm: dadosPerfil.crm,
               city: dadosPerfil.cidade,
               neighborhood: dadosPerfil.bairro,
               experience: dadosPerfil.experiencia,

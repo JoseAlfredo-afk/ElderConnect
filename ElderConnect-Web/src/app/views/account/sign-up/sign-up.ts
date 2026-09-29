@@ -1,11 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   Validators,
   ReactiveFormsModule
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Authentication } from '../../../services/security/authentication';
 
@@ -20,12 +20,20 @@ import { Authentication } from '../../../services/security/authentication';
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.css'
 })
-export class SignUp {
+export class SignUp implements OnInit {
 
   tipoConta: 'idoso' | 'cuidador' = 'idoso';
+  exibirModalTermos: boolean = false;
+
+  exibirToast: boolean = false;
+  mensagemToast: string = '';
+  tipoToast: 'sucesso' | 'erro' = 'erro';
+  private toastTimer: any;
 
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private cdr = inject(ChangeDetectorRef);
   protected authService = inject(Authentication);
 
   cadastroForm: FormGroup = this.fb.group({
@@ -35,11 +43,54 @@ export class SignUp {
     cpf: ['', [Validators.required]],
     telefone: ['', [Validators.required]],
     senha: ['', [Validators.required, Validators.minLength(8)]],
-    confirmaSenha: ['', [Validators.required]]
+    confirmaSenha: ['', [Validators.required]],
+    aceitaTermos: [false, [Validators.requiredTrue]]
   });
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['type'] === 'cuidador') {
+        this.tipoConta = 'cuidador';
+      }
+    });
+  }
+
+  mostrarNotificacao(mensagem: string, tipo: 'sucesso' | 'erro'): void {
+    this.mensagemToast = mensagem;
+    this.tipoToast = tipo;
+    this.exibirToast = true;
+    this.cdr.detectChanges();
+
+    if (this.toastTimer) {
+      clearTimeout(this.toastTimer);
+    }
+
+    this.toastTimer = setTimeout(() => {
+      this.fecharToast();
+    }, 3000);
+  }
+
+  fecharToast(): void {
+    this.exibirToast = false;
+    this.cdr.detectChanges();
+  }
 
   alterarTipoConta(tipo: 'idoso' | 'cuidador') {
     this.tipoConta = tipo;
+  }
+
+  abrirModalTermos(event: Event) {
+    event.preventDefault();
+    this.exibirModalTermos = true;
+  }
+
+  fecharModalTermos() {
+    this.exibirModalTermos = false;
+  }
+
+  aceitarTermosEFechar() {
+    this.cadastroForm.get('aceitaTermos')?.setValue(true);
+    this.fecharModalTermos();
   }
 
   aplicarMascara(event: Event, tipo: 'data' | 'cpf' | 'telefone') {
@@ -67,13 +118,19 @@ export class SignUp {
   submeter() {
     if (!this.cadastroForm.valid) {
       this.cadastroForm.markAllAsTouched();
+
+      if (this.cadastroForm.get('aceitaTermos')?.invalid) {
+        this.mostrarNotificacao('Você precisa aceitar os Termos de Uso e Privacidade para continuar.', 'erro');
+      } else {
+        this.mostrarNotificacao('Por favor, preencha todos os campos obrigatórios.', 'erro');
+      }
       return;
     }
 
     const dados = this.cadastroForm.value;
 
     if (dados.senha !== dados.confirmaSenha) {
-      alert('A senha e a confirmação de senha não coincidem.');
+      this.mostrarNotificacao('A senha e a confirmação de senha não coincidem.', 'erro');
       return;
     }
 
@@ -95,14 +152,13 @@ export class SignUp {
     };
 
     this.authService.cadastrarUsuario(usuario).subscribe({
-      next: (resposta) => {
+      next: () => {
         this.authService.mostrarAlertaCadastroGlobal = true;
-        alert('Cadastro realizado com sucesso!');
         this.router.navigate(['/account/sign-in']);
       },
       error: (erro) => {
         console.error('Erro ao cadastrar usuário:', erro);
-        alert('Não foi possível realizar o cadastro.');
+        this.mostrarNotificacao('Não foi possível realizar o cadastro. Verifique os dados.', 'erro');
       }
     });
   }
