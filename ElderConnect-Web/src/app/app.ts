@@ -49,4 +49,35 @@ export class App {
     const userTypeUpper = usuario.userType.toUpperCase();
     return userTypeUpper !== 'CUIDADOR' && userTypeUpper !== 'CAREGIVER';
   }
+
+  // ==========================================
+// INÍCIO
+// ==========================================
+
+irParaInicio(): void {
+
+  const usuario =
+    this.authService.usuarioAtual();
+
+  if (
+    this.authService.usuarioLogado() &&
+    usuario &&
+    (
+      usuario.userType === 'CUIDADOR' ||
+      usuario.userType === 'CAREGIVER'
+    )
+  ) {
+
+    this.router.navigate([
+      '/dashboard/caregiver'
+    ]);
+
+    return;
+  }
+
+  this.router.navigate([
+    '/home'
+  ]);
+
+}
 }

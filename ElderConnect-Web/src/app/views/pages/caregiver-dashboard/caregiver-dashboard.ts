@@ -1,11 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
+
 import { HttpClient } from '@angular/common/http';
+
+import {
+  Router,
+  NavigationEnd
+} from '@angular/router';
+
+import {
+  Subscription,
+  filter
+} from 'rxjs';
+
 import { Authentication } from '../../../services/security/authentication';
+
 
 interface ContractResponse {
   id: number;
-  contractNumber: string
+  contractNumber: string;
   seniorId: number;
   seniorName: string;
   caregiverId: number;
@@ -19,6 +38,7 @@ interface ContractResponse {
   rating: number;
   comment: string | null;
 }
+
 
 interface UserResponse {
   id: number;
@@ -41,12 +61,14 @@ export interface IdosoVinculado {
   dataInicio: string;
 }
 
+
 export interface Medicamento {
   nome: string;
   dosagem: string;
   horario: string;
   instrucoes: string;
 }
+
 
 interface MedicationSchedule {
   id: number;
@@ -56,16 +78,19 @@ interface MedicationSchedule {
   medicationId: number;
 }
 
+
 interface Medication {
   id: number;
   medicationName: string;
   dose: string;
 }
 
+
 export interface Aviso {
   tipo: string;
   mensagem: string;
 }
+
 
 @Component({
   selector: 'app-caregiver-dashboard',
@@ -73,12 +98,18 @@ export interface Aviso {
   imports: [CommonModule],
   templateUrl: './caregiver-dashboard.html'
 })
-export class CaregiverDashboard implements OnInit {
+export class CaregiverDashboard implements OnInit, OnDestroy {
+
   nomeCuidador: string = '';
+
   caregiverId = 0;
+
   solicitacoesPendentes: ContractResponse[] = [];
+
   contratoAtivo: ContractResponse | null = null;
+
   idosoVinculado: IdosoVinculado | null = null;
+
   exibirModalEncerrarVinculo: boolean = false;
 
   medicamentos: Medicamento[] = [];
@@ -86,308 +117,692 @@ export class CaregiverDashboard implements OnInit {
   avisos: Aviso[] = [];
 
 
+  private routerSubscription?: Subscription;
+
+
   constructor(
     private http: HttpClient,
-    private authentication: Authentication
+    private authentication: Authentication,
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef
   ) { }
+
 
   ngOnInit(): void {
 
     const usuario = this.authentication.usuarioAtual();
 
+
     if (!usuario) {
 
-      console.error('Usuário autenticado não encontrado.');
+      console.error(
+        'Usuário autenticado não encontrado.'
+      );
 
       return;
     }
 
-    if (usuario.userType.toUpperCase() !== 'CUIDADOR') {
 
-      console.error('O usuário logado não é cuidador.');
+    if (
+      usuario.userType.toUpperCase() !== 'CUIDADOR' &&
+      usuario.userType.toUpperCase() !== 'CAREGIVER'
+    ) {
+
+      console.error(
+        'O usuário logado não é cuidador.'
+      );
 
       return;
     }
+
 
     this.nomeCuidador = usuario.fullname;
-    this.caregiverId = usuario.id
 
+    this.caregiverId = usuario.id;
+
+
+    /*
+     * PRIMEIRO CARREGAMENTO
+     */
     this.carregarContratos();
+
+
+    /*
+     * ATUALIZA O DASHBOARD QUANDO
+     * O USUÁRIO VOLTA PARA ELE
+     */
+    this.routerSubscription =
+      this.router.events
+        .pipe(
+          filter(
+            event =>
+              event instanceof NavigationEnd
+          )
+        )
+        .subscribe(
+          (event: NavigationEnd) => {
+
+            if (
+              event.urlAfterRedirects
+                .includes('/dashboard/caregiver')
+            ) {
+
+              console.log(
+                'Usuário entrou no Dashboard do cuidador. Atualizando dados...'
+              );
+
+
+              this.carregarContratos();
+
+            }
+
+          }
+        );
+
   }
+
+
+  ngOnDestroy(): void {
+
+    this.routerSubscription?.unsubscribe();
+
+  }
+
 
   carregarContratos(): void {
 
-    if (!this.caregiverId || this.caregiverId <= 0) {
+    if (
+      !this.caregiverId ||
+      this.caregiverId <= 0
+    ) {
+
       return;
     }
 
-    this.http.get<ContractResponse[]>(`http://localhost:8081/api/contracts/caregiver-contracts/${this.caregiverId}`).subscribe({
 
-      next: contratos => {
-        this.solicitacoesPendentes = contratos.filter(contrato => contrato.status === 'PENDENTE');
+    this.http.get<ContractResponse[]>(
+      `http://localhost:8081/api/contracts/caregiver-contracts/${this.caregiverId}`
+    )
+      .subscribe({
 
-        this.contratoAtivo = contratos.find(contrato => contrato.status === 'ATIVO') || null;
+        next: contratos => {
+
+          console.log(
+            'Contratos recebidos:',
+            contratos
+          );
 
 
-        if (this.contratoAtivo) {
+          this.solicitacoesPendentes =
+            contratos.filter(
+              contrato =>
+                contrato.status === 'PENDENTE'
+            );
 
-          this.carregarIdosoVinculado(this.contratoAtivo);
 
-          this.carregarMedicamentos(this.contratoAtivo.seniorId);
+          this.contratoAtivo =
+            contratos.find(
+              contrato =>
+                contrato.status === 'ATIVO'
+            ) || null;
 
-          this.carregarAvisos(this.contratoAtivo.seniorId);
-        } else {
+
+          if (this.contratoAtivo) {
+
+            this.carregarIdosoVinculado(
+              this.contratoAtivo
+            );
+
+
+            this.carregarMedicamentos(
+              this.contratoAtivo.seniorId
+            );
+
+
+            this.carregarAvisos(
+              this.contratoAtivo.seniorId
+            );
+
+          } else {
+
+            this.idosoVinculado = null;
+
+            this.medicamentos = [];
+
+            this.avisos = [];
+
+          }
+
+
+          /*
+           * FORÇA A ATUALIZAÇÃO DA TELA
+           */
+          this.changeDetectorRef.detectChanges();
+
+        },
+
+
+        error: erro => {
+
+          console.error(
+            'Erro ao carregar contratos:',
+            erro
+          );
+
+
+          this.solicitacoesPendentes = [];
+
+          this.contratoAtivo = null;
 
           this.idosoVinculado = null;
 
           this.medicamentos = [];
 
           this.avisos = [];
+
+
+          this.changeDetectorRef.detectChanges();
+
         }
-      },
 
-      error: erro => {
+      });
 
-        console.error('Erro ao carregar contratos:', erro);
-
-        this.solicitacoesPendentes = [];
-
-        this.contratoAtivo = null;
-
-        this.idosoVinculado = null;
-
-        this.medicamentos = [];
-      }
-    });
   }
 
-  private carregarIdosoVinculado(contrato: ContractResponse): void {
+
+  private carregarIdosoVinculado(
+    contrato: ContractResponse
+  ): void {
 
     this.idosoVinculado = {
 
       contratoId: contrato.id,
+
       seniorId: contrato.seniorId,
+
       nome: contrato.seniorName,
+
       observacoes: contrato.description,
+
       horario: contrato.workingHours,
+
       valorContrato: contrato.contractValue,
+
       dataInicio: contrato.startDate,
+
       idade: 'Não Informado',
+
       telefone: 'Não Informado'
-    }
 
-    this.http.get<UserResponse>(`http://localhost:8081/api/user/${contrato.seniorId}`).subscribe({
+    };
 
-      next: idoso => {
 
-        if (!this.idosoVinculado) {
-          return;
+    this.changeDetectorRef.detectChanges();
+
+
+    this.http.get<UserResponse>(
+      `http://localhost:8081/api/user/${contrato.seniorId}`
+    )
+      .subscribe({
+
+        next: idoso => {
+
+          if (!this.idosoVinculado) {
+
+            return;
+          }
+
+
+          this.idosoVinculado.nome =
+            idoso.fullname;
+
+          this.idosoVinculado.telefone =
+            idoso.phoneNumber;
+
+          this.idosoVinculado.idade =
+            this.calcularIdade(
+              idoso.birthDate
+            );
+
+
+          this.changeDetectorRef.detectChanges();
+
+        },
+
+
+        error: erro => {
+
+          console.error(
+            'Erro ao carregar dados do idoso',
+            erro
+          );
+
         }
 
-        this.idosoVinculado.nome = idoso.fullname;
-        this.idosoVinculado.telefone = idoso.phoneNumber;
-        this.idosoVinculado.idade = this.calcularIdade(idoso.birthDate);
-      },
-
-      error: erro => {
-
-        console.error('Erro ao carregar dados do idoso', erro);
-
-
-      }
-    });
+      });
 
   }
 
-  aceitarContrato(contratoId: number): void {
+
+  aceitarContrato(
+    contratoId: number
+  ): void {
 
     if (this.contratoAtivo) {
 
-      alert('Já existe um atendimento ativo.');
+      alert(
+        'Já existe um atendimento ativo.'
+      );
 
       return;
     }
 
-    this.http.patch(`http://localhost:8081/api/contracts/${contratoId}/activate`, {}).subscribe({
 
-      next: () => {
+    this.http.patch(
+      `http://localhost:8081/api/contracts/${contratoId}/activate`,
+      {}
+    )
+      .subscribe({
 
-        console.log('Contrato aceito com sucesso.');
+        next: () => {
 
-        alert('Solicitação aceita!');
+          console.log(
+            'Contrato aceito com sucesso.'
+          );
 
-        this.carregarContratos();
-      },
 
-      error: erro => {
-        console.error('Erro ao aceitar contrato', erro);
+          alert(
+            'Solicitação aceita!'
+          );
 
-        alert('Não foi possível aceitar a solicitação.');
-      }
-    });
+
+          this.carregarContratos();
+
+        },
+
+
+        error: erro => {
+
+          console.error(
+            'Erro ao aceitar contrato',
+            erro
+          );
+
+
+          alert(
+            'Não foi possível aceitar a solicitação.'
+          );
+
+        }
+
+      });
 
   }
 
-  recusarContrato(contratoId: number): void {
 
-    const endDate = this.obterDataAtual();
+  recusarContrato(
+    contratoId: number
+  ): void {
 
-    this.http.patch(`http://localhost:8081/api/contracts/${contratoId}/cancel`, { endDate: endDate }).subscribe({
+    const endDate =
+      this.obterDataAtual();
 
-      next: () => {
 
-        console.log('Solicitação recusada.');
-
-        this.carregarContratos();
-      },
-
-      error: erro => {
-        console.error('Erro ao recusar contrato', erro);
-
-        alert('Não foi possível recusar a solicitação.');
+    this.http.patch(
+      `http://localhost:8081/api/contracts/${contratoId}/cancel`,
+      {
+        endDate: endDate
       }
+    )
+      .subscribe({
 
-    });
+        next: () => {
+
+          console.log(
+            'Solicitação recusada.'
+          );
+
+
+          this.carregarContratos();
+
+        },
+
+
+        error: erro => {
+
+          console.error(
+            'Erro ao recusar contrato',
+            erro
+          );
+
+
+          alert(
+            'Não foi possível recusar a solicitação.'
+          );
+
+        }
+
+      });
+
   }
+
 
   abrirModalEncerrarVinculo(): void {
 
     if (!this.contratoAtivo) {
+
       return;
     }
-    this.exibirModalEncerrarVinculo = true;
+
+
+    this.exibirModalEncerrarVinculo =
+      true;
+
+
+    this.changeDetectorRef.detectChanges();
+
   }
 
+
   fecharModalEncerrarVinculo(): void {
-    this.exibirModalEncerrarVinculo = false;
+
+    this.exibirModalEncerrarVinculo =
+      false;
+
+
+    this.changeDetectorRef.detectChanges();
+
   }
+
 
   confirmarEncerramentoVinculo(): void {
 
     if (!this.contratoAtivo) {
+
       return;
     }
 
-    const contratoId = this.contratoAtivo.id;
-    const endDate = this.obterDataAtual();
 
-    this.http.patch(`http://localhost:8081/api/contracts/${contratoId}/finish`, { endDate: endDate }).subscribe({
+    const contratoId =
+      this.contratoAtivo.id;
 
-      next: () => {
 
-        console.log('Contrato encerrado com sucesso.');
+    const endDate =
+      this.obterDataAtual();
 
-        this.fecharModalEncerrarVinculo();
 
-        this.carregarContratos();
-      },
-
-      error: erro => {
-
-        console.error('Erro ao encerrar contrato', erro);
-
-        alert('Não foi possível encerrar o vínculo.');
+    this.http.patch(
+      `http://localhost:8081/api/contracts/${contratoId}/finish`,
+      {
+        endDate: endDate
       }
-    });
+    )
+      .subscribe({
+
+        next: () => {
+
+          console.log(
+            'Contrato encerrado com sucesso.'
+          );
+
+
+          this.fecharModalEncerrarVinculo();
+
+
+          this.carregarContratos();
+
+        },
+
+
+        error: erro => {
+
+          console.error(
+            'Erro ao encerrar contrato',
+            erro
+          );
+
+
+          alert(
+            'Não foi possível encerrar o vínculo.'
+          );
+
+        }
+
+      });
+
   }
 
-  private carregarMedicamentos(seniorId: number): void {
+
+  private carregarMedicamentos(
+    seniorId: number
+  ): void {
 
     this.medicamentos = [];
 
-    this.http.get<MedicationSchedule[]>(`http://localhost:8081/api/schedule-medications/senior/${seniorId}`).subscribe(
-      {
+
+    this.http.get<MedicationSchedule[]>(
+      `http://localhost:8081/api/schedule-medications/senior/${seniorId}`
+    )
+      .subscribe({
+
         next: agendamentos => {
 
-          agendamentos.forEach(agendamento => {
-            this.http.get<Medication>(`http://localhost:8081/api/medications/${agendamento.medicationId}`).subscribe({
-              next: medicamento => {
-                this.medicamentos.push({
-                  nome: medicamento.medicationName,
-                  dosagem: medicamento.dose,
-                  horario: agendamento.intakeTime,
-                  instrucoes: agendamento.dosageInstructions
-                });
-              },
+          if (agendamentos.length === 0) {
 
-              error: erro => {
+            this.changeDetectorRef.detectChanges();
 
-                console.error('Erro ao carregar medicamento:', erro);
-              }
-            });
+            return;
           }
+
+
+          agendamentos.forEach(
+            agendamento => {
+
+              this.http.get<Medication>(
+                `http://localhost:8081/api/medications/${agendamento.medicationId}`
+              )
+                .subscribe({
+
+                  next: medicamento => {
+
+                    this.medicamentos.push({
+
+                      nome:
+                        medicamento.medicationName,
+
+                      dosagem:
+                        medicamento.dose,
+
+                      horario:
+                        agendamento.intakeTime,
+
+                      instrucoes:
+                        agendamento.dosageInstructions
+
+                    });
+
+
+                    this.changeDetectorRef.detectChanges();
+
+                  },
+
+
+                  error: erro => {
+
+                    console.error(
+                      'Erro ao carregar medicamento:',
+                      erro
+                    );
+
+                  }
+
+                });
+
+            }
           );
+
         },
 
+
         error: erro => {
-          console.error('Erro ao carregar agenda de medicamento:', erro);
+
+          console.error(
+            'Erro ao carregar agenda de medicamento:',
+            erro
+          );
+
 
           this.medicamentos = [];
 
+
+          this.changeDetectorRef.detectChanges();
+
         }
+
       });
+
   }
 
-  private carregarAvisos(seniorId: number): void {
 
-    const avisosSalvos = localStorage.getItem(`elderconnect_avisos_${seniorId}`);
+  private carregarAvisos(
+    seniorId: number
+  ): void {
+
+    const avisosSalvos =
+      localStorage.getItem(
+        `elderconnect_avisos_${seniorId}`
+      );
+
 
     if (!avisosSalvos) {
+
       this.avisos = [];
+
+
+      this.changeDetectorRef.detectChanges();
+
       return;
     }
 
-    try {
-      const avisos = JSON.parse(avisosSalvos);
 
-      this.avisos = avisos.map((aviso: any) => ({
-        tipo: aviso.tipo || 'Aviso',
-        mensagem: aviso.mensagem || aviso.texto || ''
-      }));
+    try {
+
+      const avisos =
+        JSON.parse(avisosSalvos);
+
+
+      this.avisos =
+        avisos.map(
+          (aviso: any) => ({
+
+            tipo:
+              aviso.tipo || 'Aviso',
+
+            mensagem:
+              aviso.mensagem ||
+              aviso.texto ||
+              ''
+
+          })
+        );
+
+
+      this.changeDetectorRef.detectChanges();
+
     } catch {
+
       this.avisos = [];
+
+
+      this.changeDetectorRef.detectChanges();
+
     }
 
   }
 
-  private calcularIdade(birthDate: string): string {
 
-    const partes = birthDate.split('-');
+  private calcularIdade(
+    birthDate: string
+  ): string {
+
+    const partes =
+      birthDate.split('-');
+
 
     if (partes.length !== 3) {
+
       return 'não informada';
+
     }
 
-    const ano = Number(partes[0]);
-    const mes = Number(partes[1]);
-    const dia = Number(partes[2]);
 
-    const hoje = new Date();
+    const ano =
+      Number(partes[0]);
 
-    let idade = hoje.getFullYear() - ano;
+    const mes =
+      Number(partes[1]);
 
-    const mesAtual = hoje.getMonth() + 1;
-    const diaAtual = hoje.getDate();
+    const dia =
+      Number(partes[2]);
 
-    if (mesAtual < mes || (mesAtual === mes && diaAtual < dia)) {
+
+    const hoje =
+      new Date();
+
+
+    let idade =
+      hoje.getFullYear() - ano;
+
+
+    const mesAtual =
+      hoje.getMonth() + 1;
+
+    const diaAtual =
+      hoje.getDate();
+
+
+    if (
+      mesAtual < mes ||
+      (
+        mesAtual === mes &&
+        diaAtual < dia
+      )
+    ) {
+
       idade--;
+
     }
 
-    return (`${idade} anos`);
+
+    return `${idade} anos`;
 
   }
+
 
   private obterDataAtual(): string {
 
-    const hoje = new Date();
+    const hoje =
+      new Date();
 
-    const ano = hoje.getFullYear();
 
-    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const ano =
+      hoje.getFullYear();
 
-    const dia = String(hoje.getDate()).padStart(2, '0');
 
-    return (`${ano}-${mes}-${dia}`);
+    const mes =
+      String(
+        hoje.getMonth() + 1
+      ).padStart(2, '0');
+
+
+    const dia =
+      String(
+        hoje.getDate()
+      ).padStart(2, '0');
+
+
+    return `${ano}-${mes}-${dia}`;
+
   }
 
 }
