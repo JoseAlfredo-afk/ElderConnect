@@ -1,0 +1,13 @@
+Elder Connect
+
+-  Diagrama de implantação:
+
+- o spring boot não é um ambiente de execução no ambiete real seria a JVM
+-  frontend implantado no navegador web seria um servidor web
+-  Comunicação JDBC não está correta poderia ser JDBC PostgreSQL
+-  Porta não determinadas 
+
+Diagrama de componentes 
+ - Não encontrei no projeto se puderem subir para que eu possa fazer os apontamentos
+ 
+ Documentação:  cronograma desatualizado
