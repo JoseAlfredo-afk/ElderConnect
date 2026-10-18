@@ -52,12 +52,12 @@ medication_id int not null REFERENCES medication(id) ON DELETE CASCADE
 
 CREATE TABLE contract(
 id SERIAL PRIMARY KEY,
-contract_number varchar(50) not null UNIQUE,
+contract_number varchar(255) not null UNIQUE,
 start_date date not null,
 end_date date,
 contract_value decimal(10,2) not null,
 status varchar(9) not null CHECK(status in('PENDENTE','ATIVO','COMPLETO','CANCELADO')),
-working_hours varchar(50) not null,
+working_hours varchar(255) not null,
 description text,
 rating int CHECK (rating BETWEEN 1 and 5 or rating is null),
 comment text,
