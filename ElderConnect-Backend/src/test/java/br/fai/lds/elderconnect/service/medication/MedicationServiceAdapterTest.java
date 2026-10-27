@@ -5,13 +5,11 @@ import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.medication.Med
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.medication.MedicationDao;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,6 +24,7 @@ public class MedicationServiceAdapterTest {
     @InjectMocks
     private MedicationServiceAdapter medicationServiceAdapter;
 
+    //Create
     @Test
     public void shouldCreateValidMedication() {
         Medication medication = medicationValided();
@@ -71,7 +70,7 @@ public class MedicationServiceAdapterTest {
         verifyNoInteractions(medicationDao);
     }
 
-
+    //Delete
     @Test
     public void shouldDeleteMedicationWithValidId() {
         medicationServiceAdapter.delete(1);
@@ -86,15 +85,16 @@ public class MedicationServiceAdapterTest {
         verifyNoInteractions(medicationDao);
     }
 
+    //FindById
     @Test
     public void shouldFindMedicationById() {
         Medication medication = medicationValided();
         medication.setId(1);
         when(medicationDao.readyById(1)).thenReturn(medication);
 
-        Medication result = medicationServiceAdapter.findById(1);
+        Medication resultMedication = medicationServiceAdapter.findById(1);
 
-        assertSame(medication, result);
+        assertSame(medication, resultMedication);
         verify(medicationDao).readyById(1);
     }
 
@@ -102,18 +102,112 @@ public class MedicationServiceAdapterTest {
     public void shouldReturnNullWhenMedicationDoesNotExist() {
         when(medicationDao.readyById(10)).thenReturn(null);
 
-        Medication result = medicationServiceAdapter.findById(10);
+        Medication medication = medicationServiceAdapter.findById(10);
 
-        assertNull(result);
+        assertNull(medication);
         verify(medicationDao).readyById(10);
     }
 
     @Test
     public void shouldReturnNullForInvalidMedicationId() {
-        Medication result = medicationServiceAdapter.findById(-10);
+        Medication medication = medicationServiceAdapter.findById(-10);
 
-        assertNull(result);
+        assertNull(medication);
         verifyNoInteractions(medicationDao);
+    }
+
+    //Find All
+    @Test
+    public void shouldReturnListMedications() {
+        List<Medication> medications = new ArrayList<>();
+
+        Medication medication1 = medicationValided();
+        Medication medication2 = medicationValided();
+        medication2.setMedicationName("Ibuprofeno");
+
+        medications.add(medication1);
+        medications.add(medication2);
+
+        when(medicationDao.readAll()).thenReturn(medications);
+
+        List<Medication> medicationsResult = medicationDao.readAll();
+
+        assertSame(medicationsResult, medications);
+        verify(medicationDao).readAll();
+    }
+
+    @Test
+    public void shouldReturnEmptyList() {
+        List<Medication> medications = new ArrayList<>();
+
+        when(medicationDao.readAll()).thenReturn(medications);
+
+        List<Medication> medicationsResult = medicationDao.readAll();
+
+        assertSame(medicationsResult, medications);
+        verify(medicationDao).readAll();
+    }
+
+    //Update
+
+    @Test
+    public void shouldUpdateValidData() {
+        Medication medication = medicationValided();
+        medication.setId(10);
+
+        Medication updateMedication = medicationValided();
+        updateMedication.setMedicationName("Novalgina");
+        updateMedication.setDose("30 gotas");
+
+        when(medicationDao.readyById(10)).thenReturn(medication);
+
+        boolean result = medicationServiceAdapter.update(10, updateMedication);
+
+        assertTrue(result);
+        assertEquals("Novalgina", medication.getMedicationName());
+        assertEquals("30 gotas", medication.getDose());
+
+        verify(medicationDao).readyById(10);
+        verify(medicationDao).updateInformation(10, medication);
+    }
+
+    @Test
+    public void shouldUpdateOneData() {
+        Medication medication = medicationValided();
+        medication.setId(10);
+
+        Medication updateMedication = medicationValided();
+        updateMedication.setMedicationName("Novalgina");
+
+
+        when(medicationDao.readyById(10)).thenReturn(medication);
+
+        boolean result = medicationServiceAdapter.update(10, updateMedication);
+
+        assertTrue(result);
+        assertEquals("Novalgina", medication.getMedicationName());
+
+
+        verify(medicationDao).readyById(10);
+        verify(medicationDao).updateInformation(10, medication);
+    }
+
+    @Test
+    public void shouldDontUpdateInvalidData() {
+        Medication medication = medicationValided();
+        medication.setId(10);
+
+        Medication updateMedication = medicationValided();
+        updateMedication.setMedicationName("     ");
+        updateMedication.setDose("");
+
+        when(medicationDao.readyById(10)).thenReturn(medication);
+
+        boolean result = medicationServiceAdapter.update(10, updateMedication);
+
+        assertFalse(result);
+        verify(medicationDao, never()).updateInformation(10, medication);
+
     }
 
     private Medication medicationValided() {

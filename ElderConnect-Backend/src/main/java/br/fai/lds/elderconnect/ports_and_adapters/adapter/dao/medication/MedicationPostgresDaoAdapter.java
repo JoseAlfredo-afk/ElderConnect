@@ -33,7 +33,7 @@ public class MedicationPostgresDaoAdapter implements MedicationDao {
 
             preparedStatement.setString(1, entity.getMedicationName());
             preparedStatement.setString(2, entity.getDose());
-            preparedStatement.setInt(3,entity.getSeniorId());
+            preparedStatement.setInt(3, entity.getSeniorId());
 
             preparedStatement.execute();
 
