@@ -1,2 +1,5 @@
 ElderConnect.zip
 ElderConnect.rar
+node_modules
+ElderConnect/Test-Backend/E2E/package-lock.json
+ElderConnect/Test-Backend/E2E/package.json

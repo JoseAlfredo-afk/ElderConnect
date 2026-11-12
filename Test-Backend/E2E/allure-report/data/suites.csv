@@ -1,0 +1,4 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","1504","should UserName invalid credentials","My Login application","2026-11-12","passed","2026-11-12","","","",""
+"","1388","should Password invalid credentials","My Login application","2026-11-12","passed","2026-11-12","","","",""
+"","2831","should login with valid credentials","My Login application","2026-11-12","passed","2026-11-12","","","",""
