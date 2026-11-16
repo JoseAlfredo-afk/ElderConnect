@@ -6,7 +6,8 @@ import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.medication.Medicat
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.medication.MedicationSchedulePostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.message.MessagePostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user.UserPostgresDaoAdapter;
-import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.security.BasicAuthenticationServiceAdapter;
+import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.security.basic.BasicAuthenticationServiceAdapter;
+import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.security.jwt.JwtAuthenticationServiceAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.appointment.AppointmentDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.contract.ContractDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.medication.MedicationDao;
@@ -15,12 +16,16 @@ import br.fai.lds.elderconnect.ports_and_adapters.port.dao.message.MessageDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.security.AuthenticationService;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.sql.Connection;
 import java.util.Arrays;
@@ -73,9 +78,32 @@ public class AppConfiguration {
         return new BasicAuthenticationServiceAdapter(userService, passwordEncoder);
     }
 
+    @Profile("jwt")
+    @Bean
+    public AuthenticationService jwtAuthenticationService(final UserService userService, final PasswordEncoder passwordEncoder) {
+        return new JwtAuthenticationServiceAdapter(userService, passwordEncoder);
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    // local:8081/swagger-ui.html
+    @Bean
+    public OpenAPI customOpenApi() {
+        return new OpenAPI().info(new Info().title("ElderConnect").version("0.0.1").description("Backend do ElderConnect"));
+    }
+
+    @Bean
+    WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedOrigins("http:localhost:4200").allowedMethods("GET", "POST", "PUT", "DELETE").allowCredentials(true);
+            }
+        };
+    }
+
 
 }
