@@ -8,18 +8,9 @@ class SecurePage extends Page {
     /**
      * define selectors using getter methods
      */
-    public get flashAlert() {
-        return $('#flash');
-    }
-
-    public get flashAlertErrorUserInvalid() {
-        return $('#flash');
-    }
-
-    public get flashAlertErrorPasswordInvalid() {
+    public get flashAlert () {
         return $('#flash');
     }
 }
-
 
 export default new SecurePage();

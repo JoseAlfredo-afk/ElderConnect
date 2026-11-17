@@ -5,7 +5,7 @@ export const config: WebdriverIO.Config = {
     // ====================
     // WebdriverIO supports running e2e tests as well as unit and component tests.
     runner: 'local',
-    tsConfigPath: './tsconfig.json',
+    tsConfigPath: './test/tsconfig.json',
     
     //
     // ==================
@@ -130,13 +130,7 @@ export const config: WebdriverIO.Config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-     reporters: [
-        ['allure', {
-            outputDir: 'allure-results',
-            disableWebdriverStepsReporting: true,
-            disableWebdriverScreenshotsReporting: false,
-        }],
-    ],
+    reporters: ['spec'],
 
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
@@ -304,7 +298,4 @@ export const config: WebdriverIO.Config = {
     */
     // afterAssertion: function(params) {
     // }
-
-
-
 }
