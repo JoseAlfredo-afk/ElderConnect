@@ -1,9 +1,6 @@
 
 package br.fai.lds.elderconnect.domain;
 
-import br.fai.lds.elderconnect.domain.Appointment;
-import br.fai.lds.elderconnect.domain.UserModel;
-import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.appointment.AppointmentServiceAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.appointment.AppointmentDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao;
 

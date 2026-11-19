@@ -1,6 +1,5 @@
 package br.fai.lds.elderconnect.domain;
 
-import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.appointment.AppointmentServiceAdapter;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 

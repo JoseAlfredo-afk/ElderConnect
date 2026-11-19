@@ -1,6 +1,5 @@
 package br.fai.lds.elderconnect.domain;
 
-import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.user.UserServiceAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +13,6 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.never;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 

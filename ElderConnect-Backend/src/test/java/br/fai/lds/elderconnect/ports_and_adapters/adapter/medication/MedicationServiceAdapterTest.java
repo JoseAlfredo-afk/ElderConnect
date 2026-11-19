@@ -1,7 +1,6 @@
-package br.fai.lds.elderconnect.service.medication;
+package br.fai.lds.elderconnect.ports_and_adapters.adapter.medication;
 
 import br.fai.lds.elderconnect.domain.Medication;
-import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.medication.MedicationServiceAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.medication.MedicationDao;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
