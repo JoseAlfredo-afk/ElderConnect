@@ -15,6 +15,8 @@ import br.fai.lds.elderconnect.ports_and_adapters.port.dao.message.MessageDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.user.UserDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.security.AuthenticationService;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -76,6 +78,15 @@ public class AppConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public OpenAPI customOpenApi() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("ElderConnect")
+                        .version("1.0.0")
+                        .description("Backend ElderConnect"));
     }
 
 }
