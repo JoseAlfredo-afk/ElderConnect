@@ -4,15 +4,18 @@ import br.fai.lds.elderconnect.domain.UserModel;
 import br.fai.lds.elderconnect.dto.user.*;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/user")
 public class UserRestController {
@@ -134,5 +137,21 @@ public class UserRestController {
         final boolean response = userService.updateEmail(updateEmailDto.getId(), updateEmailDto.getPassword(), updateEmailDto.getNewEmail());
 
         return response ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+    }
+
+    @Bean
+    WebMvcConfigurer configurer(){
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry
+                        .addMapping("/**")
+                        .allowedOrigins("http://localhost:4200")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+
+            }
+        };
     }
 }
