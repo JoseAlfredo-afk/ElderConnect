@@ -5,11 +5,13 @@ import br.fai.lds.elderconnect.dto.user.AuthenticationDto;
 import br.fai.lds.elderconnect.dto.user.UserResponseDto;
 import br.fai.lds.elderconnect.ports_and_adapters.port.rest_controllers.AuthenticationRestController;
 import br.fai.lds.elderconnect.ports_and_adapters.port.service.security.AuthenticationService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 //@CrossOrigin(origins = "http://localhost:4200")
+@Profile("basic")
 @RestController
 @RequestMapping("/authenticate")
 public class BasicAuthenticationRestController implements AuthenticationRestController {

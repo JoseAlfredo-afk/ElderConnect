@@ -7,6 +7,7 @@ import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.medication.Medicat
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.message.MessagePostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user.UserPostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.security.BasicAuthenticationServiceAdapter;
+import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.security.JwtAuthenticationServiceAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.appointment.AppointmentDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.contract.ContractDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.medication.MedicationDao;
@@ -88,5 +89,14 @@ public class AppConfiguration {
                         .version("1.0.0")
                         .description("Backend ElderConnect"));
     }
+
+    @Profile("jwt")
+    @Bean
+
+    public AuthenticationService jwtAuthenticationService(final PasswordEncoder passwordEncoder, final UserService userService) {
+        return new JwtAuthenticationServiceAdapter(passwordEncoder, userService);
+    }
+
+
 
 }
