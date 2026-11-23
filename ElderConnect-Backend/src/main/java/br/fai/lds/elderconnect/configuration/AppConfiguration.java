@@ -6,8 +6,8 @@ import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.medication.Medicat
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.medication.MedicationSchedulePostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.message.MessagePostgresDaoAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.adapter.dao.user.UserPostgresDaoAdapter;
-import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.security.BasicAuthenticationServiceAdapter;
-import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.security.JwtAuthenticationServiceAdapter;
+import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.security.jwt.basic.BasicAuthenticationServiceAdapter;
+import br.fai.lds.elderconnect.ports_and_adapters.adapter.service.security.jwt.JwtAuthenticationServiceAdapter;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.appointment.AppointmentDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.contract.ContractDao;
 import br.fai.lds.elderconnect.ports_and_adapters.port.dao.medication.MedicationDao;
