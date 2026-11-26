@@ -1,5 +1,11 @@
 package br.fai.lds.elderconnect.ports_and_adapters.adapter.service.security.jwt;
 
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+
+import java.security.Key;
+import java.time.Duration;
+import java.util.function.Function;
 import br.fai.lds.elderconnect.domain.UserModel;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
