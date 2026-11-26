@@ -1,5 +1,6 @@
 package br.fai.lds.elderconnect.ports_and_adapters.adapter.service.security.jwt;
 
+import br.fai.lds.elderconnect.configuration.security.JwtProperties;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 

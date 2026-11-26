@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { AuthenticatedUserDto } from '../../models/dto/authenticated-user-dto';
 import { HttpClient } from '@angular/common/http';
+import { JwtTokenDto } from '../../models/dto/jwt-token-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,7 @@ export class Authentication {
   }
 
   authenticate(email: string, password: string) {
-    return this.http.post<AuthenticatedUserDto>(
+    return this.http.post<JwtTokenDto>(
       'http://localhost:8081/authenticate',
       {
         email: email,
@@ -32,16 +33,30 @@ export class Authentication {
     );
   }
 
-  logar(user: AuthenticatedUserDto): void {
+  logar(response: JwtTokenDto): AuthenticatedUserDto {
+
+    const token = response.token;
+
+    const payload = JSON.parse(
+      atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))
+    );
+
+    const user: AuthenticatedUserDto = {
+      id: payload.id,
+      fullname: payload.fullname,
+      email: payload.email,
+      userType: payload.userType
+    };
+
+    localStorage.setItem('token', token);
+    localStorage.setItem('id', String(user.id));
+    localStorage.setItem('fullname', user.fullname);
+    localStorage.setItem('email', user.email);
+    localStorage.setItem('userType', user.userType);
 
     this.usuarioLogado.set(true);
 
-    if (user) {
-      localStorage.setItem('id', String(user.id ?? ''));
-      localStorage.setItem('fullname', user.fullname ?? '');
-      localStorage.setItem('email', user.email ?? '');
-      localStorage.setItem('userType', user.userType ?? '');
-    }
+    return user;
   }
 
   usuarioAtual(): AuthenticatedUserDto | null {
@@ -79,19 +94,20 @@ export class Authentication {
     localStorage.removeItem('fullname');
     localStorage.removeItem('email');
     localStorage.removeItem('userType');
+    localStorage.removeItem('token');
   }
 
   cadastrarUsuario(usuario: any) {
-  return this.http.post(
-    'http://localhost:8081/api/user',
-    usuario
-  );
+    return this.http.post(
+      'http://localhost:8081/api/user',
+      usuario
+    );
   }
 
   buscarUsuarioPorEmail(email: string) {
-  return this.http.get<any>(
-    `http://localhost:8081/api/user/email/${encodeURIComponent(email)}`
-  );
+    return this.http.get<any>(
+      `http://localhost:8081/api/user/email/${encodeURIComponent(email)}`
+    );
   }
 
   atualizarPerfilCuidador(id: number, perfil: any) {
