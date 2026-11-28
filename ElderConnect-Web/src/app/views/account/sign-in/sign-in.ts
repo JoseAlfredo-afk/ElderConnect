@@ -76,7 +76,7 @@ export class SignIn {
 
         const user = this.authService.logar(response);
 
-        console.log('Usuário autenticado:', user);
+        //console.log('Usuário autenticado:', user);
 
         this.mostrarNotificacao(
           'Logado com sucesso!',

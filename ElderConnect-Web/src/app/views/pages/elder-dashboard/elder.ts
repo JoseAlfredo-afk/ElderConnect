@@ -155,9 +155,9 @@ export class ElderDashboard implements OnInit {
   ngOnInit(): void {
 
 
-    console.log(
-      'Dashboard do idoso carregado.'
-    );
+    //console.log(
+      //'Dashboard do idoso carregado.'
+    //);
 
 
     const usuario =
@@ -180,10 +180,10 @@ export class ElderDashboard implements OnInit {
       usuario.fullname;
 
 
-    console.log(
-      'Usuário logado:',
-      usuario
-    );
+    //console.log(
+      //'Usuário logado:',
+     // usuario
+    //);
 
 
     /*
@@ -208,10 +208,10 @@ export class ElderDashboard implements OnInit {
   ): void {
 
 
-    console.log(
-      'Buscando medicamentos do idoso:',
-      seniorId
-    );
+   // console.log(
+     // 'Buscando medicamentos do idoso:',
+    //  seniorId
+   // );
 
 
     this.http
@@ -227,10 +227,10 @@ export class ElderDashboard implements OnInit {
         next: (agendamentos) => {
 
 
-          console.log(
-            'Agendamentos recebidos:',
-            agendamentos
-          );
+          //console.log(
+           // 'Agendamentos recebidos:',
+           // agendamentos
+         // );
 
 
           this.medicamentos = [];
@@ -275,10 +275,10 @@ export class ElderDashboard implements OnInit {
                       .detectChanges();
 
 
-                    console.log(
-                      'Medicamento exibido:',
-                      medicamento.medicationName
-                    );
+                    //console.log(
+                     // 'Medicamento exibido:',
+                      //medicamento.medicationName
+                    //);
 
                   },
 
@@ -334,13 +334,13 @@ export class ElderDashboard implements OnInit {
     seniorId: number
   ): void {
 
-    console.log('Buscando cuidador contratado:', seniorId);
+    //console.log('Buscando cuidador contratado:', seniorId);
 
     this.http.get<any[]>(`http://localhost:8081/api/contracts/senior-contracts/${seniorId}`).subscribe(
       {
         next: (contratos) => {
 
-          console.log('Contratos recebidos:', contratos);
+          //console.log('Contratos recebidos:', contratos);
 
           const contratoAtivo =
 

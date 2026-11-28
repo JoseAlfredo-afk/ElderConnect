@@ -227,10 +227,10 @@ export class CaregiverDashboard implements OnInit, OnDestroy {
 
         next: contratos => {
 
-          console.log(
-            'Contratos recebidos:',
-            contratos
-          );
+          //console.log(
+          //  'Contratos recebidos:',
+           // contratos
+         // );
 
 
           this.solicitacoesPendentes =
